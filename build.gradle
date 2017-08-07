@@ -4,6 +4,12 @@ repositories {
     mavenCentral()
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 dependencies {
     compile group: 'net.jcip', name: 'jcip-annotations', version: '1.0'
     compile group: 'commons-codec', name: 'commons-codec', version: '1.10'

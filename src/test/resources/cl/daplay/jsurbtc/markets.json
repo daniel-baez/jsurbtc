@@ -1,0 +1,44 @@
+{
+  "markets": [
+    {
+      "id": "BTC-CLP",
+      "name": "btc-clp",
+      "base_currency": "BTC",
+      "quote_currency": "CLP",
+      "minimum_order_amount": [
+        "0.0001",
+        "BTC"
+      ]
+    },
+    {
+      "id": "BTC-COP",
+      "name": "btc-cop",
+      "base_currency": "BTC",
+      "quote_currency": "COP",
+      "minimum_order_amount": [
+        "0.0001",
+        "BTC"
+      ]
+    },
+    {
+      "id": "ETH-CLP",
+      "name": "eth-clp",
+      "base_currency": "ETH",
+      "quote_currency": "CLP",
+      "minimum_order_amount": [
+        "0.01",
+        "ETH"
+      ]
+    },
+    {
+      "id": "ETH-BTC",
+      "name": "eth-btc",
+      "base_currency": "ETH",
+      "quote_currency": "BTC",
+      "minimum_order_amount": [
+        "0.01",
+        "ETH"
+      ]
+    }
+  ]
+}

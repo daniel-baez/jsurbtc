@@ -1,0 +1,33 @@
+{
+  "balances": [
+    {
+      "id": "BTC",
+      "amount": ["0.22317797", "BTC"],
+      "available_amount": ["0.22317797", "BTC"],
+      "frozen_amount": ["0.0", "BTC"],
+      "pending_withdraw_amount": ["0.0", "BTC"],
+      "account_id": 1898
+    }, {
+      "id": "CLP",
+      "amount": ["897361.6", "CLP"],
+      "available_amount": ["897361.6", "CLP"],
+      "frozen_amount": ["0.0", "CLP"],
+      "pending_withdraw_amount": ["0.0", "CLP"],
+      "account_id": 1898
+    }, {
+      "id": "COP",
+      "amount": ["0.0", "COP"],
+      "available_amount": ["0.0", "COP"],
+      "frozen_amount": ["0.0", "COP"],
+      "pending_withdraw_amount": ["0.0", "COP"],
+      "account_id": 1898
+    }, {
+      "id": "ETH",
+      "amount": ["3.84446046", "ETH"],
+      "available_amount": ["3.84446046", "ETH"],
+      "frozen_amount": ["0.0", "ETH"],
+      "pending_withdraw_amount": ["0.0", "ETH"],
+      "account_id": 1898
+    }
+  ]
+}

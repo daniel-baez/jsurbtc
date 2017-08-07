@@ -1,0 +1,13 @@
+{
+  "id": 33465,
+  "state": "executing",
+  "currency": "BTC",
+  "created_at": "2017-08-02T07:45:00.245Z",
+  "withdrawal_data": {
+    "type": "bitcoin_withdrawal_data",
+    "target_address": "32nWKHGXz8L888WYELyfe3JrXUvkWjxvQ",
+    "tx_hash": "4883cxxxxxde3a76af7sssss0488bb6e1c4f9a93ef34b0288888888"
+  },
+  "amount": ["0.05", "BTC"],
+  "fee": ["0.00085", "BTC"]
+}

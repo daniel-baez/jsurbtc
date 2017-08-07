@@ -1,0 +1,10 @@
+{
+  "balance": {
+    "id": "CLP",
+    "amount": ["897361.6", "CLP"],
+    "available_amount": ["897361.6", "CLP"],
+    "frozen_amount": ["0.0", "CLP"],
+    "pending_withdraw_amount": ["0.0", "CLP"],
+    "account_id": 1898
+  }
+}

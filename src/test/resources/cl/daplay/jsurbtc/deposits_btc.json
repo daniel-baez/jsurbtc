@@ -1,0 +1,52 @@
+{
+  "deposits": [{
+    "id": 17191,
+    "state": "confirmed",
+    "amount": ["0.39361095", "BTC"],
+    "currency": "BTC",
+    "created_at": "2017-03-16T21:53:27.142Z",
+    "deposit_data": {
+      "type": "bitcoin_deposit_data",
+      "address": "3QZBUwJtihWiUW78m31CwwwzSmSeRBRMyG",
+      "tx_hash": "46bf31d71e3204a4cb5858d2688f4788850adda2c695c42a2dc296bf44a840fa"
+    }
+  }, {
+    "id": 16904,
+    "state": "confirmed",
+    "amount": ["0.77447899", "BTC"],
+    "currency": "BTC",
+    "created_at": "2017-03-14T19:52:45.949Z",
+    "deposit_data": {
+      "type": "bitcoin_deposit_data",
+      "address": "3KpdE4rFs9ozUxffxwsi1egrBHSUiRk4C9",
+      "tx_hash": "80b1b1bc73a1ef1b7bf8cc7d2d639722b05ec1c39ba4f7f6f6e9dbe6ecb76e93"
+    }
+  }, {
+    "id": 16695,
+    "state": "confirmed",
+    "amount": ["0.35", "BTC"],
+    "currency": "BTC",
+    "created_at": "2017-03-12T21:21:59.299Z",
+    "deposit_data": {
+      "type": "bitcoin_deposit_data",
+      "address": "3CPhVuo4kUt37iVAK7Wf1F3GxNHSbDEcMq",
+      "tx_hash": "20d2a622059a51be4e78e24073bd32a14a516118f12294b1d57604a9fb887519"
+    }
+  }, {
+    "id": 10510,
+    "state": "confirmed",
+    "amount": ["0.036", "BTC"],
+    "currency": "BTC",
+    "created_at": "2016-12-23T23:31:09.920Z",
+    "deposit_data": {
+      "type": "bitcoin_deposit_data",
+      "address": "3GEuazJsMxQy1eaPmi69yuCv6hPnf4VM9B",
+      "tx_hash": "c6da4945ee75b557cbb0e0020fcbc813a0649038e5ed21a2b95795b35af09b07"
+    }
+  }],
+  "meta": {
+    "total_pages": 1,
+    "total_count": 4,
+    "current_page": 1
+  }
+}

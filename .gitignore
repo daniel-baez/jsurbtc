@@ -1,0 +1,11 @@
+.gradle/
+.idea/
+build/
+out/
+my_README.md
+jsurbtc.iml
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+

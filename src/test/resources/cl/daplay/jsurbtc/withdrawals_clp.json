@@ -1,0 +1,233 @@
+{
+  "withdrawals": [{
+    "id": 29219,
+    "state": "confirmed",
+    "currency": "CLP",
+    "created_at": "2017-07-04T20:44:30.776Z",
+    "withdrawal_data": {
+      "type": "fiat/withdrawal_data",
+      "id": 9251,
+      "created_at": "2017-07-04T20:44:30.772Z",
+      "updated_at": "2017-07-04T20:49:48.183Z",
+      "transacted_at": "2017-07-04T20:49:48.179Z",
+      "statement_ref": "j4q1rss5-149429300",
+      "fiat_account": {
+        "id": 2144,
+        "account_number": "37708888",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 4,
+        "created_at": "2016-10-17T04:16:50.274Z",
+        "currency": "CLP",
+        "document_number": "16.111.999-6",
+        "email": "algun.email@delmundo.com",
+        "full_name": "Daniel Alejandro De Los Palotes",
+        "national_number_identifier": null,
+        "phone": "+1 451-589-6666",
+        "updated_at": "2016-10-17T04:16:50.274Z",
+        "bank_name": "BANCO DE CREDITO E INVERSIONES"
+      },
+      "source_account": {
+        "id": 1,
+        "account_number": "0206653310",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 9,
+        "created_at": "2015-03-26T20:05:52.001Z",
+        "currency": "CLP",
+        "document_number": "76.415.528-9",
+        "email": "contabilidad@surbtc.com",
+        "full_name": "SurBTC SpA",
+        "national_number_identifier": "76.415.528-9",
+        "phone": "+560228818025",
+        "updated_at": "2015-03-26T20:05:52.001Z",
+        "bank_name": "BANCO ITAÚ"
+      }
+    },
+    "amount": ["400000.0", "CLP"],
+    "fee": ["0.0", "CLP"]
+  }, {
+    "id": 28366,
+    "state": "confirmed",
+    "currency": "CLP",
+    "created_at": "2017-06-28T01:41:10.611Z",
+    "withdrawal_data": {
+      "type": "fiat/withdrawal_data",
+      "id": 8929,
+      "created_at": "2017-06-28T01:41:10.601Z",
+      "updated_at": "2017-06-28T01:46:05.039Z",
+      "transacted_at": "2017-06-28T01:46:05.032Z",
+      "statement_ref": "j4gca1cp-447955060",
+      "fiat_account": {
+        "id": 2144,
+        "account_number": "37708888",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 4,
+        "created_at": "2016-10-17T04:16:50.274Z",
+        "currency": "CLP",
+        "document_number": "16.111.999-6",
+        "email": "algun.email@delmundo.com",
+        "full_name": "Daniel Alejandro De Los Palotes",
+        "national_number_identifier": null,
+        "phone": "+1 451-589-6666",
+        "updated_at": "2016-10-17T04:16:50.274Z",
+        "bank_name": "BANCO DE CREDITO E INVERSIONES"
+      },
+      "source_account": {
+        "id": 1,
+        "account_number": "0206653310",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 9,
+        "created_at": "2015-03-26T20:05:52.001Z",
+        "currency": "CLP",
+        "document_number": "76.415.528-9",
+        "email": "contabilidad@surbtc.com",
+        "full_name": "SurBTC SpA",
+        "national_number_identifier": "76.415.528-9",
+        "phone": "+560228818025",
+        "updated_at": "2015-03-26T20:05:52.001Z",
+        "bank_name": "BANCO ITAÚ"
+      }
+    },
+    "amount": ["400000.0", "CLP"],
+    "fee": ["0.0", "CLP"]
+  }, {
+    "id": 26591,
+    "state": "confirmed",
+    "currency": "CLP",
+    "created_at": "2017-06-15T05:50:04.556Z",
+    "withdrawal_data": {
+      "type": "fiat/withdrawal_data",
+      "id": 8324,
+      "created_at": "2017-06-15T05:50:04.553Z",
+      "updated_at": "2017-06-15T20:55:14.079Z",
+      "transacted_at": "2017-06-15T20:55:14.076Z",
+      "statement_ref": "j3ywls54-22853244",
+      "fiat_account": {
+        "id": 2144,
+        "account_number": "37708888",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 4,
+        "created_at": "2016-10-17T04:16:50.274Z",
+        "currency": "CLP",
+        "document_number": "16.111.999-6",
+        "email": "algun.email@delmundo.com",
+        "full_name": "Daniel Alejandro De Los Palotes",
+        "national_number_identifier": null,
+        "phone": "+1 451-589-6666",
+        "updated_at": "2016-10-17T04:16:50.274Z",
+        "bank_name": "BANCO DE CREDITO E INVERSIONES"
+      },
+      "source_account": {
+        "id": 1,
+        "account_number": "0206653310",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 9,
+        "created_at": "2015-03-26T20:05:52.001Z",
+        "currency": "CLP",
+        "document_number": "76.415.528-9",
+        "email": "contabilidad@surbtc.com",
+        "full_name": "SurBTC SpA",
+        "national_number_identifier": "76.415.528-9",
+        "phone": "+560228818025",
+        "updated_at": "2015-03-26T20:05:52.001Z",
+        "bank_name": "BANCO ITAÚ"
+      }
+    },
+    "amount": ["380000.0", "CLP"],
+    "fee": ["0.0", "CLP"]
+  }, {
+    "id": 25590,
+    "state": "confirmed",
+    "currency": "CLP",
+    "created_at": "2017-06-09T16:24:32.516Z",
+    "withdrawal_data": {
+      "type": "fiat/withdrawal_data",
+      "id": 7950,
+      "created_at": "2017-06-09T16:24:32.512Z",
+      "updated_at": "2017-06-09T16:34:21.929Z",
+      "transacted_at": "2017-06-09T16:34:21.926Z",
+      "statement_ref": "j3q2n3i9-617197506",
+      "fiat_account": {
+        "id": 2144,
+        "account_number": "37708888",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 4,
+        "created_at": "2016-10-17T04:16:50.274Z",
+        "currency": "CLP",
+        "document_number": "16.111.999-6",
+        "email": "algun.email@delmundo.com",
+        "full_name": "Daniel Alejandro De Los Palotes",
+        "national_number_identifier": null,
+        "phone": "+1 451-589-6666",
+        "updated_at": "2016-10-17T04:16:50.274Z",
+        "bank_name": "BANCO DE CREDITO E INVERSIONES"
+      },
+      "source_account": {
+        "id": 1,
+        "account_number": "0206653310",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 9,
+        "created_at": "2015-03-26T20:05:52.001Z",
+        "currency": "CLP",
+        "document_number": "76.415.528-9",
+        "email": "contabilidad@surbtc.com",
+        "full_name": "SurBTC SpA",
+        "national_number_identifier": "76.415.528-9",
+        "phone": "+560228818025",
+        "updated_at": "2015-03-26T20:05:52.001Z",
+        "bank_name": "BANCO ITAÚ"
+      }
+    },
+    "amount": ["20000.0", "CLP"],
+    "fee": ["0.0", "CLP"]
+  }, {
+    "id": 13287,
+    "state": "confirmed",
+    "currency": "CLP",
+    "created_at": "2017-02-21T01:04:56.004Z",
+    "withdrawal_data": {
+      "type": "fiat/withdrawal_data",
+      "id": 3985,
+      "created_at": "2017-02-21T01:04:55.942Z",
+      "updated_at": "2017-02-21T01:08:26.551Z",
+      "transacted_at": "2017-02-21T01:08:26.549Z",
+      "statement_ref": "izeu0s2h-943557298",
+      "fiat_account": {
+        "id": 2144,
+        "account_number": "37708888",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 4,
+        "created_at": "2016-10-17T04:16:50.274Z",
+        "currency": "CLP",
+        "document_number": "16.111.999-6",
+        "email": "algun.email@delmundo.com",
+        "full_name": "Daniel Alejandro De Los Palotes",
+        "national_number_identifier": null,
+        "phone": "+1 451-589-6666",
+        "updated_at": "2016-10-17T04:16:50.274Z",
+        "bank_name": "BANCO DE CREDITO E INVERSIONES"
+      },
+      "source_account": {
+        "id": 1,
+        "account_number": "0206653310",
+        "account_type": "Cuenta Corriente",
+        "bank_id": 9,
+        "created_at": "2015-03-26T20:05:52.001Z",
+        "currency": "CLP",
+        "document_number": "76.415.528-9",
+        "email": "contabilidad@surbtc.com",
+        "full_name": "SurBTC SpA",
+        "national_number_identifier": "76.415.528-9",
+        "phone": "+560228818025",
+        "updated_at": "2015-03-26T20:05:52.001Z",
+        "bank_name": "BANCO ITAÚ"
+      }
+    },
+    "amount": ["25116.0", "CLP"],
+    "fee": ["0.0", "CLP"]
+  }],
+  "meta": {
+    "total_pages": 1,
+    "total_count": 5,
+    "current_page": 1
+  }
+}

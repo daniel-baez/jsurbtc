@@ -1,0 +1,11 @@
+{
+  "id": "BTC-CLP",
+  "name": "btc-clp",
+  "base_currency": "BTC",
+  "quote_currency": "CLP",
+  "minimum_order_amount": [
+    "0.0001",
+    "BTC"
+  ]
+}
+

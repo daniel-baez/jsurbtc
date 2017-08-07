@@ -1,0 +1,12 @@
+{
+  "id": 10510,
+  "state": "confirmed",
+  "amount": ["0.036", "BTC"],
+  "currency": "BTC",
+  "created_at": "2016-12-23T23:31:09.920Z",
+  "deposit_data": {
+    "type": "bitcoin_deposit_data",
+    "address": "3GEuazJsMxQy1eaPmi69yuCv6hPnf4VM9B",
+    "tx_hash": "c6da4945ee75b557cbb0e0020fcbc813a0649038e5ed21a2b95795b35af09b07"
+  }
+}

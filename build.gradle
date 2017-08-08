@@ -1,13 +1,21 @@
 apply plugin: 'java'
+apply plugin: 'com.bmuschko.nexus'
+
+group = "cl.daplay"
+description = ""
+version = "1.0.0"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+    }
+}
 
 repositories {
     mavenCentral()
-}
-
-compileJava.options.encoding = 'UTF-8'
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
 }
 
 dependencies {
@@ -30,3 +38,29 @@ test {
     testLogging.showStandardStreams = true
 }
 
+modifyPom {
+    project {
+
+        scm {
+            url 'https://github.com/daplay/jsurbtc'
+            connection 'scm:https://daplay@github.com/daplay/jsurbtc.git'
+            developerConnection 'scm:git://github.com/daplay/jsurbtc.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                distribution 'repo'
+            }
+        }
+
+        developers {
+            developer {
+                id 'daplay'
+                name 'Daniel Meneses'
+                email 'daplay@gmail.com'
+            }
+        }
+    }
+}

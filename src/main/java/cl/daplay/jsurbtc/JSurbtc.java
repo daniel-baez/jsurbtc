@@ -119,12 +119,6 @@ public final class JSurbtc {
     }
 
     public List<Order> getOrders(final MarketID marketID, final OrderState orderState) throws Exception {
-        /*
-         * per	300	Número de ordenes por página [min 1, max 300]
-         * page	1	Número de pagina a recibir
-         * state	None	Estado de la orden
-         * minimun_exchanged	None	Minimo transado por la orden
-         */
         final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketID, orderState).toLowerCase();
         return newPaginatedList(path, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }

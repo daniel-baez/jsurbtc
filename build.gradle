@@ -41,9 +41,13 @@ test {
 modifyPom {
     project {
 
+        name project.name
+        description project.description
+        url 'https://github.com/daplay/jsurbtc'
+
         scm {
             url 'https://github.com/daplay/jsurbtc'
-            connection 'scm:https://daplay@github.com/daplay/jsurbtc.git'
+            connection 'scm:https://github.com/daplay/jsurbtc.git'
             developerConnection 'scm:git://github.com/daplay/jsurbtc.git'
         }
 

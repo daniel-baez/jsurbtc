@@ -16,7 +16,6 @@ import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -57,7 +56,6 @@ public final class JSurbtc {
 
     private static CloseableHttpClient buildHttpClient(String key, String secret, LongSupplier nonceSupplier) {
         return HttpClients.custom()
-                .setProxy(new HttpHost("localhost", 8888))
                 .addInterceptorFirst(new SurbtcHttpRequestInterceptor(key, secret, nonceSupplier))
                 .build();
     }

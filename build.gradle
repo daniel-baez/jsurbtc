@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'com.bmuschko.nexus'
 
 group = "cl.daplay"
-description = ""
+description = "An idiomatic Java API for Surbtc REST services."
 version = "1.0.0"
 
 buildscript {

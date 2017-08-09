@@ -41,7 +41,7 @@ compile group: 'cl.daplay', name: 'jsurbtc', version: '1.0.0'
    
 # Documentation
 
-Please see [Javadoc](https://docs.daplay.cl/jsurbtc)
+Please see [Javadoc](http://docs.daplay.cl/jsurbtc/cl/daplay/jsurbtc/JSurbtc.html)
 
 # TODO
 

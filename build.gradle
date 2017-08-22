@@ -3,7 +3,7 @@ apply plugin: 'com.bmuschko.nexus'
 
 group = "cl.daplay"
 description = "An idiomatic Java API for Surbtc REST services."
-version = "1.0.0"
+version = "1.0.1-SNAPSHOT"
 
 buildscript {
     repositories {

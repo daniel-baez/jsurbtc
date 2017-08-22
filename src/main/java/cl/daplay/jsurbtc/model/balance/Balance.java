@@ -1,5 +1,7 @@
-package cl.daplay.jsurbtc.model;
+package cl.daplay.jsurbtc.model.balance;
 
+import cl.daplay.jsurbtc.model.Amount;
+import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;

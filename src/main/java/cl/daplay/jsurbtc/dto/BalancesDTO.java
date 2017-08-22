@@ -1,6 +1,6 @@
 package cl.daplay.jsurbtc.dto;
 
-import cl.daplay.jsurbtc.model.Balance;
+import cl.daplay.jsurbtc.model.balance.Balance;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

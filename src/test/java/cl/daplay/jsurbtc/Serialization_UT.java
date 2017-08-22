@@ -11,6 +11,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -33,6 +35,37 @@ public final class Serialization_UT {
         final String written = OBJECT_MAPPER.writeValueAsString(parsed);
 
         assertEqualJSON(input, written);
+    }
+
+    @Test
+    public void quotations() throws IOException {
+        final List<String> resources = Arrays.asList("quotation_ask_given_earned_quote.json",
+                "quotation_ask_given_spent_base.json",
+                "quotation_bid_given_earned_base.json",
+                "quotation_bid_given_spent_quote.json");
+
+        for (final String resource : resources) {
+            final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream(resource), Charset.defaultCharset());
+            final QuotationDTO parsed = OBJECT_MAPPER.readValue(input, QuotationDTO.class);
+            final String written = OBJECT_MAPPER.writeValueAsString(parsed);
+
+            assertEqualJSON(input, written);
+        }
+    }
+
+    @Test
+    public void balance_events() throws IOException {
+        final List<String> resources = Arrays.asList("balance_events_btc.json",
+                "balance_events_clp.json",
+                "balance_events_eth.json");
+
+        for (final String resource : resources) {
+            final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream(resource), Charset.defaultCharset());
+            final BalanceEventsDTO parsed = OBJECT_MAPPER.readValue(input, BalanceEventsDTO.class);
+            final String written = OBJECT_MAPPER.writeValueAsString(parsed);
+
+            assertEqualJSON(input, written);
+        }
     }
 
     @Test

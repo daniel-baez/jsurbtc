@@ -7,28 +7,15 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+
+import static cl.daplay.jsurbtc.Constants.newBigDecimalFormat;
 
 public final class BigDecimalToStringSerializer extends JsonSerializer<BigDecimal> {
 
-    private static final DecimalFormat FORMAT = newFormat();
-
-    public static DecimalFormat newFormat(){
-        final DecimalFormat format = new DecimalFormat();
-
-        final DecimalFormatSymbols decimalFormatSymbols = format.getDecimalFormatSymbols();
-        decimalFormatSymbols.setDecimalSeparator('.');
-
-        format.setMaximumFractionDigits(9);
-        format.setMinimumFractionDigits(1);
-        format.setGroupingUsed(false);
-        format.setDecimalFormatSymbols(decimalFormatSymbols);
-
-        return format;
-    }
+    private static final DecimalFormat BIG_DECIMAL_FORMAT = newBigDecimalFormat();
 
     @Override
     public void serialize(BigDecimal amount, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        jsonGenerator.writeString(FORMAT.format(amount));
+        jsonGenerator.writeString(BIG_DECIMAL_FORMAT.format(amount));
     }
 }

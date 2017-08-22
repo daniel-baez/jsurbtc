@@ -1,6 +1,7 @@
 # Features
 
 - Idiomatic Java API
+- Java 8 Compatible
 - Lazy loading for paginated results
 - Immutable, Thread-safe, Jackson Ready, Serializable objects
 - Error handling
@@ -21,7 +22,7 @@ surbtc.cancelOrder(order.getId());
 // get all orders
 final List<Order> orders = surbtc.getOrders(MarketID.BTC_CLP);
 
-// fetch latest GET /markets
+// GET /markets
 final List<Market> markets = surbtc.getMarkets();
 ```
 

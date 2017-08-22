@@ -10,7 +10,7 @@ import java.util.function.IntFunction;
 import static java.lang.String.format;
 
 @ThreadSafe
-public final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
+final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 

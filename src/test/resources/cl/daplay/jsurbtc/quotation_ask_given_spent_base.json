@@ -1,0 +1,14 @@
+{
+  "quotation": {
+    "amount": ["1.0", "BTC"],
+    "limit": null,
+    "type": "ask_given_spent_base",
+    "order_amount": ["1.0", "BTC"],
+    "base_exchanged": ["1.0", "BTC"],
+    "quote_exchanged": ["2676982.2", "CLP"],
+    "base_balance_change": ["-1.0", "BTC"],
+    "quote_balance_change": ["2658243.34", "CLP"],
+    "fee": ["18738.86", "CLP"],
+    "incomplete": false
+  }
+}

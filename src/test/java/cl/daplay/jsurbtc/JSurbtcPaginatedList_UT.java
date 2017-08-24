@@ -2,11 +2,27 @@ package cl.daplay.jsurbtc;
 
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static cl.daplay.jsurbtc.JSurbtcPaginatedList.indexInPage;
 import static cl.daplay.jsurbtc.JSurbtcPaginatedList.isValidIndex;
 import static cl.daplay.jsurbtc.JSurbtcPaginatedList.pageForIndex;
+import static java.util.Collections.emptyList;
+import static org.junit.Assert.*;
 
 public class JSurbtcPaginatedList_UT {
+
+    @Test
+    public void empty() {
+        final JSurbtcPaginatedList<Object> emptyList = new JSurbtcPaginatedList<>(emptyList(), 0, 0, __ -> Collections.emptyList());
+
+        assertEquals(0, emptyList.size());
+        assertTrue(emptyList.isEmpty());
+
+        for (Object o : emptyList) {
+            fail("empty list has items");
+        }
+    }
 
     @Test
     public void test_page_for_index() {

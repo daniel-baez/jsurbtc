@@ -7,6 +7,7 @@ import java.util.AbstractList;
 import java.util.List;
 import java.util.function.IntFunction;
 
+import static java.lang.Math.max;
 import static java.lang.String.format;
 
 @ThreadSafe
@@ -39,7 +40,7 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
                                 int totalCount,
                                 int totalPages,
                                 final IntFunction<List<T>> getPage) {
-        this.pages = new Object[totalPages];
+        this.pages = new Object[max(1, totalPages)];
         this.pages[0] = firstPage;
 
         this.totalCount = totalCount;

@@ -5,9 +5,9 @@ import cl.daplay.jsurbtc.dto.request.APIKeyRequestDTO;
 import cl.daplay.jsurbtc.dto.request.OrderRequestDTO;
 import cl.daplay.jsurbtc.dto.request.QuotationRequestDTO;
 import cl.daplay.jsurbtc.model.APIKey;
-import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
+import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.balance.BalanceEvent;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
@@ -52,11 +52,11 @@ public final class JSurbtc {
     private final HttpLayer httpLayer;
 
     public JSurbtc(final String key, final String secret) {
-        this(buildObjectMapper(), key, secret, Nonce.INSTANCE, null);
+        this(buildObjectMapper(), key, secret, System::currentTimeMillis, null);
     }
 
     public JSurbtc(final String key, final String secret, final HttpHost proxy) {
-        this(buildObjectMapper(), key, secret, Nonce.INSTANCE, proxy);
+        this(buildObjectMapper(), key, secret, System::currentTimeMillis, proxy);
     }
 
     public JSurbtc(final ObjectMapper objectMapper, final String key, final String secret, final LongSupplier nonceSupplier, final HttpHost proxy) {
@@ -201,7 +201,7 @@ public final class JSurbtc {
     private <T, K> K parseResponse(final CloseableHttpResponse response, final Class<T> valueType, final Function<T, K> mapper) throws Exception {
         final int statusCode = response.getStatusLine().getStatusCode();
 
-        final boolean successful = statusCode == HttpStatus.SC_OK;
+        final boolean successful = statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED;
         if (!successful) {
             final ExceptionDTO exceptionDTO = objectMapper.readValue(response.getEntity().getContent(), ExceptionDTO.class);
             throw new Exception(format("Surbtc request failed. status code: %d, message: %s", statusCode, exceptionDTO.getMessage()));

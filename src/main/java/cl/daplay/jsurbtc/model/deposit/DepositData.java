@@ -1,9 +1,9 @@
 package cl.daplay.jsurbtc.model.deposit;
 
+import cl.daplay.jsurbtc.Utils;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.time.Instant;
@@ -43,11 +43,11 @@ public final class DepositData implements Serializable {
     }
 
     public Optional<String> getAddress() {
-        return Optional.ofNullable(address).filter(StringUtils::isNotEmpty);
+        return Optional.ofNullable(address).filter(Utils::isNotEmpty);
     }
 
     public Optional<String> getTxHash() {
-        return Optional.ofNullable(txHash).filter(StringUtils::isNotEmpty);
+        return Optional.ofNullable(txHash).filter(Utils::isNotEmpty);
     }
 
     public Optional<Instant> getCreatedAt() {

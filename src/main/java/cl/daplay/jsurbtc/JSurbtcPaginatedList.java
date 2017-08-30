@@ -1,7 +1,5 @@
 package cl.daplay.jsurbtc;
 
-import net.jcip.annotations.ThreadSafe;
-
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.function.IntFunction;
 import static java.lang.Math.max;
 import static java.lang.String.format;
 
-@ThreadSafe
 final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

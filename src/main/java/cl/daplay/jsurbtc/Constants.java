@@ -1,7 +1,5 @@
 package cl.daplay.jsurbtc;
 
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
@@ -20,7 +18,5 @@ public interface Constants {
 
         return format;
     }
-
-    MathContext DEFAULT_MATH_CONTEXT = new MathContext(9, RoundingMode.HALF_UP);
 
 }

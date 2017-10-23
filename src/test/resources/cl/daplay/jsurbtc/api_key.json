@@ -1,0 +1,11 @@
+{
+  "api_key": {
+    "id": "8b10243dac48b2a8d5f5e30d05ef1b4c",
+    "name": "test-newAPIKey-c7add553-b3b9-4503-a9fc-7d52a1a1719f",
+    "expiration_time": "2017-10-22T23:37:15.279Z",
+    "enabled": true,
+    "expired": false,
+    "last_access_at": null,
+    "secret": "j8FlrW8uYPQdHVckBJ7JB73UgdA9/zr3JYb65zIf"
+  }
+}

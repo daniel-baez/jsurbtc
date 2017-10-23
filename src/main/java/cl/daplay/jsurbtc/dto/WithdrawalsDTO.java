@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
 @JsonPropertyOrder({ "withdrawals", "meta" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class WithdrawalsDTO {
@@ -34,4 +32,22 @@ public final class WithdrawalsDTO {
         return withdrawals;
     }
 
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final WithdrawalsDTO that = (WithdrawalsDTO) o;
+
+        if (withdrawals != null ? !withdrawals.equals(that.withdrawals) : that.withdrawals != null) return false;
+        return pagination != null ? pagination.equals(that.pagination) : that.pagination == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = withdrawals != null ? withdrawals.hashCode() : 0;
+        result = 31 * result + (pagination != null ? pagination.hashCode() : 0);
+        return result;
+    }
 }

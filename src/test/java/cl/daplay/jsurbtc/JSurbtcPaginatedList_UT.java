@@ -14,7 +14,7 @@ public class JSurbtcPaginatedList_UT {
 
     @Test
     public void empty() {
-        final JSurbtcPaginatedList<Object> emptyList = new JSurbtcPaginatedList<>(emptyList(), 0, 0, __ -> Collections.emptyList());
+        final JSurbtcPaginatedList<Object> emptyList = new JSurbtcPaginatedList<>(emptyList(), __ -> Collections.emptyList(), 0, 0);
 
         assertEquals(0, emptyList.size());
         assertTrue(emptyList.isEmpty());

@@ -7,10 +7,17 @@ import java.util.function.IntFunction;
 
 import static java.lang.Math.max;
 import static java.lang.String.format;
+import static java.util.Collections.emptyList;
 
 final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
+
+    private static JSurbtcPaginatedList<?> EMPTY = new JSurbtcPaginatedList<>(emptyList(), __ -> emptyList(), 0, 0);
+
+    static <K> JSurbtcPaginatedList<K> empty() {
+        return (JSurbtcPaginatedList<K>) EMPTY;
+    }
 
     static int indexInPage(final int index, final int pageSize) {
         final int page = pageForIndex(index, pageSize);
@@ -34,9 +41,9 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
     private final IntFunction<List<T>> getPage;
 
     public JSurbtcPaginatedList(final List<T> firstPage,
-                                int totalCount,
+                                final IntFunction<List<T>> nextPage,
                                 int totalPages,
-                                final IntFunction<List<T>> getPage) {
+                                int totalCount) {
         this.pages = new Object[max(1, totalPages)];
         this.pages[0] = firstPage;
 
@@ -44,7 +51,7 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
         this.totalPages = totalPages;
         this.pageSize = firstPage.size();
 
-        this.getPage = getPage;
+        this.getPage = nextPage;
     }
 
     @Override

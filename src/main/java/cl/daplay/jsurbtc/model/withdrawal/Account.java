@@ -1,6 +1,7 @@
 package cl.daplay.jsurbtc.model.withdrawal;
 
 import cl.daplay.jsurbtc.model.Currency;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -8,7 +9,7 @@ import java.time.Instant;
 
 public final class Account implements Serializable {
 
-    private static final long serialVersionUID = 2017_08_06;
+    private static final long serialVersionUID = 2017_10_22;
 
     @JsonProperty("id")
     private final long id;
@@ -36,7 +37,10 @@ public final class Account implements Serializable {
     private final Instant updatedAt;
     @JsonProperty("bank_name")
     private final String bankName;
+    @JsonProperty("pe_cci_number")
+    private final String peCciNumber;
 
+    @JsonCreator
     public Account(@JsonProperty("id") long id,
                    @JsonProperty("account_number") String accountNumber,
                    @JsonProperty("account_type") String accountType,
@@ -49,7 +53,8 @@ public final class Account implements Serializable {
                    @JsonProperty("national_number_identifier") String nationalNumberIdentifier,
                    @JsonProperty("phone") String phone,
                    @JsonProperty("updated_at") Instant updatedAt,
-                   @JsonProperty("bank_name") String bankName) {
+                   @JsonProperty("bank_name") String bankName,
+                   @JsonProperty("pe_cci_number") String peCciNumber) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
@@ -63,6 +68,7 @@ public final class Account implements Serializable {
         this.phone = phone;
         this.updatedAt = updatedAt;
         this.bankName = bankName;
+        this.peCciNumber = peCciNumber;
     }
 
     public long getId() {
@@ -117,31 +123,16 @@ public final class Account implements Serializable {
         return bankName;
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", accountType='" + accountType + '\'' +
-                ", bankId=" + bankId +
-                ", createdAt=" + createdAt +
-                ", currency=" + currency +
-                ", documentNumber='" + documentNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", nationalNumberIdentifier='" + nationalNumberIdentifier + '\'' +
-                ", phone='" + phone + '\'' +
-                ", updatedAt=" + updatedAt +
-                ", bankName='" + bankName + '\'' +
-                '}';
+    public String getPeCciNumber() {
+        return peCciNumber;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Account account = (Account) o;
+        final Account account = (Account) o;
 
         if (id != account.id) return false;
         if (bankId != account.bankId) return false;
@@ -158,7 +149,8 @@ public final class Account implements Serializable {
             return false;
         if (phone != null ? !phone.equals(account.phone) : account.phone != null) return false;
         if (updatedAt != null ? !updatedAt.equals(account.updatedAt) : account.updatedAt != null) return false;
-        return bankName != null ? bankName.equals(account.bankName) : account.bankName == null;
+        if (bankName != null ? !bankName.equals(account.bankName) : account.bankName != null) return false;
+        return peCciNumber != null ? peCciNumber.equals(account.peCciNumber) : account.peCciNumber == null;
     }
 
     @Override
@@ -176,6 +168,29 @@ public final class Account implements Serializable {
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         result = 31 * result + (bankName != null ? bankName.hashCode() : 0);
+        result = 31 * result + (peCciNumber != null ? peCciNumber.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", bankId=" + bankId +
+                ", createdAt=" + createdAt +
+                ", currency=" + currency +
+                ", documentNumber='" + documentNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", nationalNumberIdentifier='" + nationalNumberIdentifier + '\'' +
+                ", phone='" + phone + '\'' +
+                ", updatedAt=" + updatedAt +
+                ", bankName='" + bankName + '\'' +
+                ", peCciNumber='" + peCciNumber + '\'' +
+                '}';
+    }
 }
+
+

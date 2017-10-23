@@ -12,7 +12,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public final class DepositData implements Serializable {
 
-    private static final long serialVersionUID = 2017_08_06;
+    private static final long serialVersionUID = 2017_10_22;
 
     @JsonProperty("type")
     private final String type;
@@ -24,18 +24,22 @@ public final class DepositData implements Serializable {
     private final Instant createdAt;
     @JsonProperty("updated_at")
     private final Instant updatedAt;
+    @JsonProperty("upload_url")
+    private final String uploadUrl;
 
     @JsonCreator
     public DepositData(@JsonProperty("type") String type,
                        @JsonProperty("address") String address,
                        @JsonProperty("tx_hash") String txHash,
                        @JsonProperty("created_at") Instant createdAt,
-                       @JsonProperty("updated_at") Instant updatedAt) {
+                       @JsonProperty("updated_at") Instant updatedAt,
+                       @JsonProperty("upload_url") String uploadUrl) {
         this.type = type;
         this.address = address;
         this.txHash = txHash;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.uploadUrl = uploadUrl;
     }
 
     public String getType() {
@@ -58,18 +62,23 @@ public final class DepositData implements Serializable {
         return Optional.ofNullable(updatedAt);
     }
 
+    public Optional<String> getUploadUrl() {
+        return Optional.ofNullable(uploadUrl);
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DepositData that = (DepositData) o;
+        final DepositData that = (DepositData) o;
 
         if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (txHash != null ? !txHash.equals(that.txHash) : that.txHash != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
-        return updatedAt != null ? updatedAt.equals(that.updatedAt) : that.updatedAt == null;
+        if (updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null) return false;
+        return uploadUrl != null ? uploadUrl.equals(that.uploadUrl) : that.uploadUrl == null;
     }
 
     @Override
@@ -79,6 +88,7 @@ public final class DepositData implements Serializable {
         result = 31 * result + (txHash != null ? txHash.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
+        result = 31 * result + (uploadUrl != null ? uploadUrl.hashCode() : 0);
         return result;
     }
 
@@ -90,7 +100,7 @@ public final class DepositData implements Serializable {
                 ", txHash='" + txHash + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", uploadUrl='" + uploadUrl + '\'' +
                 '}';
     }
-
 }

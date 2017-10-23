@@ -34,4 +34,21 @@ public final class DepositsDTO {
         return deposits;
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final DepositsDTO that = (DepositsDTO) o;
+
+        if (deposits != null ? !deposits.equals(that.deposits) : that.deposits != null) return false;
+        return pagination != null ? pagination.equals(that.pagination) : that.pagination == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = deposits != null ? deposits.hashCode() : 0;
+        result = 31 * result + (pagination != null ? pagination.hashCode() : 0);
+        return result;
+    }
 }

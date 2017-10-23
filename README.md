@@ -1,4 +1,6 @@
-# Features
+# this is a work in progress
+
+## Features
 
 - Idiomatic Java API
 - Java 8 Compatible
@@ -6,7 +8,7 @@
 - Immutable, Thread-safe, Jackson Ready, Serializable objects
 - Error handling
 
-# Usage
+## Usage
 
 ```java
 import cl.daplay.jsurbtc.JSurbtc;
@@ -26,7 +28,7 @@ final List<Order> orders = surbtc.getOrders(MarketID.BTC_CLP);
 final List<Market> markets = surbtc.getMarkets();
 ```
 
-# Installation
+## Installation
 
 ```xml
 <dependency>
@@ -44,11 +46,9 @@ compile group: 'cl.daplay', name: 'jsurbtc', version: '1.0.0'
 
 Please see [Javadoc](http://docs.daplay.cl/jsurbtc/cl/daplay/jsurbtc/JSurbtc.html)
 
-# TODO
+# On Test
 
-- Withdrawals
-- Deposits
-- Search user by id
+To run integration tests you'll need to have 
 
 # Errors
 
@@ -60,5 +60,6 @@ Please see [Javadoc](http://docs.daplay.cl/jsurbtc/cl/daplay/jsurbtc/JSurbtc.htm
 - 406 Not Acceptable – Has solicitado un formato no soportado por el servidor (Header “Accept”)
 - 410 Gone – El recurso seleccionado fue removido del servidor
 - 429 Too Many Requests – Has superado el límite de solicitudes por segundo
+- `422 Unprocessable entity` Request in somehow invalid
 - 500 Internal Server Error – Ha habido un problema con nuestro servidor, intentalo más tarde
 - 503 Service Unavailable – Estamos temporalmente indisponibles por mantenimiento, intentalo más tarde

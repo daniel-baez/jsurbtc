@@ -1,0 +1,12 @@
+{
+  "message": "Validation Failed",
+  "code": "invalid_record",
+  "errors": [
+    {
+      "resource": "Bid",
+      "field": "amount_cents",
+      "code": "insolvent",
+      "message": "insolvent"
+    }
+  ]
+}

@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@XmlRootElement
 @JsonPropertyOrder({ "orders", "meta" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class OrdersDTO {

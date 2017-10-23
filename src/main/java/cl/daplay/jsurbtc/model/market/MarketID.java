@@ -3,7 +3,6 @@ package cl.daplay.jsurbtc.model.market;
 import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import jdk.nashorn.internal.runtime.options.Option;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +21,11 @@ public enum MarketID {
     ETH_COP(Currency.ETH, Currency.COP),
     ETH_PEN(Currency.ETH, Currency.PEN);
 
-    private static final Map<Currency, List<MarketID>> MARKETS_BY_QUOTE_CURRENCY = Arrays.stream(MarketID.values()).collect(groupingBy(MarketID::getQuoteCurrency));
-    private static final Map<Currency, List<MarketID>> MARKETS_BY_BASE_CURRENCY = Arrays.stream(MarketID.values()).collect(groupingBy(MarketID::getBaseCurrency));
+    private static final Map<Currency, List<MarketID>> MARKETS_BY_QUOTE_CURRENCY = Arrays.stream(MarketID.values())
+            .collect(groupingBy(MarketID::getQuoteCurrency));
+
+    private static final Map<Currency, List<MarketID>> MARKETS_BY_BASE_CURRENCY = Arrays.stream(MarketID.values())
+            .collect(groupingBy(MarketID::getBaseCurrency));
 
     @JsonCreator
     public static MarketID fromJsonString(final String value) {

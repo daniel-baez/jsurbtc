@@ -1,20 +1,29 @@
 package cl.daplay.jsurbtc.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-public final class APIKey implements Serializable {
+@JsonPropertyOrder({"id",
+        "name",
+        "expiration_time",
+        "enabled",
+        "expired",
+        "last_access_at",
+        "secret"})
+public final class ApiKey implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
-    @JsonProperty("type")
+    @JsonProperty("id")
     private final String id;
     @JsonProperty("name")
     private final String name;
-    @JsonProperty("expiration_date")
-    private final Instant expirationDate;
+    @JsonProperty("expiration_time")
+    private final Instant expirationTime;
     @JsonProperty("enabled")
     private final boolean enabled;
     @JsonProperty("expired")
@@ -24,16 +33,17 @@ public final class APIKey implements Serializable {
     @JsonProperty("secret")
     private final String secret;
 
-    public APIKey(@JsonProperty("type") final String id,
+    @JsonCreator
+    public ApiKey(@JsonProperty("type") final String id,
                   @JsonProperty("name") final String name,
-                  @JsonProperty("expiration_date") final Instant expirationDate,
+                  @JsonProperty("expiration_date") final Instant expirationTime,
                   @JsonProperty("enabled") final boolean enabled,
                   @JsonProperty("expired") final boolean expired,
                   @JsonProperty("last_access_at") final Instant lastAccessAt,
                   @JsonProperty("secret") final String secret) {
         this.id = id;
         this.name = name;
-        this.expirationDate = expirationDate;
+        this.expirationTime = expirationTime;
         this.enabled = enabled;
         this.expired = expired;
         this.lastAccessAt = lastAccessAt;
@@ -48,8 +58,8 @@ public final class APIKey implements Serializable {
         return name;
     }
 
-    public Instant getExpirationDate() {
-        return expirationDate;
+    public Instant getExpirationTime() {
+        return expirationTime;
     }
 
     public boolean isEnabled() {
@@ -73,13 +83,13 @@ public final class APIKey implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        APIKey apiKey = (APIKey) o;
+        ApiKey apiKey = (ApiKey) o;
 
         if (enabled != apiKey.enabled) return false;
         if (expired != apiKey.expired) return false;
         if (id != null ? !id.equals(apiKey.id) : apiKey.id != null) return false;
         if (name != null ? !name.equals(apiKey.name) : apiKey.name != null) return false;
-        if (expirationDate != null ? !expirationDate.equals(apiKey.expirationDate) : apiKey.expirationDate != null)
+        if (expirationTime != null ? !expirationTime.equals(apiKey.expirationTime) : apiKey.expirationTime != null)
             return false;
         if (lastAccessAt != null ? !lastAccessAt.equals(apiKey.lastAccessAt) : apiKey.lastAccessAt != null)
             return false;
@@ -90,7 +100,7 @@ public final class APIKey implements Serializable {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (expirationDate != null ? expirationDate.hashCode() : 0);
+        result = 31 * result + (expirationTime != null ? expirationTime.hashCode() : 0);
         result = 31 * result + (enabled ? 1 : 0);
         result = 31 * result + (expired ? 1 : 0);
         result = 31 * result + (lastAccessAt != null ? lastAccessAt.hashCode() : 0);
@@ -103,7 +113,7 @@ public final class APIKey implements Serializable {
         return "APIKey{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", expirationDate=" + expirationDate +
+                ", expirationTime=" + expirationTime +
                 ", enabled=" + enabled +
                 ", expired=" + expired +
                 ", lastAccessAt=" + lastAccessAt +

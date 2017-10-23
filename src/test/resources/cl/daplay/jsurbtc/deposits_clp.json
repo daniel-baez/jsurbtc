@@ -2,36 +2,42 @@
   "deposits": [{
     "id": 29464,
     "state": "confirmed",
-    "amount": ["140000.0", "CLP"],
     "currency": "CLP",
     "created_at": "2017-06-06T04:14:04.635Z",
     "deposit_data": {
       "type": "fiat_deposit_data",
       "created_at": "2017-06-06T04:14:04.632Z",
-      "updated_at": "2017-06-06T04:14:04.632Z"
-    }
+      "updated_at": "2017-06-06T04:14:04.632Z",
+      "upload_url": null
+    },
+    "amount": ["140000.0", "CLP"],
+    "fee": ["0.0", "CLP"]
   }, {
     "id": 26844,
     "state": "confirmed",
-    "amount": ["836608.0", "CLP"],
     "currency": "CLP",
     "created_at": "2017-05-25T19:54:42.871Z",
     "deposit_data": {
       "type": "fiat_deposit_data",
       "created_at": "2017-05-25T19:54:42.869Z",
-      "updated_at": "2017-05-25T19:54:42.869Z"
-    }
+      "updated_at": "2017-05-25T19:54:42.869Z",
+      "upload_url": null
+    },
+    "amount": ["836608.0", "CLP"],
+    "fee": ["0.0", "CLP"]
   }, {
     "id": 26030,
     "state": "confirmed",
-    "amount": ["461801.0", "CLP"],
     "currency": "CLP",
     "created_at": "2017-05-23T21:06:11.156Z",
     "deposit_data": {
       "type": "fiat_deposit_data",
       "created_at": "2017-05-23T21:06:11.150Z",
-      "updated_at": "2017-05-23T21:06:11.150Z"
-    }
+      "updated_at": "2017-05-23T21:06:11.150Z",
+      "upload_url": null
+    },
+    "amount": ["461801.0", "CLP"],
+    "fee": ["0.0", "CLP"]
   }],
   "meta": {
     "total_pages": 1,

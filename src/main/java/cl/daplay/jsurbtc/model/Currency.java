@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public enum Currency {
     USD(new BigDecimal("100")),
     BTC(new BigDecimal(1e8)),
+    BCH(new BigDecimal(1e8)),
     CLP(new BigDecimal("100")),
     COP(new BigDecimal("100")),
     ETH(new BigDecimal(1e9)),

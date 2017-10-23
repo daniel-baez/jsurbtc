@@ -2,250 +2,162 @@ package cl.daplay.jsurbtc;
 
 import cl.daplay.jsurbtc.dto.*;
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
-import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
+import static java.lang.String.format;
 import static org.junit.Assert.assertEquals;
 
 public final class Serialization_UT {
 
-    private static final ObjectMapper OBJECT_MAPPER = JSurbtc.buildObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = JSON.newObjectMapper();
+
+    @Test
+    public void exception() throws Exception {
+        backAndForth(ExceptionDTO.class,
+                "exception.json",
+                "exception2.json");
+    }
+
+    @Test
+    public void balance_events() throws Exception {
+        backAndForth(BalanceEventsDTO.class,
+                "balance_events_btc.json",
+                "balance_events_clp.json",
+                "balance_events_eth.json");
+    }
+
+    @Test
+    public void withdrawals() throws Exception {
+        backAndForth(WithdrawalsDTO.class,
+                "withdrawals_empty.json",
+                "withdrawals_btc.json",
+                "withdrawals_clp.json"
+        );
+    }
+
+    @Test
+    public void apikey() throws Exception {
+        backAndForth(ApiKeyDTO.class, "api_key.json");
+    }
+
+    @Test
+    public void deposits() throws Exception {
+        backAndForth(DepositsDTO.class,
+                (dto, file) -> {
+                    System.out.printf("%s:%n", file);
+                    dto.getDeposits().forEach(it -> System.out.printf("- %s%n", it));
+
+                },
+                "deposits_clp.json",
+                "deposits_empty.json",
+                "deposits_btc.json"
+        );
+    }
+
+    @Test
+    public void amount() throws Exception {
+        backAndForth(Amount.class, "amount.json");
+    }
+
+    @Test
+    public void market() throws Exception {
+        backAndForth(Market.class, "market.json");
+    }
+
+    @Test
+    public void markets() throws Exception {
+        backAndForth(MarketsDTO.class, "markets.json");
+    }
+
+    @Test
+    public void ticker() throws Exception {
+        backAndForth(TickerDTO.class, "ticker.json");
+    }
+
+    @Test
+    public void order_book() throws Exception {
+        backAndForth(OrderBookDTO.class, "order_book.json");
+    }
+
+    @Test
+    public void balances() throws Exception {
+        backAndForth(BalancesDTO.class, "balances.json");
+        backAndForth(BalanceDTO.class, "balance.json");
+    }
+
+    @Test
+    public void orders() throws Exception {
+        backAndForth(OrdersDTO.class,
+                "orders.json",
+                "orders_empty.json",
+                "orders2.json");
+
+        backAndForth(OrderDTO.class,
+                "order.json");
+    }
+
+    private <T> void backAndForth(final Class<T> valueType, final String... files) throws Exception {
+        backAndForth(valueType, (value, file) -> {}, files);
+    }
+
+    private <T> Map<String, T> backAndForth(final Class<T> valueType, BiConsumer<T, String> forEach, final String... files) throws Exception {
+        final Map<String, T> result = new LinkedHashMap<>();
+
+        for (final String f : files) {
+            final InputStream resourceAsStream = Serialization_UT.class.getResourceAsStream(f);
+            final String input = IOUtils.toString(resourceAsStream, Charset.defaultCharset());
+            try {
+                final T parsed = OBJECT_MAPPER.readValue(input, valueType);
+                forEach.accept(parsed, f);
+                final String written = OBJECT_MAPPER.writeValueAsString(parsed);
+
+                if (false) {
+                    System.out.printf("valueType: %s%n", valueType);
+                    System.out.printf("input: %s%n", input);
+                    System.out.printf("parsed: %s%n", parsed);
+                    System.out.printf("written: %s%n", written);
+                }
+
+                assertEqualJSON(valueType, input);
+                result.put(f, parsed);
+            } catch (Throwable ex) {
+                String t = "while parsing file: '%s' with valueType: '%s'";
+                String m = format(t, f, valueType);
+                throw new Exception(m, ex);
+            }
+        }
+
+        return result;
+    }
 
     private void assertEqualJSON(String input, String written) {
         assertEquals(minify(input), minify(written));
+    }
+
+    private <T> void assertEqualJSON(Class<T> clazz, String input) throws IOException {
+        final T fromInput = OBJECT_MAPPER.readValue(input, clazz);
+        final String output = OBJECT_MAPPER.writeValueAsString(fromInput);
+        final T fromOutput = OBJECT_MAPPER.readValue(output, clazz);
+
+        final boolean txtEquals = minify(input).equals(minify(output));
+        if (!txtEquals) {
+            assertEquals(fromInput, fromOutput);
+        }
     }
 
     private String minify(String json) {
         return json.replaceAll("\\s", "");
     }
 
-    @Test
-    public void exception() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("exception.json"), Charset.defaultCharset());
-        final ExceptionDTO parsed = OBJECT_MAPPER.readValue(input, ExceptionDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void quotations() throws IOException {
-        final List<String> resources = Arrays.asList("quotation_ask_given_earned_quote.json",
-                "quotation_ask_given_spent_base.json",
-                "quotation_bid_given_earned_base.json",
-                "quotation_bid_given_spent_quote.json");
-
-        for (final String resource : resources) {
-            final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream(resource), Charset.defaultCharset());
-            final QuotationDTO parsed = OBJECT_MAPPER.readValue(input, QuotationDTO.class);
-            final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-            assertEqualJSON(input, written);
-        }
-    }
-
-    @Test
-    public void balance_events() throws IOException {
-        final List<String> resources = Arrays.asList("balance_events_btc.json",
-                "balance_events_clp.json",
-                "balance_events_eth.json");
-
-        for (final String resource : resources) {
-            final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream(resource), Charset.defaultCharset());
-            final BalanceEventsDTO parsed = OBJECT_MAPPER.readValue(input, BalanceEventsDTO.class);
-            final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-            assertEqualJSON(input, written);
-        }
-    }
-
-    @Test
-    public void withdrawals_empty() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("withdrawals_empty.json"), Charset.defaultCharset());
-        final WithdrawalsDTO parsed = OBJECT_MAPPER.readValue(input, WithdrawalsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void withdrawals_btc() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("withdrawals_btc.json"), Charset.defaultCharset());
-        final WithdrawalsDTO parsed = OBJECT_MAPPER.readValue(input, WithdrawalsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void withdrawal_btc() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("withdrawal_btc.json"), Charset.defaultCharset());
-        final Withdrawal parsed = OBJECT_MAPPER.readValue(input, Withdrawal.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void withdrawals_clp() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("withdrawals_clp.json"), Charset.defaultCharset());
-        final WithdrawalsDTO parsed = OBJECT_MAPPER.readValue(input, WithdrawalsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void withdrawal_clp() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("withdrawal_clp.json"), Charset.defaultCharset());
-        final Withdrawal parsed = OBJECT_MAPPER.readValue(input, Withdrawal.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void deposits_empty() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("deposits_empty.json"), Charset.defaultCharset());
-        final DepositsDTO parsed = OBJECT_MAPPER.readValue(input, DepositsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void deposits_btc() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("deposits_btc.json"), Charset.defaultCharset());
-        final DepositsDTO parsed = OBJECT_MAPPER.readValue(input, DepositsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void deposits_clp() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("deposits_clp.json"), Charset.defaultCharset());
-        final DepositsDTO parsed = OBJECT_MAPPER.readValue(input, DepositsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void deposit_btc() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("deposit_btc.json"), Charset.defaultCharset());
-        final Deposit parsed = OBJECT_MAPPER.readValue(input, Deposit.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void deposit_clp() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("deposit_clp.json"), Charset.defaultCharset());
-        final Deposit parsed = OBJECT_MAPPER.readValue(input, Deposit.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void amount() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("amount.json"), Charset.defaultCharset());
-        final Amount parsed = OBJECT_MAPPER.readValue(input, Amount.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void market() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("market.json"), Charset.defaultCharset());
-        final Market parsed = OBJECT_MAPPER.readValue(input, Market.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void markets() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("markets.json"), Charset.defaultCharset());
-        final MarketsDTO parsed = OBJECT_MAPPER.readValue(input, MarketsDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void ticker() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("ticker.json"), Charset.defaultCharset());
-        final TickerDTO parsed = OBJECT_MAPPER.readValue(input, TickerDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void order_book() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("order_book.json"), Charset.defaultCharset());
-        final OrderBookDTO parsed = OBJECT_MAPPER.readValue(input, OrderBookDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void balance() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("balance.json"), Charset.defaultCharset());
-        final BalanceDTO parsed = OBJECT_MAPPER.readValue(input, BalanceDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void balances() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("balances.json"), Charset.defaultCharset());
-        final BalancesDTO parsed = OBJECT_MAPPER.readValue(input, BalancesDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void orders() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("orders.json"), Charset.defaultCharset());
-        final OrdersDTO parsed = OBJECT_MAPPER.readValue(input, OrdersDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void orders_empty() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("orders_empty.json"), Charset.defaultCharset());
-        final OrdersDTO parsed = OBJECT_MAPPER.readValue(input, OrdersDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
-
-    @Test
-    public void order() throws IOException {
-        final String input = IOUtils.toString(Serialization_UT.class.getResourceAsStream("order.json"), Charset.defaultCharset());
-        final OrderDTO parsed = OBJECT_MAPPER.readValue(input, OrderDTO.class);
-        final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-        assertEqualJSON(input, written);
-    }
 
 }

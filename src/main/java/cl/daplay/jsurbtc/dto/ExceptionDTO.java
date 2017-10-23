@@ -1,23 +1,37 @@
 package cl.daplay.jsurbtc.dto;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
+@JsonIgnoreProperties
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class ExceptionDTO {
 
-    @JsonProperty("message")
-    private final String message;
+    public static class ErrorDTO {
 
-    @JsonCreator
-    public ExceptionDTO(@JsonProperty("message") String message) {
-        this.message = message;
+        @JsonProperty("resource")
+        public String resource;
+
+        @JsonProperty("field")
+        public String field;
+
+        @JsonProperty("code")
+        public String code;
+
+        @JsonProperty("message")
+        public String message;
+
     }
 
-    public String getMessage() {
-        return message;
+    @JsonProperty("message")
+    public String message;
+    @JsonProperty("code")
+    public String code;
+    @JsonProperty("errors")
+    public ErrorDTO[] errors;
+
+    public ExceptionDTO() {
     }
 
 }

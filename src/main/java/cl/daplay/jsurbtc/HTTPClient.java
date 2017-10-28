@@ -1,6 +1,7 @@
 package cl.daplay.jsurbtc;
 
 import cl.daplay.jsurbtc.http.SurbtcHttpRequestInterceptor;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
 import org.apache.http.client.methods.*;
@@ -8,14 +9,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
-import java.io.IOException;
-import java.util.Optional;
+import java.io.UnsupportedEncodingException;
 import java.util.function.LongSupplier;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.lang.String.format;
 
 final class HTTPClient {
 
@@ -37,7 +34,7 @@ final class HTTPClient {
     @FunctionalInterface
     interface HTTPResponseHandler<T> {
 
-        Optional<T> handle(final int statusCode, final String responseBody) throws Exception;
+        T handle(final int statusCode, final String responseBody) throws Exception;
 
     }
 
@@ -47,29 +44,27 @@ final class HTTPClient {
         this.httpClient = httpClient;
     }
 
-    <T> Optional<T> get(final String path, final HTTPResponseHandler<T> responseMapper) {
+    <T> T get(final String path, final HTTPResponseHandler<T> responseMapper) throws Exception {
         final HttpGet get = new HttpGet(BASE_PATH + path);
         return executeRequest(get, responseMapper);
     }
 
-    <T> Optional<T> put(final String path, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) {
+    <T> T put(final String path, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         final HttpPut put = new HttpPut(BASE_PATH + path);
         return executeRequest(put, jsonBody, responseHandler);
     }
 
-    <T> Optional<T> post(final String path, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) {
+    <T> T post(final String path, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         final HttpPost post = new HttpPost(BASE_PATH + path);
         return executeRequest(post, jsonBody, responseHandler);
     }
 
-    private <T> Optional<T> executeRequest(final HttpEntityEnclosingRequest request,
-                                           final Supplier<String> jsonBody,
-                                           final HTTPResponseHandler<T> responseMapper) {
-        return getStringEntity(jsonBody)
-                .map(entity -> {
-                    request.setEntity(entity);
-                    return request;
-                }).flatMap(req -> executeRequest((HttpUriRequest) req, responseMapper));
+    private <T> T executeRequest(final HttpEntityEnclosingRequest request,
+                                 final Supplier<String> jsonBody,
+                                 final HTTPResponseHandler<T> responseMapper) throws Exception {
+        final StringEntity stringEntity = getStringEntity(jsonBody);
+        request.setEntity(stringEntity);
+        return executeRequest((HttpUriRequest) request, responseMapper);
     }
 
     private String convertStreamToString(java.io.InputStream is) {
@@ -77,59 +72,23 @@ final class HTTPClient {
         return s.hasNext() ? s.next() : "";
     }
 
-    private <T> Optional<T> executeRequest(final HttpUriRequest request,
-                                           final HTTPResponseHandler<T> responseMapper) {
-        try {
-            final CloseableHttpResponse response = httpClient.execute(request);
+    private <T> T executeRequest(final HttpUriRequest request, final HTTPResponseHandler<T> responseMapper) throws Exception {
+        final CloseableHttpResponse response = httpClient.execute(request);
 
-            final int statusCode = response.getStatusLine().getStatusCode();
-            final String responseBody = Optional.ofNullable(response)
-                    .map(CloseableHttpResponse::getEntity)
-                    .map(it -> {
-                        try {
-                            return it.getContent();
-                        } catch (final IOException ex) {
-                            LOGGER.log(Level.WARNING, ex, () -> format("While executing HTTP request: '%s'", request));
-                            return null;
-                        }
-                    })
-                    .map(this::convertStreamToString)
-                    .orElse("");
+        final int statusCode = response.getStatusLine().getStatusCode();
+        final HttpEntity entity = response.getEntity();
+        final String responseBody = convertStreamToString(entity.getContent());
+        final T result = responseMapper.handle(statusCode, responseBody);
 
-            final Optional<T> result = responseMapper.handle(statusCode, responseBody);
-            response.close();
+        response.close();
 
-            return result;
-        } catch (final Exception ex) {
-            LOGGER.log(Level.WARNING, ex, () -> format("While executing HTTP request: '%s'", request));
-
-            if (ex instanceof JSurbtcException) {
-                JSurbtcException EX = (JSurbtcException) ex;
-
-                for (final JSurbtcException.Error error : EX.errors) {
-                    LOGGER.log(Level.WARNING, () -> {
-                        final String t = "\t Error resource: '%s', field: '%s', code: '%s', message: '%s'";
-                        final String m = format(t, error.resource, error.field, error.code, error.message);
-                        return m;
-                    });
-                }
-            }
-
-
-            return Optional.empty();
-        }
+        return result;
     }
 
-    private Optional<StringEntity> getStringEntity(final Supplier<String> jsonBody) {
-        try {
-            final StringEntity input = new StringEntity(jsonBody.get());
-            input.setContentType("application/json");
-
-            return Optional.of(input);
-        } catch (final Exception ex) {
-            LOGGER.log(Level.WARNING, ex, () -> "While creating JSON payload for HTTP request.");
-            return Optional.empty();
-        }
+    private StringEntity getStringEntity(final Supplier<String> jsonBody) throws UnsupportedEncodingException {
+        final StringEntity input = new StringEntity(jsonBody.get());
+        input.setContentType("application/json");
+        return input;
     }
 
 }

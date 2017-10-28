@@ -9,6 +9,8 @@ import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.market.MarketID;
 import cl.daplay.jsurbtc.model.order.*;
+import cl.daplay.jsurbtc.model.trades.Trades;
+import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import org.apache.http.HttpHost;
 import org.junit.Test;
@@ -17,7 +19,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -29,12 +30,40 @@ public class JSurbrc_IT {
     String key;
     String secret;
 
+    @FunctionalInterface
+    interface ThrowingSupplier<T> {
+
+        T get() throws Exception;
+
+    }
+
     private JSurbtc newClient() {
         return new JSurbtc(key, secret, JSurbtc.newNonce(), new HttpHost("localhost", 8888));
     }
 
     @Test
-    public void get_deposits() {
+    public void get_trades() throws Exception {
+        final JSurbtc client = newClient();
+
+        for (final MarketID marketId : MarketID.values()) {
+            final Trades trades = client.getTrades(marketId);
+
+            System.out.printf("Trades for marketId: %s%n", marketId);
+            System.out.printf("%s%n", trades);
+
+            for (final Transaction transaction : trades) {
+                System.out.printf("\t%s%n", transaction);
+            }
+
+            final Transaction min = Collections.max(trades.getEntries());
+            final Trades trades1 = client.getTrades(marketId, min.getTimestamp());
+
+            assertEquals(trades.getEntries(), trades1.getEntries());
+        }
+    }
+
+    @Test
+    public void get_deposits() throws Exception {
         final JSurbtc client = newClient();
 
         for (Currency currency : Currency.values()) {
@@ -48,7 +77,7 @@ public class JSurbrc_IT {
     }
 
     @Test
-    public void get_withdrawals() {
+    public void get_withdrawals() throws Exception {
         final JSurbtc client = newClient();
 
         for (Currency currency : Currency.values()) {
@@ -62,7 +91,7 @@ public class JSurbrc_IT {
     }
 
     @Test
-    public void get_balance_events() {
+    public void get_balance_events() throws Exception {
         final JSurbtc client = newClient();
 
         for (Currency currency : Currency.values()) {
@@ -76,38 +105,37 @@ public class JSurbrc_IT {
     }
 
     @Test
-    public void new_api_key() {
+    public void new_api_key() throws Exception {
         final JSurbtc client = newClient();
 
         final Instant expiration = Instant.now().plus(10, ChronoUnit.SECONDS);
         final String name = format("test-newAPIKey-%s", UUID.randomUUID().toString());
 
-        final Optional<ApiKey> apiKey = client.newAPIKey(name, expiration);
-        assertTrue("apiKey should work", apiKey.isPresent());
+        final ApiKey apiKey = client.newAPIKey(name, expiration);
 
-        System.out.printf("%s%n", apiKey.get());
+        System.out.printf("%s%n", apiKey);
     }
 
     @Test
-    public void new_order__and__cancel_order() {
+    public void new_order__and__cancel_order() throws Exception {
         final JSurbtc client = newClient();
 
         final Order order = client.newOrder(MarketID.BTC_CLP,
                 OrderType.BID,
                 OrderPriceType.LIMIT,
                 BigDecimal.ONE,
-                BigDecimal.ONE).orElse(null);
+                BigDecimal.ONE);
 
         assertNotNull("newOrder should work", order);
         System.out.printf("order= %s%n", order);
 
-        final Order cancelOrder = client.cancelOrder(order.getId()).orElse(null);
+        final Order cancelOrder = client.cancelOrder(order.getId());
         assertNotNull("cancelOrder should work", cancelOrder);
         System.out.printf("cancelledOrder=%s%n", order);
     }
 
     @Test
-    public void get_markets() {
+    public void get_markets() throws Exception {
         final JSurbtc client = newClient();
 
         final Set<MarketID> expected = EnumSet.allOf(MarketID.class);
@@ -121,23 +149,20 @@ public class JSurbrc_IT {
     }
 
     @Test
-    public void get_order_book() {
+    public void get_order_book() throws Exception {
         final JSurbtc client = newClient();
 
         final List<Market> markets = client.getMarkets();
         assertTrue("getMarkets works", !markets.isEmpty());
 
         for (final Market market : markets) {
-            final Optional<OrderBook> maybeOrderBook = client.getOrderBook(market.getId());
-            assertTrue("getOrderBook works", maybeOrderBook.isPresent());
-
-            final OrderBook orderBook = maybeOrderBook.get();
+            final OrderBook orderBook = client.getOrderBook(market.getId());
             System.out.printf("%s%n", orderBook);
         }
     }
 
     @Test
-    public void get_balance() {
+    public void get_balance() throws Exception {
         final JSurbtc client = newClient();
 
         final List<Balance> balances = client.getBalances();
@@ -145,7 +170,7 @@ public class JSurbrc_IT {
         System.out.printf("balances: %s:%n", balances);
 
         for (final Balance expected : balances) {
-            final Balance actual = client.getBalance(expected.getId()).orElse(null);
+            final Balance actual = client.getBalance(expected.getId());
 
             final String t = "expected: %s, actual: %s:%n";
             final String m = format(t, expected, actual);
@@ -155,27 +180,24 @@ public class JSurbrc_IT {
     }
 
     @Test
-    public void get_ticker() {
+    public void get_ticker() throws Exception {
         final JSurbtc client = newClient();
         final List<Market> markets = client.getMarkets();
 
         for (final Market market : markets) {
             final MarketID marketId = market.getId();
-            final Optional<Ticker> maybeTicker = client.getTicker(marketId);
+            final Ticker ticker = client.getTicker(marketId);
 
-            assertTrue("client.getTicket() should be successful.", maybeTicker.isPresent());
-
-            final Ticker ticker = maybeTicker.get();
             System.out.printf("ticker:%s%n", ticker);
         }
     }
 
     @Test
-    public void get_orders() {
+    public void get_orders() throws Exception {
         final JSurbtc client = newClient();
         final List<Market> markets = client.getMarkets();
 
-        final Map<String, Supplier<List<Order>>> tests = new LinkedHashMap<>();
+        final Map<String, ThrowingSupplier<List<Order>>> tests = new LinkedHashMap<>();
 
         // orders for every market
         for (final Market market : markets) {
@@ -214,18 +236,21 @@ public class JSurbrc_IT {
             }
         }
 
-        tests.forEach((name, ordersSupplier) -> {
-            System.out.println(name);
-            final List<Order> orders = ordersSupplier.get();
+        for (Map.Entry<String, ThrowingSupplier<List<Order>>> test : tests.entrySet()) {
+            final String key = test.getKey();
+            final ThrowingSupplier<List<Order>> value = test.getValue();
+
+            System.out.println(key);
+            final List<Order> orders = value.get();
 
             for (final Order order : orders) {
-                final Order order1 = client.getOrder(order.getId()).orElse(null);
+                final Order order1 = client.getOrder(order.getId());
 
                 assertEquals(order, order1);
 
                 System.out.printf("\t %s%n", order);
             }
-        });
+        }
     }
 
 }

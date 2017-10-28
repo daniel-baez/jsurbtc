@@ -1,6 +1,7 @@
 package cl.daplay.jsurbtc.model;
 
 import cl.daplay.jsurbtc.jackson.BigDecimalToStringSerializer;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -26,6 +27,7 @@ public final class Ticker implements Serializable {
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal priceVariation7Days;
 
+    @JsonCreator
     public Ticker(@JsonProperty("last_price") final Amount lastPrice,
                   @JsonProperty("min_ask") final Amount minAsk,
                   @JsonProperty("max_bid") final Amount maxBid,

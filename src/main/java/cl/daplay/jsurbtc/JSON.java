@@ -7,12 +7,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Optional;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static java.lang.String.format;
 
 public enum JSON {
     INSTANCE;
@@ -32,28 +28,20 @@ public enum JSON {
 
     Supplier<String> payload(final Object value) {
         return () -> {
-            return stringify(value).orElse("");
+            try {
+                return stringify(value);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         };
     }
 
-    Optional<String> stringify(final Object value) {
-        try {
-            final String s = objectMapper.writeValueAsString(value);
-            return Optional.of(s);
-        } catch (final JsonProcessingException ex) {
-            LOGGER.log(Level.WARNING, ex, () -> format("While deserializing value: '%s' with type: '%s' to JSON.", value, value == null ? "null" : value.getClass().getName()));
-            return Optional.empty();
-        }
+    String stringify(final Object value) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(value);
     }
 
-    <T> Optional<T> parse(final String json, final Class<T> valueType) {
-        try {
-            final T t = objectMapper.readValue(json, valueType);
-            return Optional.of(t);
-        } catch (final IOException ex) {
-            LOGGER.log(Level.WARNING, ex, () -> format("While deserializing value with type: '%s' to JSON.", valueType));
-            return Optional.empty();
-        }
+    <T> T parse(final String json, final Class<T> valueType) throws IOException {
+        return objectMapper.readValue(json, valueType);
     }
 
 }

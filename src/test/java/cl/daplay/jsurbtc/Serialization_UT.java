@@ -29,6 +29,18 @@ public final class Serialization_UT {
     }
 
     @Test
+    public void trades() throws Exception {
+        backAndForth(TradesDTO.class,
+                "trades1.json",
+                "trades2.json",
+                "trades3.json",
+                "trades4.json",
+                "trades5.json",
+                "trades6.json",
+                "trades7.json");
+    }
+
+    @Test
     public void balance_events() throws Exception {
         backAndForth(BalanceEventsDTO.class,
                 "balance_events_btc.json",

@@ -3,13 +3,19 @@ package cl.daplay.jsurbtc;
 import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
-import java.util.function.IntFunction;
 
 import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
 final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
+
+    @FunctionalInterface
+    public interface GetPage<T> {
+
+        List<T> getPage(final int index) throws Exception;
+
+    }
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -38,10 +44,10 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
     private final int totalCount;
     private final int totalPages;
     private final Object[] pages;
-    private final IntFunction<List<T>> getPage;
+    private final GetPage<T> nextPage;
 
     public JSurbtcPaginatedList(final List<T> firstPage,
-                                final IntFunction<List<T>> nextPage,
+                                final GetPage<T> nextPage,
                                 int totalPages,
                                 int totalCount) {
         this.pages = new Object[max(1, totalPages)];
@@ -51,7 +57,7 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
         this.totalPages = totalPages;
         this.pageSize = firstPage.size();
 
-        this.getPage = nextPage;
+        this.nextPage = nextPage;
     }
 
     @Override
@@ -61,7 +67,13 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
         }
 
         final int pageForIndex = pageForIndex(index, pageSize);
-        final List<T> page = getPage(pageForIndex);
+        final List<T> page;
+
+        try {
+            page = getPage(pageForIndex);
+        } catch (Exception e) {
+            throw new JSurbtcPaginatedListException(e);
+        }
 
         final int indexInPage = indexInPage(index, pageSize);
 
@@ -74,14 +86,14 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
     }
 
     @SuppressWarnings("unchecked")
-    private List<T> getPage(int pageForIndex) {
+    private List<T> getPage(int pageForIndex) throws Exception {
         if (!isValidIndex(pageForIndex, totalPages)) {
-            throw new IllegalArgumentException(format("getPage(pageForIndex=%d), illegal pageForIndex", pageForIndex));
+            throw new IllegalArgumentException(format("nextPage(pageForIndex=%d), illegal pageForIndex", pageForIndex));
         }
 
         synchronized (pages) {
             if (pages[pageForIndex] == null) {
-                pages[pageForIndex] = getPage.apply(pageForIndex);
+                pages[pageForIndex] = nextPage.getPage(pageForIndex);
             }
         }
 

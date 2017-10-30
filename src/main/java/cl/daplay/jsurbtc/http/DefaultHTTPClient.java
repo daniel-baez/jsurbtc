@@ -16,9 +16,9 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-public final class NativeHTTPClient implements HTTPClient {
+public final class DefaultHTTPClient implements HTTPClient {
 
-    private final static Logger LOGGER = Logger.getLogger(NativeHTTPClient.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(DefaultHTTPClient.class.getName());
 
     private static final String BASE_PATH = "https://www.surbtc.com";
 
@@ -27,7 +27,7 @@ public final class NativeHTTPClient implements HTTPClient {
     private final String key;
     private final LongSupplier nonceSupplier;
 
-    public NativeHTTPClient(final Proxy proxy, final String secret, final String key, final LongSupplier nonceSupplier) {
+    public DefaultHTTPClient(final Proxy proxy, final String secret, final String key, final LongSupplier nonceSupplier) {
         this.proxy = proxy;
         this.secret = secret;
         this.key = key;

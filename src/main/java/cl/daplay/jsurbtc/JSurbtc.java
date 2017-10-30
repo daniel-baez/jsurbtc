@@ -3,7 +3,7 @@ package cl.daplay.jsurbtc;
 import cl.daplay.jsurbtc.dto.*;
 import cl.daplay.jsurbtc.dto.request.APIKeyRequestDTO;
 import cl.daplay.jsurbtc.dto.request.OrderRequestDTO;
-import cl.daplay.jsurbtc.http.NativeHTTPClient;
+import cl.daplay.jsurbtc.http.DefaultHTTPClient;
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
@@ -59,7 +59,7 @@ public final class JSurbtc {
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
-        this(new NativeHTTPClient(proxy, secret, key, nonceSupplier), newBigDecimalFormat(), json);
+        this(new DefaultHTTPClient(proxy, secret, key, nonceSupplier), newBigDecimalFormat(), json);
     }
 
     JSurbtc(final HTTPClient httpClient, final DecimalFormat bigDecimalFormat, final JSON json) {

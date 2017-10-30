@@ -1,9 +1,8 @@
 package cl.daplay.jsurbtc;
 
-import org.apache.commons.codec.binary.Hex;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -24,28 +23,17 @@ public final class Signer {
                        final String path,
                        final long nonce) throws InvalidKeyException, NoSuchAlgorithmException {
         final String message = buildMessage(body, method, path, nonce);
-
-
-        System.out.printf("signing...%n");
-        System.out.printf("- body='%s'%n", body);
-        System.out.printf("- method='%s'%n", method);
-        System.out.printf("- path='%s'%n", path);
-        System.out.printf("- nonce='%s'%n", nonce);
-
         return sign(message);
     }
 
     private String sign(final String message) throws NoSuchAlgorithmException, InvalidKeyException {
-        // final byte[] bytes = HmacUtils.hmacSha384(secret.getBytes(), message.getBytes());
-        // return String.format("%040x", new BigInteger(1, bytes));
-
         final Key signingKey = new SecretKeySpec(secret.getBytes(), HMAC_SHA384_ALGORITHM);
         final Mac mac = Mac.getInstance(HMAC_SHA384_ALGORITHM);
 
         mac.init(signingKey);
 
         byte[] rawHmac = mac.doFinal(message.getBytes());
-        return Hex.encodeHexString(rawHmac);
+        return String.format("%040x", new BigInteger(1, rawHmac));
     }
 
     private String buildMessage(final String body,

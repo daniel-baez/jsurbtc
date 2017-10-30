@@ -15,8 +15,6 @@ import cl.daplay.jsurbtc.model.market.MarketID;
 import cl.daplay.jsurbtc.model.order.*;
 import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.net.InetSocketAddress;
@@ -49,31 +47,19 @@ public final class JSurbtc {
     private final JSON json;
 
     public JSurbtc(final String key, final String secret) {
-        this(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
-    }
-
-    public JSurbtc(final String key, final String secret, final HttpHost proxy) {
-        this(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
+        this(key, secret, JSurbtc.newNonce(), null);
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier) {
-        this(key, secret, nonceSupplier, new InetSocketAddress("127.0.0.1", 8888));
+        this(key, secret, nonceSupplier, null);
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress socketAddress) {
-        this(key, secret, nonceSupplier, JSON.INSTANCE, new Proxy(Proxy.Type.HTTP, socketAddress));
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy) {
+        this(key, secret, nonceSupplier, JSON.INSTANCE, new Proxy(Proxy.Type.HTTP, httpProxy));
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
         this(new NativeHTTPClient(proxy, secret, key, nonceSupplier), newBigDecimalFormat(), json);
-
-
-/*        this(DefaultHTTPClient.newInstance(requireNonNull(key, "Key can't be null at JSurbtc constructor."),
-                requireNonNull(secret, "Secret can't be null at JSurbtc constructor."),
-                nonceSupplier,
-                new HttpHost("localhost", 8888)),
-                newBigDecimalFormat(),
-                json);*/
     }
 
     JSurbtc(final HTTPClient httpClient, final DecimalFormat bigDecimalFormat, final JSON json) {
@@ -235,7 +221,8 @@ public final class JSurbtc {
 
     private <T> HTTPClient.HTTPResponseHandler<T> handlingErrors(final HTTPClient.HTTPResponseHandler<T> responseHandler) {
         return (statusCode, responseBody) -> {
-            final boolean successful = statusCode == HttpStatus.SC_OK || statusCode == HttpStatus.SC_CREATED;
+            // OK(200) or CREATED(201)
+            final boolean successful = statusCode == 200 || statusCode == 201;
             if (!successful) {
                 final ExceptionDTO exceptionDTO = json.parse(responseBody, ExceptionDTO.class);
                 if (null == exceptionDTO) {

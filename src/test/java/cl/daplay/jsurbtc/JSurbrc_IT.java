@@ -12,10 +12,10 @@ import cl.daplay.jsurbtc.model.order.*;
 import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
-import org.apache.http.HttpHost;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -38,7 +38,7 @@ public class JSurbrc_IT {
     }
 
     private JSurbtc newClient() {
-        return new JSurbtc(key, secret, JSurbtc.newNonce(), new HttpHost("localhost", 8888));
+        return new JSurbtc(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
     }
 
     @Test

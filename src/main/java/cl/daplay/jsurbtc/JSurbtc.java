@@ -3,21 +3,24 @@ package cl.daplay.jsurbtc;
 import cl.daplay.jsurbtc.dto.*;
 import cl.daplay.jsurbtc.dto.request.APIKeyRequestDTO;
 import cl.daplay.jsurbtc.dto.request.OrderRequestDTO;
+import cl.daplay.jsurbtc.http.NativeHTTPClient;
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
-import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.balance.BalanceEvent;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.market.MarketID;
 import cl.daplay.jsurbtc.model.order.*;
+import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpStatus;
 
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.text.DecimalFormat;
 import java.time.Instant;
 import java.util.List;
@@ -30,7 +33,6 @@ import static cl.daplay.jsurbtc.Constants.newBigDecimalFormat;
 import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonMap;
-import static java.util.Objects.requireNonNull;
 
 public final class JSurbtc {
 
@@ -47,28 +49,31 @@ public final class JSurbtc {
     private final JSON json;
 
     public JSurbtc(final String key, final String secret) {
-        this(key, secret, JSurbtc.newNonce(), null, JSON.INSTANCE);
+        this(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
     }
 
     public JSurbtc(final String key, final String secret, final HttpHost proxy) {
-        this(key, secret, JSurbtc.newNonce(), proxy, JSON.INSTANCE);
+        this(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier) {
-        this(key, secret, nonceSupplier, null, JSON.INSTANCE);
+        this(key, secret, nonceSupplier, new InetSocketAddress("127.0.0.1", 8888));
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final HttpHost proxy) {
-        this(key, secret, nonceSupplier, proxy, JSON.INSTANCE);
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress socketAddress) {
+        this(key, secret, nonceSupplier, JSON.INSTANCE, new Proxy(Proxy.Type.HTTP, socketAddress));
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final HttpHost proxy, final JSON json) {
-        this(HTTPClient.newInstance(requireNonNull(key, "Key can't be null at JSurbtc constructor."),
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
+        this(new NativeHTTPClient(proxy, secret, key, nonceSupplier), newBigDecimalFormat(), json);
+
+
+/*        this(DefaultHTTPClient.newInstance(requireNonNull(key, "Key can't be null at JSurbtc constructor."),
                 requireNonNull(secret, "Secret can't be null at JSurbtc constructor."),
                 nonceSupplier,
-                proxy),
+                new HttpHost("localhost", 8888)),
                 newBigDecimalFormat(),
-                json);
+                json);*/
     }
 
     JSurbtc(final HTTPClient httpClient, final DecimalFormat bigDecimalFormat, final JSON json) {

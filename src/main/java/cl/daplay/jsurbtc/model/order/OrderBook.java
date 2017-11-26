@@ -31,4 +31,12 @@ public final class OrderBook implements Serializable {
     public List<Offer> getAsks() {
         return asks;
     }
+
+    @Override
+    public String toString() {
+        return "OrderBook{" +
+                "bids=" + bids +
+                ", asks=" + asks +
+                '}';
+    }
 }

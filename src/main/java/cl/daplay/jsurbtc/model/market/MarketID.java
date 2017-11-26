@@ -19,7 +19,12 @@ public enum MarketID {
     ETH_BTC(Currency.ETH, Currency.BTC),
     ETH_CLP(Currency.ETH, Currency.CLP),
     ETH_COP(Currency.ETH, Currency.COP),
-    ETH_PEN(Currency.ETH, Currency.PEN);
+    ETH_PEN(Currency.ETH, Currency.PEN),
+    BCH_CLP(Currency.BCH, Currency.CLP),
+    BCH_COP(Currency.BCH, Currency.COP),
+    BCH_PEN(Currency.BCH, Currency.PEN),
+    BCH_BTC(Currency.BCH, Currency.BTC),
+    ;
 
     private static final Map<Currency, List<MarketID>> MARKETS_BY_QUOTE_CURRENCY = Arrays.stream(MarketID.values())
             .collect(groupingBy(MarketID::getQuoteCurrency));

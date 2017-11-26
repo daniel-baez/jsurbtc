@@ -6,6 +6,9 @@ group = "cl.daplay"
 description = "An idiomatic Java API for Surbtc REST services."
 version = "1.0.1-SNAPSHOT"
 
+targetCompatibility = '1.8'
+sourceCompatibility = '1.8'
+
 buildscript {
     repositories {
         jcenter()

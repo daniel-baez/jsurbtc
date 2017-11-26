@@ -55,7 +55,7 @@ public final class JSurbtc {
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy) {
-        this(key, secret, nonceSupplier, JSON.INSTANCE, new Proxy(Proxy.Type.HTTP, httpProxy));
+        this(key, secret, nonceSupplier, JSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy));
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {

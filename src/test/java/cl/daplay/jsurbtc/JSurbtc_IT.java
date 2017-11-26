@@ -1,5 +1,27 @@
 package cl.daplay.jsurbtc;
 
+import static java.lang.String.format;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
+import java.net.InetSocketAddress;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
@@ -8,25 +30,17 @@ import cl.daplay.jsurbtc.model.balance.BalanceEvent;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.market.MarketID;
-import cl.daplay.jsurbtc.model.order.*;
+import cl.daplay.jsurbtc.model.order.Order;
+import cl.daplay.jsurbtc.model.order.OrderBook;
+import cl.daplay.jsurbtc.model.order.OrderPriceType;
+import cl.daplay.jsurbtc.model.order.OrderState;
+import cl.daplay.jsurbtc.model.order.OrderType;
 import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
-import org.junit.Test;
 
-import java.math.BigDecimal;
-import java.net.InetSocketAddress;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+public class JSurbtc_IT {
 
-import static java.lang.String.format;
-import static org.junit.Assert.*;
-
-public class JSurbrc_IT {
-
-    // TODO: a better way to fill this
     String key;
     String secret;
 
@@ -37,8 +51,28 @@ public class JSurbrc_IT {
 
     }
 
+    @Before
+    public void before() throws Exception {
+        key = System.getProperty("jsurbtc.key", "");
+        secret = System.getProperty("jsurbtc.secret", "");
+
+        if (key.isEmpty() || secret.isEmpty()) {
+            final String message = "Please provide properties `jsurbtc.key`, and `jsurbtc.secret` in file $HOME/.gradle/gradle.properties";
+            throw new IllegalStateException(message);
+        }
+    }
+
     private JSurbtc newClient() {
-        return new JSurbtc(key, secret, JSurbtc.newNonce(), new InetSocketAddress("127.0.0.1", 8888));
+        final String proxyHost = System.getProperty("jsurbtc.proxy.host", "");
+        final String proxyPort = System.getProperty("jsurbtc.proxy.port", "");
+
+        InetSocketAddress proxy = null;
+
+        if (!proxyHost.isEmpty() && !proxyPort.isEmpty() && proxyPort.matches("^\\d+$")) {
+            proxy = new InetSocketAddress(proxyHost, Integer.parseInt(proxyPort));
+        }
+
+        return new JSurbtc(key, secret, JSurbtc.newNonce(), proxy);
     }
 
     @Test
@@ -237,13 +271,15 @@ public class JSurbrc_IT {
         }
 
         for (Map.Entry<String, ThrowingSupplier<List<Order>>> test : tests.entrySet()) {
-            final String key = test.getKey();
+
+            final String testName = test.getKey();
             final ThrowingSupplier<List<Order>> value = test.getValue();
 
-            System.out.println(key);
+            System.out.println(testName);
             final List<Order> orders = value.get();
 
             for (final Order order : orders) {
+                System.out.printf("checking order: %d %n", order.getId());
                 final Order order1 = client.getOrder(order.getId());
 
                 assertEquals(order, order1);

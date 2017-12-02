@@ -21,9 +21,10 @@ public class WithdrawalDataTypeIdResolver extends TypeIdResolverBase {
     static {
         ID_2_CLASS.put("fiat/withdrawal_data", FiatWithdrawalData.class);
         ID_2_CLASS.put("bitcoin_withdrawal_data", BitcoinWithdrawalData.class);
+        ID_2_CLASS.put("btc_withdrawal_data", BitcoinWithdrawalData.class);
 
         CLASS_2_ID.put(FiatWithdrawalData.class, "fiat/withdrawal_data");
-        CLASS_2_ID.put(BitcoinWithdrawalData.class, "bitcoin_withdrawal_data");
+        CLASS_2_ID.put(BitcoinWithdrawalData.class, "btc_withdrawal_data");
     }
 
     @Override

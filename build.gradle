@@ -34,10 +34,7 @@ test {
     testLogging.showStandardStreams = true
 
     final boolean runIntegration = project.hasProperty('jsurbtc.secret') && project.hasProperty('jsurbtc.key')
-    if (runIntegration) {
-        systemProperty 'jsurbtc.key', project.property('jsurbtc.key')
-        systemProperty 'jsurbtc.secret', project.property('jsurbtc.secret')
-    } else {
+    if (!runIntegration) {
         exclude { it.name.endsWith('_IT.class') }
     }
 }

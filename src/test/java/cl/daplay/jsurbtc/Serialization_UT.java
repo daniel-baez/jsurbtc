@@ -3,13 +3,10 @@ package cl.daplay.jsurbtc;
 import cl.daplay.jsurbtc.dto.*;
 import cl.daplay.jsurbtc.model.Amount;
 import cl.daplay.jsurbtc.model.market.Market;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -19,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public final class Serialization_UT {
 
-    private static final ObjectMapper OBJECT_MAPPER = JSON.newObjectMapper();
+    private static final JSON OBJECT_MAPPER = JSON.INSTANCE;
 
     @Test
     public void exception() throws Exception {
@@ -127,18 +124,11 @@ public final class Serialization_UT {
 
         for (final String f : files) {
             final InputStream resourceAsStream = Serialization_UT.class.getResourceAsStream(f);
-            final String input = IOUtils.toString(resourceAsStream, Charset.defaultCharset());
+            final String input = Utils.convertStreamToString(resourceAsStream);
             try {
-                final T parsed = OBJECT_MAPPER.readValue(input, valueType);
+                final T parsed = OBJECT_MAPPER.parse(input, valueType);
                 forEach.accept(parsed, f);
-                final String written = OBJECT_MAPPER.writeValueAsString(parsed);
-
-                if (false) {
-                    System.out.printf("valueType: %s%n", valueType);
-                    System.out.printf("input: %s%n", input);
-                    System.out.printf("parsed: %s%n", parsed);
-                    System.out.printf("written: %s%n", written);
-                }
+                final String written = OBJECT_MAPPER.stringify(parsed);
 
                 assertEqualJSON(valueType, input);
                 result.put(f, parsed);
@@ -152,14 +142,10 @@ public final class Serialization_UT {
         return result;
     }
 
-    private void assertEqualJSON(String input, String written) {
-        assertEquals(minify(input), minify(written));
-    }
-
     private <T> void assertEqualJSON(Class<T> clazz, String input) throws IOException {
-        final T fromInput = OBJECT_MAPPER.readValue(input, clazz);
-        final String output = OBJECT_MAPPER.writeValueAsString(fromInput);
-        final T fromOutput = OBJECT_MAPPER.readValue(output, clazz);
+        final T fromInput = OBJECT_MAPPER.parse(input, clazz);
+        final String output = OBJECT_MAPPER.stringify(fromInput);
+        final T fromOutput = OBJECT_MAPPER.parse(output, clazz);
 
         final boolean txtEquals = minify(input).equals(minify(output));
         if (!txtEquals) {

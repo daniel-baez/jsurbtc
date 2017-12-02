@@ -6,17 +6,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.junit.Before;
@@ -41,9 +38,6 @@ import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 
 public class JSurbtc_IT {
 
-    String key;
-    String secret;
-
     @FunctionalInterface
     interface ThrowingSupplier<T> {
 
@@ -53,18 +47,48 @@ public class JSurbtc_IT {
 
     @Before
     public void before() throws Exception {
-        key = System.getProperty("jsurbtc.key", "");
-        secret = System.getProperty("jsurbtc.secret", "");
+    }
+
+    private Optional<Properties> getGradleProperties() {
+        return Optional.ofNullable(System.getProperty("user.home"))
+                .filter(string -> !string.isEmpty())
+                .map(string -> new File(string))
+                .filter(userHome -> userHome.exists() && userHome.isDirectory())
+                .map(userHome -> new File(userHome, ".gradle/"))
+                .filter(gradleHome -> gradleHome.exists() && gradleHome.isDirectory())
+                .map(gradleHome -> new File(gradleHome, "gradle.properties"))
+                .filter(gradleProperties -> gradleProperties.exists() && gradleProperties.isFile())
+                .map(gradleProperties -> {
+                    try {
+                        final Properties properties = new Properties();
+                        properties.load(new FileReader(gradleProperties));
+                        return properties;
+                    } catch (IOException e) {
+                        return null;
+                    }
+                });
+    }
+
+    private JSurbtc newClient() {
+        final Optional<Properties> maybeGradleProperties = getGradleProperties();
+
+        if (!maybeGradleProperties.isPresent()) {
+            final String message = "Please provide properties `jsurbtc.key`, and `jsurbtc.secret` in file $HOME/.gradle/gradle.properties";
+            throw new IllegalStateException(message);
+        }
+
+        final Properties properties = maybeGradleProperties.get();
+
+        final String key = properties.getProperty("jsurbtc.key", "");
+        final String secret = properties.getProperty("jsurbtc.secret", "");
 
         if (key.isEmpty() || secret.isEmpty()) {
             final String message = "Please provide properties `jsurbtc.key`, and `jsurbtc.secret` in file $HOME/.gradle/gradle.properties";
             throw new IllegalStateException(message);
         }
-    }
 
-    private JSurbtc newClient() {
-        final String proxyHost = System.getProperty("jsurbtc.proxy.host", "");
-        final String proxyPort = System.getProperty("jsurbtc.proxy.port", "");
+        final String proxyHost = properties.getProperty("jsurbtc.proxy.host", "");
+        final String proxyPort = properties.getProperty("jsurbtc.proxy.port", "");
 
         InetSocketAddress proxy = null;
 

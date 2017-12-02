@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 public enum JSON {
     INSTANCE;
 
-    private final static Logger LOGGER = Logger.getLogger(JSON.class.getName());
-
     public static ObjectMapper newObjectMapper() {
         final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 

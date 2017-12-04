@@ -5,27 +5,26 @@
 - Idiomatic Java API
 - Java 8 Compatible
 - Lazy loading for paginated results
-- Immutable, Thread-safe, Serializable objects
 - Error handling
 
 ## Usage
 
 ```java
-import cl.daplay.jsurbtc.JSurbtc;
+import cl.daplay.jsurbtc.JSurbtcImpl;
 
-final JSurbtc surbtc = new JSurbtc(apiKey, apiSecret);
+JSurbtc surbtc = new JSurbtc(apiKey, apiSecret);
 
 // create order
-final Order order = surbtc.createOrder(MarketID.BTC_CLP, OrderType.BID, OrderPriceType.LIMIT, BigDecimal.ONE, BigDecimal.ONE);
+Order order = surbtc.createOrder(MarketID.BTC_CLP, OrderType.BID, OrderPriceType.LIMIT, BigDecimal.ONE, BigDecimal.ONE);
 
 // cancel order
 surbtc.cancelOrder(order.getId());
 
 // get all orders
-final List<Order> orders = surbtc.getOrders(MarketID.BTC_CLP);
+List<Order> orders = surbtc.getOrders(MarketID.BTC_CLP);
 
 // GET /markets
-final List<Market> markets = surbtc.getMarkets();
+List<Market> markets = surbtc.getMarkets();
 ```
 
 ## Installation
@@ -34,12 +33,12 @@ final List<Market> markets = surbtc.getMarkets();
 <dependency>
    <groupId>cl.daplay</groupId>
    <artifactId>jsurbtc</artifactId>
-   <version>2.0.0</version>
+   <version>2.1.0</version>
 </dependency>
 ```
 
 ```groovy
-compile group: 'cl.daplay', name: 'jsurbtc', version: '2.0.0'
+compile group: 'cl.daplay', name: 'jsurbtc', version: '2.1.0'
 ```
    
 # Documentation

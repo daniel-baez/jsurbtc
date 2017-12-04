@@ -3,7 +3,7 @@ package cl.daplay.jsurbtc.model.withdrawal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public final class BitcoinWithdrawalData extends WithdrawalData {
+public class BitcoinWithdrawalData extends WithdrawalData {
 
     private static final long serialVersionUID = 2017_08_06;
 

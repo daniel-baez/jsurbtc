@@ -14,7 +14,7 @@ import java.time.Instant;
         "expired",
         "last_access_at",
         "secret"})
-public final class ApiKey implements Serializable {
+public class ApiKey implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -32,6 +32,16 @@ public final class ApiKey implements Serializable {
     private final Instant lastAccessAt;
     @JsonProperty("secret")
     private final String secret;
+
+    public ApiKey(ApiKey other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.expirationTime = other.expirationTime;
+        this.enabled = other.enabled;
+        this.expired = other.expired;
+        this.lastAccessAt = other.lastAccessAt;
+        this.secret = other.secret;
+    }
 
     @JsonCreator
     public ApiKey(@JsonProperty("type") final String id,

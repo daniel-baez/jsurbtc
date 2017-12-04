@@ -16,6 +16,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import cl.daplay.jsurbtc.model.order.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,16 +28,11 @@ import cl.daplay.jsurbtc.model.balance.BalanceEvent;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.market.MarketID;
-import cl.daplay.jsurbtc.model.order.Order;
-import cl.daplay.jsurbtc.model.order.OrderBook;
-import cl.daplay.jsurbtc.model.order.OrderPriceType;
-import cl.daplay.jsurbtc.model.order.OrderState;
-import cl.daplay.jsurbtc.model.order.OrderType;
 import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 
-public class JSurbtc_IT {
+public class JSurbtc_Implementation_IT {
 
     @FunctionalInterface
     interface ThrowingSupplier<T> {
@@ -96,7 +92,7 @@ public class JSurbtc_IT {
             proxy = new InetSocketAddress(proxyHost, Integer.parseInt(proxyPort));
         }
 
-        return new JSurbtc(key, secret, JSurbtc.newNonce(), proxy);
+        return new JSurbtcImpl(key, secret, JSurbtc.newNonce(), proxy);
     }
 
     @Test

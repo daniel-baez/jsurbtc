@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public final class Ticker implements Serializable {
+public class Ticker implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -26,6 +26,15 @@ public final class Ticker implements Serializable {
     @JsonProperty("price_variation_7d")
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal priceVariation7Days;
+
+    public Ticker(Ticker other) {
+        this.lastPrice = other.lastPrice;
+        this.minAsk = other.minAsk;
+        this.maxBid = other.maxBid;
+        this.volume = other.volume;
+        this.priceVariation24Hours = other.priceVariation24Hours;
+        this.priceVariation7Days = other.priceVariation7Days;
+    }
 
     @JsonCreator
     public Ticker(@JsonProperty("last_price") final Amount lastPrice,

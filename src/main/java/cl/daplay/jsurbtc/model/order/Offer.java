@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "price", "amount" })
-public final class Offer implements Serializable {
+public class Offer implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 

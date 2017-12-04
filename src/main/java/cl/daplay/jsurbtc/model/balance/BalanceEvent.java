@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
 
-public final class BalanceEvent implements Serializable {
+public class BalanceEvent implements Serializable {
 
     private static final long serialVersionUID = 2017_08_12;
 
@@ -50,6 +50,27 @@ public final class BalanceEvent implements Serializable {
     private final Instant createdAt;
     @JsonProperty("transfer_description")
     private final String transferDescription;
+
+    public BalanceEvent(BalanceEvent other) {
+        this.id = other.id;
+        this.currency = other.currency;
+        this.event = other.event;
+        this.accountId = other.accountId;
+        this.eventIds = other.eventIds;
+        this.transactionType = other.transactionType;
+        this.oldAmount = other.oldAmount;
+        this.newAmount = other.newAmount;
+        this.oldFrozenAmount = other.oldFrozenAmount;
+        this.newFrozenAmount = other.newFrozenAmount;
+        this.oldPendingWithdrawAmount = other.oldPendingWithdrawAmount;
+        this.newPendingWithdrawAmount = other.newPendingWithdrawAmount;
+        this.oldFrozenForFee = other.oldFrozenForFee;
+        this.newFrozenForFee = other.newFrozenForFee;
+        this.oldAvailableAmount = other.oldAvailableAmount;
+        this.newAvailableAmount = other.newAvailableAmount;
+        this.createdAt = other.createdAt;
+        this.transferDescription = other.transferDescription;
+    }
 
     public BalanceEvent(@JsonProperty("id") final long id,
                         @JsonProperty("currency") final Currency currency,

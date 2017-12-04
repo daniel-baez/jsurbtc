@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc.dto.request;
+package cl.daplay.jsurbtc.jackson.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

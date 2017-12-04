@@ -10,7 +10,7 @@ import java.time.Instant;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "timestamp", "amount", "price", "direction" })
-public final class Transaction implements Serializable, Comparable<Transaction> {
+public class Transaction implements Serializable, Comparable<Transaction> {
 
     private static final long serialVersionUID = 2017_10_27;
 

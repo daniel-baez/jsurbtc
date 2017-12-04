@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 
-public final class Order implements Serializable {
+public class Order implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -40,6 +40,23 @@ public final class Order implements Serializable {
     private Amount totalExchanged;
     @JsonProperty("paid_fee")
     private Amount paidFee;
+
+    public Order(Order other) {
+        this.id = other.id;
+        this.type = other.type;
+        this.state = other.state;
+        this.createdAt = other.createdAt;
+        this.marketId = other.marketId;
+        this.accountId = other.accountId;
+        this.feeCurrency = other.feeCurrency;
+        this.priceType = other.priceType;
+        this.limit = other.limit;
+        this.amount = other.amount;
+        this.originalAmount = other.originalAmount;
+        this.tradedAmount = other.tradedAmount;
+        this.totalExchanged = other.totalExchanged;
+        this.paidFee = other.paidFee;
+    }
 
     @JsonCreator
     public Order(@JsonProperty("id") long id,

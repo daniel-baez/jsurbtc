@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
-public final class FiatWithdrawalData extends WithdrawalData {
+public class FiatWithdrawalData extends WithdrawalData {
 
     private static final long serialVersionUID = 2017_08_06;
 

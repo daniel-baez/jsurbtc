@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public final class Trades implements Serializable, Iterable<Transaction> {
+public class Trades implements Serializable, Iterable<Transaction> {
 
     private static final long serialVersionUID = 2017_10_27;
 
@@ -19,6 +19,12 @@ public final class Trades implements Serializable, Iterable<Transaction> {
     private final Instant lastTimestamp;
     @JsonProperty("entries")
     private final List<Transaction> entries;
+
+    public Trades(Trades other) {
+        this.timestamp = other.timestamp;
+        this.lastTimestamp = other.lastTimestamp;
+        this.entries = other.entries;
+    }
 
     @JsonCreator
     public Trades(@JsonProperty("timestamp") final Instant timestamp,

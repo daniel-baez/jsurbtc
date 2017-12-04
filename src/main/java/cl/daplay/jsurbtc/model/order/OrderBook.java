@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonPropertyOrder({ "asks", "bids" })
-public final class OrderBook implements Serializable {
+public class OrderBook implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -16,6 +16,11 @@ public final class OrderBook implements Serializable {
     private final List<Offer> bids;
     @JsonProperty("asks")
     private final List<Offer> asks;
+
+    public OrderBook(OrderBook other) {
+        this.bids = other.bids;
+        this.asks = other.asks;
+    }
 
     @JsonCreator
     public OrderBook(@JsonProperty("bids") List<Offer> bids,

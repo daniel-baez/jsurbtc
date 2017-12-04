@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 
-public final class Withdrawal implements Serializable {
+public class Withdrawal implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -26,6 +26,15 @@ public final class Withdrawal implements Serializable {
     @JsonProperty("fee")
     private final Amount fee;
 
+    public Withdrawal(Withdrawal other) {
+        this.id = other.id;
+        this.state = other.state;
+        this.currency = other.currency;
+        this.createdAt = other.createdAt;
+        this.withdrawalWithdrawalData = other.withdrawalWithdrawalData;
+        this.amount = other.amount;
+        this.fee = other.fee;
+    }
 
     public Withdrawal(@JsonProperty("id") long id,
                       @JsonProperty("state") String state,

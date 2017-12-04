@@ -1,6 +1,6 @@
 package cl.daplay.jsurbtc;
 
-import cl.daplay.jsurbtc.dto.*;
+import cl.daplay.jsurbtc.jackson.dto.*;
 import cl.daplay.jsurbtc.model.Amount;
 import cl.daplay.jsurbtc.model.market.Market;
 import org.junit.Test;

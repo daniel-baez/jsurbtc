@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public final class DepositData implements Serializable {
+public class DepositData implements Serializable {
 
     private static final long serialVersionUID = 2017_10_22;
 

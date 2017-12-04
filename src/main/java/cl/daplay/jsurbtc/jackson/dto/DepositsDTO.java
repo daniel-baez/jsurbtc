@@ -1,26 +1,28 @@
-package cl.daplay.jsurbtc.dto;
+package cl.daplay.jsurbtc.jackson.dto;
 
-import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
+import cl.daplay.jsurbtc.model.deposit.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@JsonPropertyOrder({ "withdrawals", "meta" })
+@XmlRootElement
+@JsonPropertyOrder({ "deposits", "meta" })
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class WithdrawalsDTO {
+public final class DepositsDTO {
 
-    @JsonProperty("withdrawals")
-    private final List<Withdrawal> withdrawals;
+    @JsonProperty("deposits")
+    private final List<Deposit> deposits;
     @JsonProperty("meta")
     private final PaginationDTO pagination;
 
     @JsonCreator
-    public WithdrawalsDTO(@JsonProperty("orders") List<Withdrawal> orders,
-                          @JsonProperty("meta") PaginationDTO pagination) {
-        this.withdrawals = orders;
+    public DepositsDTO(@JsonProperty("deposits") List<Deposit> deposits,
+                       @JsonProperty("meta") PaginationDTO pagination) {
+        this.deposits = deposits;
         this.pagination = pagination;
     }
 
@@ -28,25 +30,24 @@ public final class WithdrawalsDTO {
         return pagination;
     }
 
-    public List<Withdrawal> getWithdrawals() {
-        return withdrawals;
+    public List<Deposit> getDeposits() {
+        return deposits;
     }
-
 
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final WithdrawalsDTO that = (WithdrawalsDTO) o;
+        final DepositsDTO that = (DepositsDTO) o;
 
-        if (withdrawals != null ? !withdrawals.equals(that.withdrawals) : that.withdrawals != null) return false;
+        if (deposits != null ? !deposits.equals(that.deposits) : that.deposits != null) return false;
         return pagination != null ? pagination.equals(that.pagination) : that.pagination == null;
     }
 
     @Override
     public int hashCode() {
-        int result = withdrawals != null ? withdrawals.hashCode() : 0;
+        int result = deposits != null ? deposits.hashCode() : 0;
         result = 31 * result + (pagination != null ? pagination.hashCode() : 0);
         return result;
     }

@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc.dto;
+package cl.daplay.jsurbtc.jackson.dto;
 
 import cl.daplay.jsurbtc.model.order.OrderBook;
 import com.fasterxml.jackson.annotation.JsonCreator;

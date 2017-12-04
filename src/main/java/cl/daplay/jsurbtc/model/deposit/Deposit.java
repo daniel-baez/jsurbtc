@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public final class Deposit implements Serializable {
+public class Deposit implements Serializable {
 
     private static final long serialVersionUID = 2017_10_22;
 
@@ -28,6 +28,16 @@ public final class Deposit implements Serializable {
     private final Amount amount;
     @JsonProperty("fee")
     private final Amount fee;
+
+    public Deposit(Deposit other) {
+        this.id = other.id;
+        this.state = other.state;
+        this.currency = other.currency;
+        this.createdAt = other.createdAt;
+        this.depositData = other.depositData;
+        this.amount = other.amount;
+        this.fee = other.fee;
+    }
 
     @JsonCreator
     public Deposit(@JsonProperty("id") final long id,

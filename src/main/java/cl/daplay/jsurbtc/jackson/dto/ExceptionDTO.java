@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc.dto;
+package cl.daplay.jsurbtc.jackson.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

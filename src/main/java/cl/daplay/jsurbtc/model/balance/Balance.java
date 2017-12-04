@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 
 @JsonPropertyOrder({ "id", "amount", "available_amount", "frozen_amount", "pending_withdraw_amount", "account_id" })
-public final class Balance implements Serializable {
+public class Balance implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -25,6 +25,15 @@ public final class Balance implements Serializable {
     private final Amount frozenAmount;
     @JsonProperty("pending_withdraw_amount")
     private final Amount pendingWithdrawAmount;
+
+    public Balance(Balance other) {
+        this.accountId = other.accountId;
+        this.id = other.id;
+        this.amount = other.amount;
+        this.availableAmount = other.availableAmount;
+        this.frozenAmount = other.frozenAmount;
+        this.pendingWithdrawAmount = other.pendingWithdrawAmount;
+    }
 
     @JsonCreator
     public Balance(@JsonProperty("account_id") final long accountId,

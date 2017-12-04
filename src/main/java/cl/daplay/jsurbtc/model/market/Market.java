@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
-public final class Market implements Serializable {
+public class Market implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -21,6 +21,14 @@ public final class Market implements Serializable {
     private final Currency quoteCurrency;
     @JsonProperty("minimum_order_amount")
     private final Amount minimumOrderAmount;
+
+    public Market(Market other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.baseCurrency = other.baseCurrency;
+        this.quoteCurrency = other.quoteCurrency;
+        this.minimumOrderAmount = other.minimumOrderAmount;
+    }
 
     @JsonCreator
     public Market(@JsonProperty("id") final MarketID id,

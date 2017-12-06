@@ -71,7 +71,7 @@ public class Amount implements Serializable, Comparable<Amount> {
     @Override
     public int compareTo(Amount o) {
         sameCurrencyCheck(o);
-        return this.getCurrency().compareTo(o.getCurrency());
+        return this.getAmount().compareTo(o.getAmount());
     }
 
     private void sameCurrencyCheck(Amount amount) {

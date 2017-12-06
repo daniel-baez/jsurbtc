@@ -55,10 +55,18 @@ public class Ticker implements Serializable {
         return lastPrice;
     }
 
+    /**
+     * Lowest selling position
+     * @return
+     */
     public Amount getMinAsk() {
         return minAsk;
     }
 
+    /**
+     * Highest buying position
+     * @return
+     */
     public Amount getMaxBid() {
         return maxBid;
     }
@@ -73,6 +81,20 @@ public class Ticker implements Serializable {
 
     public BigDecimal getPriceVariation7Days() {
         return priceVariation7Days;
+    }
+
+    /**
+     * returns `getBaseCurrency().getCurrency()`
+     */
+    public Currency getBaseCurrency() {
+        return getVolume().getCurrency();
+    }
+
+    /**
+     * returns `getLastPrice().getCurrency()`
+     */
+    public Currency getQuoteCurrency() {
+        return getLastPrice().getCurrency();
     }
 
     @Override

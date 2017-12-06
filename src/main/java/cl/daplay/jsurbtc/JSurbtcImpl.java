@@ -31,7 +31,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonMap;
 
-public final class JSurbtcImpl implements JSurbtc {
+public class JSurbtcImpl implements JSurbtc {
 
     private final static Logger LOGGER = Logger.getLogger(JSurbtcImpl.class.getName());
 
@@ -53,6 +53,12 @@ public final class JSurbtcImpl implements JSurbtc {
 
     public JSurbtcImpl(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
         this(new DefaultHTTPClient(proxy, secret, key, nonceSupplier), newBigDecimalFormat(), json);
+    }
+
+    public JSurbtcImpl(JSurbtcImpl other) {
+        this.bigDecimalFormat = other.bigDecimalFormat;
+        this.httpClient = other.httpClient;
+        this.json = other.json;
     }
 
     JSurbtcImpl(final HTTPClient httpClient, final DecimalFormat bigDecimalFormat, final JSON json) {
@@ -98,7 +104,7 @@ public final class JSurbtcImpl implements JSurbtc {
     }
 
     @Override
-    public List<Market> getMarkets() throws Exception {
+    public List<? extends Market> getMarkets() throws Exception {
         final String path = "/api/v2/markets";
         return get(path, MarketsDTO.class, MarketsDTO::getMarkets);
     }
@@ -122,30 +128,30 @@ public final class JSurbtcImpl implements JSurbtc {
     }
 
     @Override
-    public List<Balance> getBalances() throws Exception {
+    public List<? extends Balance> getBalances() throws Exception {
         return get("/api/v2/balances", BalancesDTO.class, BalancesDTO::getBalances);
     }
 
     @Override
-    public List<Order> getOrders(final MarketID marketId) throws Exception {
+    public List<? extends Order> getOrders(final MarketID marketId) throws Exception {
         final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
         return newPaginatedList(path, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
     @Override
-    public List<Order> getOrders(final MarketID marketId, final OrderState orderState) throws Exception {
+    public List<? extends Order> getOrders(final MarketID marketId, final OrderState orderState) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketId, orderState).toLowerCase();
         return newPaginatedList(path, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
     @Override
-    public List<Order> getOrders(final MarketID marketId, final BigDecimal minimunExchanged) throws Exception {
+    public List<? extends Order> getOrders(final MarketID marketId, final BigDecimal minimunExchanged) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?minimun_exchanged=%s", marketId, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
         return newPaginatedList(path, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
     @Override
-    public List<Order> getOrders(final MarketID marketId, final OrderState orderState, final BigDecimal minimunExchanged) throws Exception {
+    public List<? extends Order> getOrders(final MarketID marketId, final OrderState orderState, final BigDecimal minimunExchanged) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&minimun_exchanged=%s", marketId, orderState, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
         return newPaginatedList(path, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
@@ -158,19 +164,19 @@ public final class JSurbtcImpl implements JSurbtc {
     }
 
     @Override
-    public List<Deposit> getDeposits(final Currency currency) throws Exception {
+    public List<? extends Deposit> getDeposits(final Currency currency) throws Exception {
         final String path = format("/api/v2/currencies/%s/deposits", currency).toLowerCase();
         return newPaginatedList(path, DepositsDTO.class, DepositsDTO::getPagination, DepositsDTO::getDeposits);
     }
 
     @Override
-    public List<Withdrawal> getWithdrawals(final Currency currency) throws Exception {
+    public List<? extends Withdrawal> getWithdrawals(final Currency currency) throws Exception {
         final String path = format("/api/v2/currencies/%s/withdrawals", currency).toLowerCase();
         return newPaginatedList(path, WithdrawalsDTO.class, WithdrawalsDTO::getPagination, WithdrawalsDTO::getWithdrawals);
     }
 
     @Override
-    public List<BalanceEvent> getBalanceEvents(final Currency currency) throws Exception {
+    public List<? extends BalanceEvent> getBalanceEvents(final Currency currency) throws Exception {
         final String path = "/api/v2/balance_events";
         final String params = "?currencies%5B%5D=" + currency + "&event_names%5B%5D=deposit_confirm&event_names%5B%5D=withdrawal_confirm&event_names%5B%5D=transaction&event_names%5B%5D=transfer_confirmation&relevant=true";
 

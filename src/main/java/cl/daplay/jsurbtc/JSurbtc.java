@@ -18,17 +18,29 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.LongSupplier;
 
+import static java.lang.System.currentTimeMillis;
+
+/**
+ * Main entrypoint for the client
+ */
 public interface JSurbtc {
 
+    /**
+     * default nonce implementation, can't be shared among client
+     *
+     * @return
+     */
     static LongSupplier newNonce() {
-        final long now = System.currentTimeMillis();
-        final AtomicLong seed = new AtomicLong(now);
-        return seed::getAndIncrement;
+        return new AtomicLong(currentTimeMillis())::getAndIncrement;
     }
 
     ApiKey newAPIKey(String name, Instant expiration) throws Exception;
 
-    Order newOrder(MarketID marketId, OrderType orderType, OrderPriceType orderPriceType, BigDecimal qty, BigDecimal price) throws Exception;
+    Order newOrder(MarketID marketId,
+                   OrderType orderType,
+                   OrderPriceType orderPriceType,
+                   BigDecimal qty,
+                   BigDecimal price) throws Exception;
 
     Trades getTrades(MarketID marketId, Instant timestamp) throws Exception;
 
@@ -48,11 +60,15 @@ public interface JSurbtc {
 
     List<? extends Order> getOrders(MarketID marketId) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId, OrderState orderState) throws Exception;
+    List<? extends Order> getOrders(MarketID marketId,
+                                    OrderState orderState) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId, BigDecimal minimunExchanged) throws Exception;
+    List<? extends Order> getOrders(MarketID marketId,
+                                    BigDecimal minimunExchanged) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId, OrderState orderState, BigDecimal minimunExchanged) throws Exception;
+    List<? extends Order> getOrders(MarketID marketId,
+                                    OrderState orderState,
+                                    BigDecimal minimunExchanged) throws Exception;
 
     Order getOrder(long orderId) throws Exception;
 

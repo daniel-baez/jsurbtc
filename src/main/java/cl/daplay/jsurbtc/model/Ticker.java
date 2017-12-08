@@ -2,6 +2,7 @@ package cl.daplay.jsurbtc.model;
 
 import cl.daplay.jsurbtc.jackson.BigDecimalToStringSerializer;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -51,6 +52,24 @@ public class Ticker implements Serializable {
         this.priceVariation7Days = priceVariation7Days;
     }
 
+    /**
+     * example: if you asked for BTC_CLP this would be BTC
+     * @return `getBaseCurrency().getCurrency()`
+     */
+    @JsonIgnore
+    public Currency getBaseCurrency() {
+        return getVolume().getCurrency();
+    }
+
+    /**
+     * example: if you asked for BTC_CLP this would be CLP
+     * @return `getLastPrice().getCurrency()`
+     */
+    @JsonIgnore
+    public Currency getQuoteCurrency() {
+        return getLastPrice().getCurrency();
+    }
+
     public Amount getLastPrice() {
         return lastPrice;
     }
@@ -81,20 +100,6 @@ public class Ticker implements Serializable {
 
     public BigDecimal getPriceVariation7Days() {
         return priceVariation7Days;
-    }
-
-    /**
-     * returns `getBaseCurrency().getCurrency()`
-     */
-    public Currency getBaseCurrency() {
-        return getVolume().getCurrency();
-    }
-
-    /**
-     * returns `getLastPrice().getCurrency()`
-     */
-    public Currency getQuoteCurrency() {
-        return getLastPrice().getCurrency();
     }
 
     @Override

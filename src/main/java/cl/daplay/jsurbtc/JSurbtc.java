@@ -48,7 +48,7 @@ public interface JSurbtc {
 
     Order cancelOrder(long orderId) throws Exception;
 
-    List<? extends Market> getMarkets() throws Exception;
+    List<Market> getMarkets() throws Exception;
 
     Ticker getTicker(MarketID marketId) throws Exception;
 
@@ -56,25 +56,25 @@ public interface JSurbtc {
 
     Balance getBalance(Currency currency) throws Exception;
 
-    List<? extends Balance> getBalances() throws Exception;
+    List<Balance> getBalances() throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId) throws Exception;
+    List<Order> getOrders(MarketID marketId) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId,
-                                    OrderState orderState) throws Exception;
+    List<Order> getOrders(MarketID marketId,
+                          OrderState orderState) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId,
-                                    BigDecimal minimunExchanged) throws Exception;
+    List<Order> getOrders(MarketID marketId,
+                          BigDecimal minimunExchanged) throws Exception;
 
-    List<? extends Order> getOrders(MarketID marketId,
-                                    OrderState orderState,
-                                    BigDecimal minimunExchanged) throws Exception;
+    List<Order> getOrders(MarketID marketId,
+                          OrderState orderState,
+                          BigDecimal minimunExchanged) throws Exception;
 
     Order getOrder(long orderId) throws Exception;
 
-    List<? extends Deposit> getDeposits(Currency currency) throws Exception;
+    List<Deposit> getDeposits(Currency currency) throws Exception;
 
-    List<? extends Withdrawal> getWithdrawals(Currency currency) throws Exception;
+    List<Withdrawal> getWithdrawals(Currency currency) throws Exception;
 
-    List<? extends BalanceEvent> getBalanceEvents(Currency currency) throws Exception;
+    List<BalanceEvent> getBalanceEvents(Currency currency) throws Exception;
 }

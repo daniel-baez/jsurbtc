@@ -251,7 +251,7 @@ public class JSurbtc_Implementation_IT {
         final JSurbtc client = newClient();
         final List<Market> markets = (List<Market>) client.getMarkets();
 
-        final Map<String, ThrowingSupplier<List<? extends Order>>> tests = new LinkedHashMap<>();
+        final Map<String, ThrowingSupplier<List<Order>>> tests = new LinkedHashMap<>();
 
         // orders for every market
         for (final Market market : markets) {
@@ -290,10 +290,10 @@ public class JSurbtc_Implementation_IT {
             }
         }
 
-        for (Map.Entry<String, ThrowingSupplier<List<? extends Order>>> test : tests.entrySet()) {
+        for (Map.Entry<String, ThrowingSupplier<List<Order>>> test : tests.entrySet()) {
 
             final String testName = test.getKey();
-            final ThrowingSupplier<List<? extends Order>> value = test.getValue();
+            final ThrowingSupplier<List<Order>> value = test.getValue();
 
             System.out.println(testName);
             final List<Order> orders = (List<Order>) value.get();

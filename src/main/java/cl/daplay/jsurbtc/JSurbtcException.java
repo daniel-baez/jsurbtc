@@ -27,6 +27,14 @@ public final class JSurbtcException extends Exception {
     public final String code;
     public final Error[] errors;
 
+    public JSurbtcException(String message) {
+        super(message);
+        this.httpStatusCode = 0;
+        this.message = message;
+        this.code = "";
+        this.errors = new Error[0];
+    }
+
     public JSurbtcException(final int httpStatusCode, final String message, final String code, final Error[] errors) {
         super(message(httpStatusCode, message, code));
         this.httpStatusCode = httpStatusCode;

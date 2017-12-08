@@ -122,7 +122,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : Currency.values()) {
             System.out.printf("Deposits for Currency: %s%n", currency);
-            final List<Deposit> deposits = client.getDeposits(currency);
+            final List<Deposit> deposits = (List<Deposit>) client.getDeposits(currency);
 
             for (Deposit deposit : deposits) {
                 System.out.printf("\t%s%n", deposit);
@@ -136,7 +136,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : Currency.values()) {
             System.out.printf("Withdrawals for Currency: %s%n", currency);
-            final List<Withdrawal> withdrawals = client.getWithdrawals(currency);
+            final List<Withdrawal> withdrawals = (List<Withdrawal>) client.getWithdrawals(currency);
 
             for (Withdrawal withdrawal : withdrawals) {
                 System.out.printf("\t%s%n", withdrawal);
@@ -150,7 +150,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : Currency.values()) {
             System.out.printf("Balances for Currency: %s%n", currency);
-            final List<BalanceEvent> balanceEvents = client.getBalanceEvents(currency);
+            final List<BalanceEvent> balanceEvents = (List<BalanceEvent>) client.getBalanceEvents(currency);
 
             for (BalanceEvent balanceEvent : balanceEvents) {
                 System.out.printf("\t%s%n", balanceEvent);
@@ -206,7 +206,7 @@ public class JSurbtc_Implementation_IT {
     public void get_order_book() throws Exception {
         final JSurbtc client = newClient();
 
-        final List<Market> markets = client.getMarkets();
+        final List<Market> markets = (List<Market>) client.getMarkets();
         assertTrue("getMarkets works", !markets.isEmpty());
 
         for (final Market market : markets) {
@@ -219,7 +219,7 @@ public class JSurbtc_Implementation_IT {
     public void get_balance() throws Exception {
         final JSurbtc client = newClient();
 
-        final List<Balance> balances = client.getBalances();
+        final List<Balance> balances = (List<Balance>) client.getBalances();
 
         System.out.printf("balances: %s:%n", balances);
 
@@ -236,7 +236,7 @@ public class JSurbtc_Implementation_IT {
     @Test
     public void get_ticker() throws Exception {
         final JSurbtc client = newClient();
-        final List<Market> markets = client.getMarkets();
+        final List<Market> markets = (List<Market>) client.getMarkets();
 
         for (final Market market : markets) {
             final MarketID marketId = market.getId();
@@ -249,9 +249,9 @@ public class JSurbtc_Implementation_IT {
     @Test
     public void get_orders() throws Exception {
         final JSurbtc client = newClient();
-        final List<Market> markets = client.getMarkets();
+        final List<Market> markets = (List<Market>) client.getMarkets();
 
-        final Map<String, ThrowingSupplier<List<Order>>> tests = new LinkedHashMap<>();
+        final Map<String, ThrowingSupplier<List<? extends Order>>> tests = new LinkedHashMap<>();
 
         // orders for every market
         for (final Market market : markets) {
@@ -290,13 +290,13 @@ public class JSurbtc_Implementation_IT {
             }
         }
 
-        for (Map.Entry<String, ThrowingSupplier<List<Order>>> test : tests.entrySet()) {
+        for (Map.Entry<String, ThrowingSupplier<List<? extends Order>>> test : tests.entrySet()) {
 
             final String testName = test.getKey();
-            final ThrowingSupplier<List<Order>> value = test.getValue();
+            final ThrowingSupplier<List<? extends Order>> value = test.getValue();
 
             System.out.println(testName);
-            final List<Order> orders = value.get();
+            final List<Order> orders = (List<Order>) value.get();
 
             for (final Order order : orders) {
                 System.out.printf("checking order: %d %n", order.getId());

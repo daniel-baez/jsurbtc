@@ -22,4 +22,18 @@ public final class MarketsDTO {
         return markets;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MarketsDTO that = (MarketsDTO) o;
+
+        return markets.equals(that.markets);
+    }
+
+    @Override
+    public int hashCode() {
+        return markets.hashCode();
+    }
 }

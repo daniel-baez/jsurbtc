@@ -62,11 +62,6 @@ public final class Serialization_UT {
     @Test
     public void deposits() throws Exception {
         backAndForth(DepositsDTO.class,
-                (dto, file) -> {
-                    System.out.printf("%s:%n", file);
-                    dto.getDeposits().forEach(it -> System.out.printf("- %s%n", it));
-
-                },
                 "deposits_clp.json",
                 "deposits_empty.json",
                 "deposits_btc.json"
@@ -101,6 +96,10 @@ public final class Serialization_UT {
     @Test
     public void balances() throws Exception {
         backAndForth(BalancesDTO.class, "balances.json");
+    }
+
+    @Test
+    public void balance() throws Exception {
         backAndForth(BalanceDTO.class, "balance.json");
     }
 
@@ -110,7 +109,10 @@ public final class Serialization_UT {
                 "orders.json",
                 "orders_empty.json",
                 "orders2.json");
+    }
 
+    @Test
+    public void order() throws Exception {
         backAndForth(OrderDTO.class,
                 "order.json");
     }

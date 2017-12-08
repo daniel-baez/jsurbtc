@@ -21,4 +21,28 @@ public final class BalancesDTO {
     public List<Balance> getBalances() {
         return balances;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BalancesDTO that = (BalancesDTO) o;
+
+        return balances.equals(that.balances);
+    }
+
+    @Override
+    public int hashCode() {
+        return balances.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("BalancesDTO{");
+        sb.append("balances=").append(balances);
+        sb.append('}');
+        return sb.toString();
+    }
+
 }

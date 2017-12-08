@@ -1,12 +1,18 @@
 package cl.daplay.jsurbtc.model.order;
 
+import cl.daplay.jsurbtc.JSurbtcException;
 import cl.daplay.jsurbtc.model.Amount;
 import cl.daplay.jsurbtc.model.Currency;
+import cl.daplay.jsurbtc.model.market.MarketID;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Optional;
+
+import static java.lang.String.format;
 
 public class Order implements Serializable {
 
@@ -89,6 +95,41 @@ public class Order implements Serializable {
         this.paidFee = paidFee;
     }
 
+    /**
+     * @return the actual amount you get (traded amount - paid fee) in baseCurrency
+     */
+    @JsonIgnore
+    public Amount getActualAmount() {
+        final Amount paidFee = getPaidFee();
+        final Amount tradedAmount = getTradedAmount();
+
+        return new Amount(tradedAmount.getCurrency(), tradedAmount.subtract(paidFee));
+    }
+
+    /**
+     * @return MarketID of originalAmount.currency and totalExchanged.currency
+     */
+    @JsonIgnore
+    public MarketID getMarkedID() throws JSurbtcException {
+        final Currency base = originalAmount.getCurrency();
+        final Currency quote = totalExchanged.getCurrency();
+
+        return MarketID.byBaseAndQuoteCurrencies(base, quote)
+                .orElseThrow(() -> {
+                    return new JSurbtcException(format("Can't find MarketID constant for [%s, %s]", base, quote));
+                });
+    }
+
+    /**
+     * If you made an order BTC_CLP, this would be BTC
+     *
+     * @return amount.currency
+     */
+    @JsonIgnore
+    public Currency getBaseCurrency() {
+        return amount.getCurrency();
+    }
+
     public long getId() {
         return id;
     }
@@ -113,6 +154,9 @@ public class Order implements Serializable {
         return accountId;
     }
 
+    /**
+     * If you made an order BTC_CLP, this would be CLP
+     */
     public Currency getFeeCurrency() {
         return feeCurrency;
     }
@@ -144,6 +188,7 @@ public class Order implements Serializable {
     public Amount getPaidFee() {
         return paidFee;
     }
+
 
     @Override
     public boolean equals(Object o) {

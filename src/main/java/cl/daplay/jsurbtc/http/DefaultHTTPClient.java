@@ -1,12 +1,11 @@
 package cl.daplay.jsurbtc.http;
 
 import cl.daplay.jsurbtc.HTTPClient;
+import cl.daplay.jsurbtc.JSurbtcException;
 import cl.daplay.jsurbtc.Signer;
 import cl.daplay.jsurbtc.Utils;
 
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
@@ -49,7 +48,49 @@ public final class DefaultHTTPClient implements HTTPClient {
         return doRequest(path, "POST", jsonBody, responseHandler);
     }
 
-    private <T> T doRequest(final String path, final String method, final Supplier<String> bodySupplier, final HTTPResponseHandler<T> responseHandler) throws Exception {
+    @FunctionalInterface
+    interface ThrowingSupplier<T> {
+
+        T get() throws Exception;
+
+    }
+
+    private <T> T retry(final int limit, final ThrowingSupplier<T> supplier) throws Exception {
+        int retries = 0;
+        Exception lastEx = null;
+
+        while (true) {
+            if (retries > limit) {
+                if (lastEx != null) {
+                    throw lastEx;
+                }
+            }
+
+            try {
+                return supplier.get();
+            } catch (Exception ex) {
+                lastEx = ex;
+                retries = retries + 1;
+            }
+        }
+
+    }
+
+    private <T> T doRequest(final String path,
+                            final String method,
+                            final Supplier<String> bodySupplier,
+                            final HTTPResponseHandler<T> responseHandler) throws Exception {
+        // TODO: this should be configurable
+        // TODO: move retrying to another implementation of HTTPClient
+        return retry(5, () -> {
+            return __doRequest(path, method, bodySupplier, responseHandler);
+        });
+    }
+
+    private <T> T __doRequest(final String path,
+                            final String method,
+                            final Supplier<String> bodySupplier,
+                            final HTTPResponseHandler<T> responseHandler) throws Exception {
         final URL url = new URL(BASE_PATH + path);
         final HttpURLConnection con = (HttpURLConnection) (proxy == null ? url.openConnection() : url.openConnection(proxy));
 
@@ -60,19 +101,25 @@ public final class DefaultHTTPClient implements HTTPClient {
         final long nonce = nonceSupplier.getAsLong();
         final String signature = new Signer(this.secret).sign(requestBody, method, path, nonce);
 
-        // headers
-        con.setRequestMethod(method);
+        // TODO: these for endpoint doesn't need signature
+        final boolean publicEndpoint = path.endsWith("ticker") || path.endsWith("order_book") || path.endsWith("trades") || path.endsWith("markets");
 
-        con.setRequestProperty("X-SBTC-APIKEY", key);
-        con.setRequestProperty("X-SBTC-NONCE", Long.toString(nonce, 10));
-        con.setRequestProperty("X-SBTC-SIGNATURE", signature);
+        if (!publicEndpoint) {
+            // headers
+            con.setRequestMethod(method);
 
-        con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("X-SBTC-APIKEY", key);
+            con.setRequestProperty("X-SBTC-NONCE", Long.toString(nonce, 10));
+            con.setRequestProperty("X-SBTC-SIGNATURE", signature);
+
+            if (!requestBody.isEmpty()) {
+                con.setRequestProperty("Content-Type", "application/json");
+            }
+        }
+
         con.setRequestProperty("accept", "application/json");
-
-        // Accept-Encoding: gzip,deflate
-        con.setRequestProperty("User-Agent", "JSurbtcImpl/2.0.0");
         con.setRequestProperty("Accept-Encoding", "gzip,deflate");
+        con.setRequestProperty("User-Agent", "JSurbtcImpl/2.0.0");
 
         Reader reader = null;
 
@@ -85,11 +132,17 @@ public final class DefaultHTTPClient implements HTTPClient {
                 writer.close();
             }
 
+            final InputStream pipe = pipe(con);
+
             // handles input
-            if ("gzip".equals(con.getContentEncoding())) {
-                reader = new InputStreamReader(new GZIPInputStream(con.getInputStream()));
+            if (null != pipe) {
+                if ("gzip".equals(con.getContentEncoding())) {
+                    reader = new InputStreamReader(new GZIPInputStream(pipe(con)));
+                } else {
+                    reader = new InputStreamReader(pipe(con));
+                }
             } else {
-                reader = new InputStreamReader(con.getInputStream());
+                reader = new StringReader("");
             }
 
             final int statusCode = con.getResponseCode();
@@ -100,6 +153,14 @@ public final class DefaultHTTPClient implements HTTPClient {
             if (reader != null) {
                 reader.close();
             }
+        }
+    }
+
+    private InputStream pipe(HttpURLConnection con) {
+        try {
+            return con.getInputStream();
+        } catch (IOException e) {
+            return con.getErrorStream();
         }
     }
 

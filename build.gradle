@@ -29,7 +29,6 @@ javadoc.doLast {
 
         def indexOfHead = content.indexOf("<head>");
         if (indexOfHead) {
-            println file
             // gets a builder to update content
             StringBuilder builder = new StringBuilder(content)
 

@@ -1,4 +1,4 @@
-# This is a work in progress
+# This is a work in progress [!travis-ci](https://travis-ci.org/daplay/jsurbtc.svg?branch=master)
 
 ## Features
 

@@ -253,15 +253,15 @@ public class JSurbtcImpl implements JSurbtc {
         };
     }
 
-    private JSurbtcException.Error error2Error(ExceptionDTO.ErrorDTO in) {
-        return new JSurbtcException.Error(in.resource, in.field, in.code, in.message);
+    private JSurbtcException.Detail error2Error(ExceptionDTO.ErrorDTO in) {
+        return new JSurbtcException.Detail(in.resource, in.field, in.code, in.message);
     }
 
     private JSurbtcException error2Error(final int statusCode, ExceptionDTO in) {
         final ExceptionDTO.ErrorDTO[] dtos = in.errors == null ? new ExceptionDTO.ErrorDTO[0] : in.errors;
 
-        final JSurbtcException.Error[] errors = stream(dtos).map(this::error2Error).toArray(JSurbtcException.Error[]::new);
-        return new JSurbtcException(statusCode, in.message, in.code, errors);
+        final JSurbtcException.Detail[] details = stream(dtos).map(this::error2Error).toArray(JSurbtcException.Detail[]::new);
+        return new JSurbtcException(statusCode, in.message, in.code, details);
     }
 
 }

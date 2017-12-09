@@ -110,7 +110,7 @@ public class Order implements Serializable {
      * @return MarketID of originalAmount.currency and totalExchanged.currency
      */
     @JsonIgnore
-    public MarketID getMarkedID() throws JSurbtcException {
+    public MarketID getMarketID() throws JSurbtcException {
         final Currency base = originalAmount.getCurrency();
         final Currency quote = totalExchanged.getCurrency();
 

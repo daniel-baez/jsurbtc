@@ -110,13 +110,13 @@ public class Order implements Serializable {
      * @return MarketID of originalAmount.currency and totalExchanged.currency
      */
     @JsonIgnore
-    public MarketID getMarketID() throws JSurbtcException {
+    public MarketID getMarketID() {
         final Currency base = originalAmount.getCurrency();
         final Currency quote = totalExchanged.getCurrency();
 
         return MarketID.byBaseAndQuoteCurrencies(base, quote)
                 .orElseThrow(() -> {
-                    return new JSurbtcException(format("Can't find MarketID constant for [%s, %s]", base, quote));
+                    return new RuntimeException(format("Can't find MarketID constant for [%s, %s]", base, quote));
                 });
     }
 
@@ -251,6 +251,9 @@ public class Order implements Serializable {
                 ", tradedAmount=" + tradedAmount +
                 ", totalExchanged=" + totalExchanged +
                 ", paidFee=" + paidFee +
+                ", actualAmount=" + getActualAmount() +
+                ", marketID=" + getMarketID() +
+                ", baseCurrency=" + getBaseCurrency() +
                 '}';
     }
 }

@@ -209,8 +209,8 @@ public class JSurbtc_Implementation_IT {
             assertEquals("if out of founds, `status` code should be `422`", 422, ex.httpStatusCode);
             assertEquals("if out of founds, `code` should be `invalid_record`", "invalid_record", ex.code);
             assertEquals("if out of founds, `message` should be `Validation Failed`", "Validation Failed", ex.message);
-            assertEquals("if out of founds, there should be only one error detail", 1, ex.errors.length);
-            assertEquals("if out of founds, error detail should match literal", "Error{resource='Bid', field='amount_cents', code='insolvent', message='insolvent'}", ex.errors[0].toString());
+            assertEquals("if out of founds, there should be only one error detail", 1, ex.details.length);
+            assertEquals("if out of founds, error detail should match literal", "Detail{resource='Bid', field='amount_cents', code='insolvent', message='insolvent'}", ex.details[0].toString());
         }
 
     }

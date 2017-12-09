@@ -28,13 +28,27 @@ public class Amount extends BigDecimal implements Serializable {
     private final BigDecimal amount;
 
     public Amount(Amount other) {
-        this(other.currency, other.amount);
+        super(other.amount.toString());
+
+        this.currency = other.currency;
+        this.amount = other.amount;
+    }
+
+    public Amount(@JsonProperty("currency") final Currency currency,
+                  @JsonProperty("amount") final Amount other) {
+        super(other.amount.toString());
+
+        Objects.requireNonNull(currency);
+        Objects.requireNonNull(other);
+
+        this.currency = currency;
+        this.amount = other.amount;
     }
 
     @JsonCreator
     public Amount(@JsonProperty("currency") final Currency currency,
                   @JsonProperty("amount") final BigDecimal amount) {
-        super(amount.toBigInteger(), amount.scale());
+        super(amount.toString());
 
         Objects.requireNonNull(currency);
         Objects.requireNonNull(amount);
@@ -48,72 +62,58 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     public Amount add(Amount o) {
-        requireSameCurrency(o);
         return new Amount(currency, super.add(o));
     }
 
     public Amount add(Amount o, MathContext mc) {
-        requireSameCurrency(o);
         return new Amount(currency, super.add(o, mc));
     }
 
     public Amount subtract(Amount subtrahend) {
-        requireSameCurrency(subtrahend);
         return new Amount(currency, super.subtract(subtrahend));
     }
 
     public Amount subtract(Amount subtrahend, MathContext mc) {
-        requireSameCurrency(subtrahend);
         return new Amount(currency, super.subtract(subtrahend, mc));
     }
 
     public Amount multiply(Amount multiplicand) {
-        requireSameCurrency(multiplicand);
         return new Amount(currency, super.multiply(multiplicand));
     }
 
     public Amount multiply(Amount multiplicand, MathContext mc) {
-        requireSameCurrency(multiplicand);
         return new Amount(currency, super.multiply(multiplicand, mc));
     }
 
     public Amount divide(Amount divisor, int scale, int roundingMode) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor, scale, roundingMode));
     }
 
     public Amount divide(Amount divisor, int scale, RoundingMode roundingMode) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor, scale, roundingMode));
     }
 
     public Amount divide(Amount divisor, int roundingMode) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor, roundingMode));
     }
 
     public Amount divide(Amount divisor, RoundingMode roundingMode) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor, roundingMode));
     }
 
     public Amount divide(Amount divisor) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor));
     }
 
     public Amount divide(Amount divisor, MathContext mc) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.divide(divisor, mc));
     }
 
     public Amount remainder(Amount divisor) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.remainder(divisor));
     }
 
     public Amount remainder(Amount divisor, MathContext mc) {
-        requireSameCurrency(divisor);
         return new Amount(currency, super.remainder(divisor, mc));
     }
 
@@ -197,12 +197,6 @@ public class Amount extends BigDecimal implements Serializable {
         return new Amount(currency, super.pow(n, mc));
     }
 
-    private void requireSameCurrency(Amount other) {
-        if (currency != other.currency) {
-            throw new IllegalArgumentException(format("Can't mix currencies: %s, %s", currency, other.currency));
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -222,11 +216,8 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Amount{" +
-                "currency=" + currency +
-                ", amount=" + format("%.2f", amount) +
-                '}';
+    public final String toString() {
+        return format("%s %s", currency, super.toString());
     }
 
 }

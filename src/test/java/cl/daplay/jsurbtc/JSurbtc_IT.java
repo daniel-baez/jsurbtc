@@ -14,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.function.IntFunction;
 import java.util.function.LongFunction;
 import java.util.function.LongSupplier;
 import java.util.stream.Collectors;
@@ -35,79 +34,13 @@ import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 
-public class JSurbtc_Implementation_IT {
+public class JSurbtc_IT extends IT {
 
     @FunctionalInterface
     interface ThrowingSupplier<T> {
 
         T get() throws Exception;
 
-    }
-
-    @Before
-    public void before() throws Exception {
-    }
-
-    private Optional<Properties> getGradleProperties() {
-        return Optional.ofNullable(System.getProperty("user.home"))
-                .filter(string -> !string.isEmpty())
-                .map(string -> new File(string))
-                .filter(userHome -> userHome.exists() && userHome.isDirectory())
-                .map(userHome -> new File(userHome, ".gradle/"))
-                .filter(gradleHome -> gradleHome.exists() && gradleHome.isDirectory())
-                .map(gradleHome -> new File(gradleHome, "gradle.properties"))
-                .filter(gradleProperties -> gradleProperties.exists() && gradleProperties.isFile())
-                .map(gradleProperties -> {
-                    try {
-                        final Properties properties = new Properties();
-                        properties.load(new FileReader(gradleProperties));
-                        return properties;
-                    } catch (IOException e) {
-                        return null;
-                    }
-                });
-    }
-
-    private JSurbtc newClient() {
-        final Optional<Properties> maybeGradleProperties = getGradleProperties();
-
-        if (!maybeGradleProperties.isPresent()) {
-            final String message = "Please provide properties `jsurbtc.key`, and `jsurbtc.secret` in file $HOME/.gradle/gradle.properties";
-            throw new IllegalStateException(message);
-        }
-
-        final Properties properties = maybeGradleProperties.get();
-
-        final String key = properties.getProperty("jsurbtc.key", "");
-        final String secret = properties.getProperty("jsurbtc.secret", "");
-
-        if (key.isEmpty() || secret.isEmpty()) {
-            final String message = "Please provide properties `jsurbtc.key`, and `jsurbtc.secret` in file $HOME/.gradle/gradle.properties";
-            throw new IllegalStateException(message);
-        }
-
-        final String proxyHost = properties.getProperty("jsurbtc.proxy.host", "");
-        final String proxyPort = properties.getProperty("jsurbtc.proxy.port", "");
-
-        InetSocketAddress proxy = null;
-
-        if (!proxyHost.isEmpty() && !proxyPort.isEmpty() && proxyPort.matches("^\\d+$")) {
-            proxy = new InetSocketAddress(proxyHost, Integer.parseInt(proxyPort));
-        }
-
-        final LongSupplier delegate = JSurbtc.newNonce();
-        final LongSupplier nonce = () -> {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return delegate.getAsLong();
-        };
-
-
-        return new JSurbtcImpl(key, secret, nonce, proxy);
     }
 
     @Test
@@ -139,7 +72,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : EnumSet.of(Currency.BTC, Currency.BCH, Currency.ETH, Currency.CLP, Currency.USD, Currency.CNY)) {
             System.out.printf("Deposits for Currency: %s%n", currency);
-            final List<Deposit> deposits = (List<Deposit>) client.getDeposits(currency);
+            final List<Deposit> deposits = client.getDeposits(currency);
 
             for (Deposit deposit : deposits) {
                 System.out.printf("\t%s%n", deposit);
@@ -153,7 +86,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : Currency.values()) {
             System.out.printf("Withdrawals for Currency: %s%n", currency);
-            final List<Withdrawal> withdrawals = (List<Withdrawal>) client.getWithdrawals(currency);
+            final List<Withdrawal> withdrawals = client.getWithdrawals(currency);
 
             for (Withdrawal withdrawal : withdrawals) {
                 System.out.printf("\t%s%n", withdrawal);
@@ -167,7 +100,7 @@ public class JSurbtc_Implementation_IT {
 
         for (Currency currency : Currency.values()) {
             System.out.printf("Balances for Currency: %s%n", currency);
-            final List<BalanceEvent> balanceEvents = (List<BalanceEvent>) client.getBalanceEvents(currency);
+            final List<BalanceEvent> balanceEvents = client.getBalanceEvents(currency);
 
             for (BalanceEvent balanceEvent : balanceEvents) {
                 System.out.printf("\t%s%n", balanceEvent);
@@ -233,7 +166,7 @@ public class JSurbtc_Implementation_IT {
     public void get_order_book() throws Exception {
         final JSurbtc client = newClient();
 
-        final List<Market> markets = (List<Market>) client.getMarkets();
+        final List<Market> markets = client.getMarkets();
         assertTrue("getMarkets works", !markets.isEmpty());
 
         for (final Market market : markets) {
@@ -263,7 +196,7 @@ public class JSurbtc_Implementation_IT {
     @Test
     public void get_ticker() throws Exception {
         final JSurbtc client = newClient();
-        final List<Market> markets = (List<Market>) client.getMarkets();
+        final List<Market> markets = client.getMarkets();
 
         for (final Market market : markets) {
             final MarketID marketId = market.getId();

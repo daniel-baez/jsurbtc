@@ -18,31 +18,26 @@ buildscript {
     }
 }
 
-javadoc.doLast {
-    // contents of "gtag.js" file will be inserted after every head
-    String gtag = file("gtag.js").text
+javadoc {
+    doLast {
+        // contents of "gtag.js" file will be inserted after every head
+        String gtag = file("gtag.js").text
 
-    // for each html
-    def files = fileTree(destinationDir).include('**/*.html')
-    files.each { File file ->
-        def content = file.text
+        // for each html
+        def files = fileTree(destinationDir).include('**/*.html')
+        files.each { file ->
+            def content = file.text
 
-        def indexOfHead = content.indexOf("<head>");
-        if (indexOfHead) {
-            // gets a builder to update content
-            StringBuilder builder = new StringBuilder(content)
+            def indexOfHead = content.indexOf("<head>");
+            if (indexOfHead) {
+                // determines post of insertion (just after head element)
+                def insertIndex = indexOfHead + "<head>".length()
 
-            // determines post of insertion (just after head element)
-            def insertIndex = indexOfHead + "<head>".length()
-
-            // insertion taking place
-            builder.insert(insertIndex, gtag);
-
-            // replace file
-            file.text = builder.toString()
+                // replace file
+                file.text = new StringBuilder(content).insert(insertIndex, gtag).toString()
+            }
         }
     }
-
 }
 
 repositories {

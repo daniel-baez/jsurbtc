@@ -4,15 +4,12 @@ import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.groupingBy;
 
-public enum MarketID {
+public enum MarketID implements Iterable<Currency> {
     BTC_CLP(Currency.BTC, Currency.CLP),
     BTC_COP(Currency.BTC, Currency.COP),
     BTC_PEN(Currency.BTC, Currency.PEN),
@@ -63,6 +60,11 @@ public enum MarketID {
 
     public Currency getQuoteCurrency() {
         return quoteCurrency;
+    }
+
+    @Override
+    public Iterator<Currency> iterator() {
+        return Arrays.asList(baseCurrency, quoteCurrency).iterator();
     }
 
     @Override

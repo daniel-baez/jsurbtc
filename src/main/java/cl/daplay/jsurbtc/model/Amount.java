@@ -21,6 +21,14 @@ public class Amount extends BigDecimal implements Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
+    private static BigDecimal unwrap(BigDecimal o) {
+        if (o instanceof Amount) {
+            return ((Amount) o).getAmount();
+        }
+
+        return o;
+    }
+
     @JsonProperty("currency")
     private final Currency currency;
     @JsonProperty("amount")
@@ -28,37 +36,47 @@ public class Amount extends BigDecimal implements Serializable {
     private final BigDecimal amount;
 
     public Amount(Amount other) {
-        super(other.amount.toString());
-
-        this.currency = other.currency;
-        this.amount = other.amount;
-    }
-
-    public Amount(@JsonProperty("currency") final Currency currency,
-                  @JsonProperty("amount") final Amount other) {
-        super(other.amount.toString());
-
-        Objects.requireNonNull(currency);
-        Objects.requireNonNull(other);
-
-        this.currency = currency;
-        this.amount = other.amount;
+        this(other.getCurrency(), other.getAmount());
     }
 
     @JsonCreator
     public Amount(@JsonProperty("currency") final Currency currency,
                   @JsonProperty("amount") final BigDecimal amount) {
-        super(amount.toString());
+        super(unwrap(amount).toString());
 
         Objects.requireNonNull(currency);
         Objects.requireNonNull(amount);
 
         this.currency = currency;
-        this.amount = amount;
+        this.amount = unwrap(amount);
     }
 
     public Currency getCurrency() {
         return currency;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    @Override
+    public Amount abs() {
+        return new Amount(currency, super.abs());
+    }
+
+    @Override
+    public Amount abs(MathContext mc) {
+        return new Amount(currency, super.abs(mc));
+    }
+
+    @Override
+    public Amount negate() {
+        return new Amount(currency, super.negate());
+    }
+
+    @Override
+    public Amount negate(MathContext mc) {
+        return new Amount(currency, super.negate(mc));
     }
 
     public Amount add(Amount o) {
@@ -98,11 +116,11 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     public Amount divide(Amount divisor, RoundingMode roundingMode) {
-        return new Amount(currency, super.divide(divisor, roundingMode));
+        return new Amount(currency, super.divide(divisor.getAmount(), roundingMode));
     }
 
     public Amount divide(Amount divisor) {
-        return new Amount(currency, super.divide(divisor));
+        return new Amount(currency, super.divide(divisor.getAmount(), RoundingMode.HALF_UP));
     }
 
     public Amount divide(Amount divisor, MathContext mc) {

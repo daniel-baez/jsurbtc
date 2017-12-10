@@ -1,5 +1,6 @@
 package cl.daplay.jsurbtc.model.balance;
 
+import cl.daplay.jsurbtc.model.Amount;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.order.OrderType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +20,7 @@ public class BalanceEvent implements Serializable {
     @JsonProperty("currency")
     private final Currency currency;
     @JsonProperty("event")
-    private final BalanceEventType event;
+    private final BalanceEventType type;
     @JsonProperty("account_id")
     private final long accountId;
     @JsonProperty("event_ids")
@@ -54,7 +55,7 @@ public class BalanceEvent implements Serializable {
     public BalanceEvent(BalanceEvent other) {
         this.id = other.id;
         this.currency = other.currency;
-        this.event = other.event;
+        this.type = other.type;
         this.accountId = other.accountId;
         this.eventIds = other.eventIds;
         this.transactionType = other.transactionType;
@@ -74,7 +75,7 @@ public class BalanceEvent implements Serializable {
 
     public BalanceEvent(@JsonProperty("id") final long id,
                         @JsonProperty("currency") final Currency currency,
-                        @JsonProperty("event") final BalanceEventType event,
+                        @JsonProperty("event") final BalanceEventType type,
                         @JsonProperty("account_id") final long accountId,
                         @JsonProperty("event_ids") final long[] eventIds,
                         @JsonProperty("transaction_type") final OrderType transactionType,
@@ -92,7 +93,7 @@ public class BalanceEvent implements Serializable {
                         @JsonProperty("transfer_description") final String transferDescription) {
         this.id = id;
         this.currency = currency;
-        this.event = event;
+        this.type = type;
         this.accountId = accountId;
         this.eventIds = eventIds;
         this.transactionType = transactionType;
@@ -118,8 +119,8 @@ public class BalanceEvent implements Serializable {
         return currency;
     }
 
-    public BalanceEventType getEvent() {
-        return event;
+    public BalanceEventType getType() {
+        return type;
     }
 
     public long getAccountId() {
@@ -132,6 +133,13 @@ public class BalanceEvent implements Serializable {
 
     public OrderType getTransactionType() {
         return transactionType;
+    }
+
+    /**
+     * @return newAmount - oldAmount
+     */
+    public Amount getDeltaAmount() {
+        return new Amount(currency, getNewAmount().subtract(getOldAmount()));
     }
 
     @JsonIgnore
@@ -206,7 +214,7 @@ public class BalanceEvent implements Serializable {
         if (id != that.id) return false;
         if (accountId != that.accountId) return false;
         if (currency != that.currency) return false;
-        if (event != null ? !event.equals(that.event) : that.event != null) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false;
         if (!Arrays.equals(eventIds, that.eventIds)) return false;
         if (transactionType != that.transactionType) return false;
         if (oldAmount != null ? !oldAmount.equals(that.oldAmount) : that.oldAmount != null) return false;
@@ -235,7 +243,7 @@ public class BalanceEvent implements Serializable {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (event != null ? event.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (int) (accountId ^ (accountId >>> 32));
         result = 31 * result + Arrays.hashCode(eventIds);
         result = 31 * result + (transactionType != null ? transactionType.hashCode() : 0);
@@ -259,12 +267,13 @@ public class BalanceEvent implements Serializable {
         return "BalanceEvent{" +
                 "id=" + id +
                 ", currency=" + currency +
-                ", event='" + event + '\'' +
+                ", type='" + type + '\'' +
                 ", accountId=" + accountId +
                 ", eventIds=" + Arrays.toString(eventIds) +
                 ", transactionType=" + transactionType +
                 ", oldAmount=" + getOldAmount() +
                 ", newAmount=" + getNewAmount() +
+                ", deltaAmount=" + getDeltaAmount() +
                 ", oldFrozenAmount=" + getOldFrozenAmount() +
                 ", newFrozenAmount=" + getNewFrozenAmount() +
                 ", oldPendingWithdrawAmount=" + getOldPendingWithdrawAmount() +

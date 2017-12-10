@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.model.order;
 
-import cl.daplay.jsurbtc.JSurbtcException;
 import cl.daplay.jsurbtc.model.Amount;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.market.MarketID;
@@ -10,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -96,14 +94,26 @@ public class Order implements Serializable {
     }
 
     /**
-     * @return the actual amount you get (traded amount - paid fee) in baseCurrency
+     * @return for Bids, the amount you ended up getting (traded amount - paid fee) in baseCurrency
+     * for Asks, traded amount
      */
     @JsonIgnore
     public Amount getActualAmount() {
-        final Amount paidFee = getPaidFee();
-        final Amount tradedAmount = getTradedAmount();
+        if (type == OrderType.BID) {
+            final Amount paidFee = getPaidFee();
+            final Amount tradedAmount = getTradedAmount();
+            return new Amount(tradedAmount.getCurrency(), tradedAmount.subtract(paidFee));
+        } else {
+            return tradedAmount;
+        }
+    }
 
-        return new Amount(tradedAmount.getCurrency(), tradedAmount.subtract(paidFee));
+    public Amount getExchangeRate() {
+        return totalExchanged.divide(tradedAmount);
+    }
+
+    public Amount getPaidFeeQuoted() {
+        return getExchangeRate().multiply(getPaidFee());
     }
 
     /**
@@ -144,10 +154,6 @@ public class Order implements Serializable {
 
     public Instant getCreatedAt() {
         return createdAt;
-    }
-
-    public long getMarketId() {
-        return marketId;
     }
 
     public long getAccountId() {
@@ -253,6 +259,8 @@ public class Order implements Serializable {
                 ", paidFee=" + paidFee +
                 ", actualAmount=" + getActualAmount() +
                 ", marketID=" + getMarketID() +
+                ", getExchangeRate=" + getExchangeRate() +
+                ", getPaidFeeQuoted=" + getPaidFeeQuoted() +
                 ", baseCurrency=" + getBaseCurrency() +
                 '}';
     }

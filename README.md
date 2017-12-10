@@ -1,5 +1,7 @@
 # This is a work in progress ![travis-ci](https://travis-ci.org/daplay/jsurbtc.svg?branch=master)
 
+Want to create a script? [no problem](https://github.com/daplay/sur)
+
 ## Features
 
 - Idiomatic Java API

@@ -22,6 +22,7 @@ import cl.daplay.jsurbtc.model.order.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import cl.daplay.jsurbtc.fun.ThrowingSupplier;
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
@@ -35,13 +36,6 @@ import cl.daplay.jsurbtc.model.trades.Transaction;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 
 public class JSurbtc_IT extends IT {
-
-    @FunctionalInterface
-    interface ThrowingSupplier<T> {
-
-        T get() throws Exception;
-
-    }
 
     @Test
     public void get_trades() throws Exception {

@@ -44,7 +44,7 @@ public class ApiKey implements Serializable {
     }
 
     @JsonCreator
-    public ApiKey(@JsonProperty("type") final String id,
+    public ApiKey(@JsonProperty("id") final String id,
                   @JsonProperty("name") final String name,
                   @JsonProperty("expiration_date") final Instant expirationTime,
                   @JsonProperty("enabled") final boolean enabled,

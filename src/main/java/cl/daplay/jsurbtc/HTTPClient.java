@@ -11,11 +11,11 @@ public interface HTTPClient {
 
     }
 
-    <T> T get(String path, HTTPResponseHandler<T> responseMapper) throws Exception;
+    <T> T get(String path, Signer signer, HTTPResponseHandler<T> responseMapper) throws Exception;
 
-    <T> T put(String path, Supplier<String> jsonBody, HTTPResponseHandler<T> responseHandler) throws Exception;
+    <T> T put(String path, Signer signer, Supplier<String> jsonBody, HTTPResponseHandler<T> responseHandler) throws Exception;
 
-    <T> T post(String path, Supplier<String> jsonBody, HTTPResponseHandler<T> responseHandler) throws Exception;
+    <T> T post(String path, Signer signer, Supplier<String> jsonBody, HTTPResponseHandler<T> responseHandler) throws Exception;
 
 
 }

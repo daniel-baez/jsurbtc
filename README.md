@@ -25,9 +25,18 @@ surbtc.cancelOrder(order.getId());
 // get all orders
 List<Order> orders = surbtc.getOrders(MarketID.BTC_CLP);
 
+```
+
+```java
+import cl.daplay.jsurbtc.JSurbtc;
+
+// this allows to call public APIs only
+JSurbtc surbtc = new JSurbtc();
+
 // GET /markets
 List<Market> markets = surbtc.getMarkets();
 ```
+
 
 ## Installation
 

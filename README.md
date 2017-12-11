@@ -12,7 +12,7 @@ Want to create a script? [no problem](https://github.com/daplay/sur)
 ## Usage
 
 ```java
-import cl.daplay.jsurbtc.JSurbtcImpl;
+import cl.daplay.jsurbtc.JSurbtc;
 
 JSurbtc surbtc = new JSurbtc(apiKey, apiSecret);
 

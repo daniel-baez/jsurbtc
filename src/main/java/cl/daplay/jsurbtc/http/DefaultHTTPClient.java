@@ -119,7 +119,7 @@ public final class DefaultHTTPClient implements HTTPClient {
 
         con.setRequestProperty("accept", "application/json");
         con.setRequestProperty("Accept-Encoding", "gzip,deflate");
-        con.setRequestProperty("User-Agent", "JSurbtcImpl/2.0.0");
+        con.setRequestProperty("User-Agent", "JSurbtc/2.0.0");
 
         Reader reader = null;
 

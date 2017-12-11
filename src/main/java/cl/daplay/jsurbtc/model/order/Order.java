@@ -108,10 +108,12 @@ public class Order implements Serializable {
         }
     }
 
+    @JsonIgnore
     public Amount getExchangeRate() {
         return totalExchanged.divide(tradedAmount);
     }
 
+    @JsonIgnore
     public Amount getPaidFeeQuoted() {
         return getExchangeRate().multiply(getPaidFee());
     }

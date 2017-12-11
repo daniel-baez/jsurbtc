@@ -76,6 +76,6 @@ abstract class IT {
         };
 
 
-        return new JSurbtcImpl(key, secret, nonce, proxy);
+        return new JSurbtc(key, secret, nonce, proxy);
     }
 }

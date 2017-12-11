@@ -55,8 +55,10 @@ dependencies {
 test {
     testLogging.showStandardStreams = true
 
-    final boolean runIntegration = project.hasProperty('jsurbtc.secret') && project.hasProperty('jsurbtc.key')
-    if (!runIntegration) {
+    final boolean skipIntegration = project.hasProperty('skipIntegration') && Boolean.parseBoolean(project.getProperty('skipIntegration'));
+    final boolean integrationConfiguration = project.hasProperty('jsurbtc.secret') && project.hasProperty('jsurbtc.key')
+
+    if (skipIntegration || !integrationConfiguration) {
         exclude { it.name.endsWith('_IT.class') }
     }
 }

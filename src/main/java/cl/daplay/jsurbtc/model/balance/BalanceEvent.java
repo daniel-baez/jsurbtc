@@ -138,6 +138,7 @@ public class BalanceEvent implements Serializable {
     /**
      * @return newAmount - oldAmount
      */
+    @JsonIgnore
     public Amount getDeltaAmount() {
         return new Amount(currency, getNewAmount().subtract(getOldAmount()));
     }

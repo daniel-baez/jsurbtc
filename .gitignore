@@ -3,5 +3,8 @@
 build/
 out/
 jsurbtc.iml
-
 /bin/
+.classpath
+.project
+.settings/
+

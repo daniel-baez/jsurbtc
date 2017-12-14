@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 import static java.lang.String.format;
@@ -95,7 +96,7 @@ public class Order implements Serializable {
 
     /**
      * @return for Bids, the amount you ended up getting (traded amount - paid fee) in baseCurrency
-     * for Asks, traded amount
+     * for Asks, tradedAmount
      */
     @JsonIgnore
     public Amount getActualAmount() {
@@ -108,14 +109,39 @@ public class Order implements Serializable {
         }
     }
 
+    /**
+     * @return always in 'quoteCurrency' returns totalExchaged - paidFee
+     */
+    @JsonIgnore
+    public Amount getActualExchanged() {
+        return totalExchanged.subtract(getPaidFeeQuoted());
+    }
+
+    /**
+     * @return tradedAmount / totalExchanged
+     */
     @JsonIgnore
     public Amount getExchangeRate() {
+        final boolean zeroTradingAmount = tradedAmount.compareTo(BigDecimal.ZERO) == 0;
+        final boolean zeroTotalExchanged = totalExchanged.compareTo(BigDecimal.ZERO) == 0;
+
+        if (zeroTradingAmount || zeroTotalExchanged) {
+            return new Amount(getBaseCurrency(), BigDecimal.ZERO);
+        }
+
         return totalExchanged.divide(tradedAmount);
     }
 
+    /**
+     * paid fee, always in quote currency
+     */
     @JsonIgnore
     public Amount getPaidFeeQuoted() {
-        return getExchangeRate().multiply(getPaidFee());
+        if (type == OrderType.BID) {
+            return getExchangeRate().multiply(getPaidFee());
+        }
+
+        return getPaidFee();
     }
 
     /**
@@ -261,6 +287,7 @@ public class Order implements Serializable {
                 ", paidFee=" + paidFee +
                 ", actualAmount=" + getActualAmount() +
                 ", marketID=" + getMarketID() +
+                ", getActualExchanged=" + getActualExchanged() +
                 ", getExchangeRate=" + getExchangeRate() +
                 ", getPaidFeeQuoted=" + getPaidFeeQuoted() +
                 ", baseCurrency=" + getBaseCurrency() +

@@ -75,16 +75,14 @@ public class Ticker implements Serializable {
     }
 
     /**
-     * Lowest selling position
-     * @return
+     * @return Lowest selling position
      */
     public Amount getMinAsk() {
         return minAsk;
     }
 
     /**
-     * Highest buying position
-     * @return
+     * @return Highest buying position
      */
     public Amount getMaxBid() {
         return maxBid;

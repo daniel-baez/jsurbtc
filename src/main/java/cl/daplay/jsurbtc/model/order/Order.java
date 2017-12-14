@@ -133,7 +133,7 @@ public class Order implements Serializable {
     }
 
     /**
-     * paid fee, always in quote currency
+     * @return paid fee, always in quote currency
      */
     @JsonIgnore
     public Amount getPaidFeeQuoted() {
@@ -188,9 +188,6 @@ public class Order implements Serializable {
         return accountId;
     }
 
-    /**
-     * If you made an order BTC_CLP, this would be CLP
-     */
     public Currency getFeeCurrency() {
         return feeCurrency;
     }

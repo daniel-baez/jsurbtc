@@ -54,14 +54,12 @@ import cl.daplay.jsurbtc.signers.DefaultSigner;
 import cl.daplay.jsurbtc.signers.DoNothingSigner;
 
 /**
- * Main entrypoint for the client
+ * Main entrypoint
  */
 public class JSurbtc {
 
     /**
-     * default nonce implementation, can't be shared among client
-     *
-     * @return
+     * @return default nonce implementation, can't be shared among client
      */
     public static LongSupplier newNonce() {
         return new AtomicLong(currentTimeMillis())::getAndIncrement;
@@ -99,9 +97,6 @@ public class JSurbtc {
                 DoNothingSigner.INSTANCE);
     }
 
-    /**
-     * Copy constructor
-     */
     public JSurbtc(JSurbtc other) {
         this.bigDecimalFormat = other.bigDecimalFormat;
         this.httpClient = other.httpClient;

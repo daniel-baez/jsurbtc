@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: "jacoco"
 apply plugin: 'com.bmuschko.nexus'
 
 group = "cl.daplay"
@@ -63,11 +62,6 @@ test {
     }
 }
 
-jacoco {
-    toolVersion = "0.7.6.201602180812"
-    reportsDir = file("$buildDir/customJacocoReportDir")
-}
-
 modifyPom {
     project {
 
@@ -85,7 +79,6 @@ modifyPom {
             license {
                 name 'The Apache Software License, Version 2.0'
                 url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
             }
         }
 

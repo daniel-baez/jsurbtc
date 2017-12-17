@@ -18,4 +18,4 @@ before_install:
 install:
   - echo "skip default gradlew assemble"
 script:
-  - ./gradlew release -x test --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password
+  - ./gradlew release -x test --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password -PnexusUsername=${NEXUS_USERNAME} -PnexusPassword=${NEXUS_PASSWORD}

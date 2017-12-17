@@ -18,4 +18,4 @@ env: TERM=dumb
 install:
   - echo "skip default gradlew assemble"
 script:
-  - ./gradlew release -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password
+  - ./gradlew release --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password

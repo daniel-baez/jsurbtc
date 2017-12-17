@@ -11,11 +11,11 @@ env: TERM=dumb
 #     - /^v\d+\.\d+\.\d+$/
 before_install:
     - git fetch --unshallow
-#   - git config user.email "name@example.com"
-#   - git config user.name "Travis-CI"
-#   - git config url.https://.insteadOf git://
-#   - git checkout -qf $TRAVIS_BRANCH
+    - git config user.email "daplay@gmail.com"
+    - git config user.name "Daniel Meneses"
+    - git config url.https://.insteadOf git://
+    - git checkout -qf $TRAVIS_BRANCH
 install:
   - echo "skip default gradlew assemble"
 script:
-  - ./gradlew release --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password
+  - ./gradlew release -x test --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password

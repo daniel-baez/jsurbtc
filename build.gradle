@@ -1,21 +1,26 @@
+buildscript {
+    repositories {
+        jcenter();
+        mavenCentral();
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1';
+        classpath 'de.gliderpilot.gradle.semantic-release:gradle-semantic-release-plugin:1.3.1';
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'com.bmuschko.nexus'
+apply plugin: 'de.gliderpilot.semantic-release'
 
 group = "cl.daplay"
 description = "An idiomatic Java API for Surbtc REST services."
-version = "2.1.0"
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-    }
-}
 
 javadoc {
     doLast {

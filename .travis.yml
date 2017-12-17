@@ -17,5 +17,6 @@ before_install:
     - git checkout -qf $TRAVIS_BRANCH
 install:
   - echo "skip default gradlew assemble"
+  - echo "skip ${DANIEL}"
 script:
   - ./gradlew release -x test --stacktrace -Dorg.ajoberstar.grgit.auth.username=${GH_TOKEN} -Dorg.ajoberstar.grgit.auth.password -PnexusUsername=${NEXUS_USERNAME} -PnexusPassword=${NEXUS_PASSWORD}

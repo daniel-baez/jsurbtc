@@ -9,18 +9,37 @@ buildscript {
     dependencies {
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1';
         classpath 'de.gliderpilot.gradle.semantic-release:gradle-semantic-release-plugin:1.3.1';
+        // generates
+        classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17"
+        // classpath "gradle.plugin.com.prot.versioninfo:jar-version-info-gradle-plugin:0.4"
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: 'de.gliderpilot.semantic-release'
+apply plugin: "com.gorylenko.gradle-git-properties"
 
 group = "cl.daplay"
 description = "An idiomatic Java API for Surbtc REST services."
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
+
+task generateVersionFile {
+    description = 'Generates file "version.properties".'
+
+    doLast {
+        def out = new File(project.buildDir, "resources/main/version.properties")
+
+        def props = new Properties()
+        props.setProperty('version', project.version.toString())
+
+        props.store(out.newWriter(), null)
+    }
+}
+
+processResources.finalizedBy generateVersionFile
 
 javadoc {
     doLast {

@@ -9,9 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1';
         classpath 'de.gliderpilot.gradle.semantic-release:gradle-semantic-release-plugin:1.3.1';
-        // generates
         classpath "gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17"
-        // classpath "gradle.plugin.com.prot.versioninfo:jar-version-info-gradle-plugin:0.4"
     }
 }
 
@@ -39,7 +37,31 @@ task generateVersionFile {
     }
 }
 
+task readmeUpdate {
+    description = 'Updates version in README.md'
+
+    def versionPattern = /\d\.\d\.\d/
+    def execute = !version.toString().contains("SNAPSHOT")
+    if (!execute) {
+        println "README.md won't be updated, as $version is an SNAPSHOT version"
+        return;
+    }
+
+    if (!(version.toString() ==~ versionPattern)) {
+        println "README.md won't be updated, as $version is not a release version"
+        return;
+    }
+
+    doLast {
+        def readme = new File(project.projectDir, "README.md")
+        def text = readme.text
+
+        readme.text = text.replaceAll versionPattern, version.toString()
+    }
+}
+
 processResources.finalizedBy generateVersionFile
+tasks.release.dependsOn readmeUpdate
 
 javadoc {
     doLast {

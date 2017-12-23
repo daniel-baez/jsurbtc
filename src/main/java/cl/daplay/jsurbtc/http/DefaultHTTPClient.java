@@ -15,10 +15,7 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
-import cl.daplay.jsurbtc.HTTPClient;
-import cl.daplay.jsurbtc.JSurbtcException;
-import cl.daplay.jsurbtc.Signer;
-import cl.daplay.jsurbtc.Utils;
+import cl.daplay.jsurbtc.*;
 
 public final class DefaultHTTPClient implements HTTPClient {
 
@@ -29,11 +26,16 @@ public final class DefaultHTTPClient implements HTTPClient {
     private final Proxy proxy;
     private final String key;
     private final LongSupplier nonceSupplier;
+    private final String version;
 
-	public DefaultHTTPClient(final Proxy proxy, final String key, LongSupplier nonceSupplier) {
+    public DefaultHTTPClient(final Proxy proxy,
+                             final String key,
+                             final LongSupplier nonceSupplier,
+                             final String version) {
         this.proxy = proxy;
         this.key = key;
         this.nonceSupplier = nonceSupplier;
+        this.version = version;
     }
 
     @Override
@@ -125,7 +127,7 @@ public final class DefaultHTTPClient implements HTTPClient {
 
         con.setRequestProperty("accept", "application/json");
         con.setRequestProperty("Accept-Encoding", "gzip,deflate");
-        con.setRequestProperty("User-Agent", "JSurbtc/2.0.0");
+        con.setRequestProperty("User-Agent", "JSurbtc/" + version);
 
         Reader reader = null;
 

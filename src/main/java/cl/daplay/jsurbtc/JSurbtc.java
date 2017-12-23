@@ -90,7 +90,7 @@ public class JSurbtc {
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
-        this(new DefaultHTTPClient(proxy, key, nonceSupplier), 
+        this(new DefaultHTTPClient(proxy, key, nonceSupplier, VersionSupplier.INSTANCE.get()),
                 newBigDecimalFormat(), 
                 json,
                 new DefaultSigner(secret),

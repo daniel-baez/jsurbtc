@@ -117,6 +117,20 @@ test {
     }
 }
 
+project.ext.ghToken = project.hasProperty('ghToken') ? project.getProperty('ghToken') : System.getenv('GH_TOKEN') ?: null
+
+project.afterEvaluate {
+    semanticRelease {
+        repo {
+            ghToken = project.ghToken
+
+            releaseAsset jar
+            releaseAsset sourcesJar
+            releaseAsset javadocJar
+        }
+    }
+}
+
 modifyPom {
     project {
 

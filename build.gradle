@@ -38,9 +38,9 @@ task generateVersionFile {
 }
 
 task readmeUpdate {
+    def versionPattern = /\d\.\d\.\d/
     description = 'Updates version in README.md'
 
-    def versionPattern = /\d\.\d\.\d/
     def execute = !version.toString().contains("SNAPSHOT")
     if (!execute) {
         println "README.md won't be updated, as $version is an SNAPSHOT version"
@@ -52,11 +52,20 @@ task readmeUpdate {
         return;
     }
 
-    doLast {
-        def readme = new File(project.projectDir, "README.md")
-        def text = readme.text
+    // handle to README.md
+    def readme = new File(project.projectDir, "README.md")
 
+    // replace text in README.md
+    doLast {
+        def text = readme.text
         readme.text = text.replaceAll versionPattern, version.toString()
+    }
+
+    // add, commit and push change
+    doLast {
+        grgit.add(patterns: ['README.md'])
+        grgit.commit(message: "chore(README.md) releases version: '${version.toString()}'.")
+        grgit.push
     }
 }
 

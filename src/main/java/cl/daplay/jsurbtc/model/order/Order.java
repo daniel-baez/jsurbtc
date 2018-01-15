@@ -18,7 +18,7 @@ public class Order implements Serializable {
     @JsonProperty("id")
     private long id;
     @JsonProperty("type")
-    private OrderType type;
+    private String type;
     @JsonProperty("state")
     private OrderState state;
     @JsonProperty("created_at")
@@ -63,7 +63,7 @@ public class Order implements Serializable {
 
     @JsonCreator
     public Order(@JsonProperty("id") long id,
-                 @JsonProperty("type") OrderType type,
+                 @JsonProperty("type") String type,
                  @JsonProperty("state") OrderState state,
                  @JsonProperty("created_at") Instant createdAt,
                  @JsonProperty("market_id") long marketId,
@@ -98,7 +98,7 @@ public class Order implements Serializable {
      */
     @JsonIgnore
     public Amount getActualAmount() {
-        if (type == OrderType.BID) {
+        if (type.equals("BID")) {
             final Amount paidFee = getPaidFee();
             final Amount tradedAmount = getTradedAmount();
             return new Amount(tradedAmount.getCurrency(), tradedAmount.subtract(paidFee));
@@ -135,7 +135,7 @@ public class Order implements Serializable {
      */
     @JsonIgnore
     public Amount getPaidFeeQuoted() {
-        if (type == OrderType.BID) {
+        if (type.equals("BID")) {
             return getExchangeRate().multiply(getPaidFee());
         }
 
@@ -167,7 +167,7 @@ public class Order implements Serializable {
         return id;
     }
 
-    public OrderType getType() {
+    public String getType() {
         return type;
     }
 

@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.jackson.dto.request;
 
-import cl.daplay.jsurbtc.model.order.OrderType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
@@ -13,7 +12,7 @@ public class OrderRequestDTO {
     @JsonProperty("order")
     private final Map<String, Object> content;
 
-    public OrderRequestDTO(final DecimalFormat bigDecimalFormat, final OrderType orderType, final String orderPriceType, final BigDecimal qty, final BigDecimal price) {
+    public OrderRequestDTO(final DecimalFormat bigDecimalFormat, final String orderType, final String orderPriceType, final BigDecimal qty, final BigDecimal price) {
         this.content = new LinkedHashMap<>();
         this.content.put("type", orderType);
         this.content.put("price_type", orderPriceType);

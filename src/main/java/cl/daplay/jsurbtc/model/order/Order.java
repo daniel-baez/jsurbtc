@@ -20,7 +20,7 @@ public class Order implements Serializable {
     @JsonProperty("type")
     private String type;
     @JsonProperty("state")
-    private OrderState state;
+    private String state;
     @JsonProperty("created_at")
     private Instant createdAt;
     @JsonProperty("market_id")
@@ -64,7 +64,7 @@ public class Order implements Serializable {
     @JsonCreator
     public Order(@JsonProperty("id") long id,
                  @JsonProperty("type") String type,
-                 @JsonProperty("state") OrderState state,
+                 @JsonProperty("state") String state,
                  @JsonProperty("created_at") Instant createdAt,
                  @JsonProperty("market_id") long marketId,
                  @JsonProperty("account_id") long accountId,
@@ -171,7 +171,7 @@ public class Order implements Serializable {
         return type;
     }
 
-    public OrderState getState() {
+    public String getState() {
         return state;
     }
 

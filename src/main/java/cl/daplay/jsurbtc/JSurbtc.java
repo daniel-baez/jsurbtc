@@ -43,7 +43,6 @@ import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.order.Order;
 import cl.daplay.jsurbtc.model.order.OrderBook;
-import cl.daplay.jsurbtc.model.order.OrderState;
 import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import cl.daplay.jsurbtc.signers.DefaultSigner;
@@ -154,7 +153,7 @@ public class JSurbtc {
     public Order cancelOrder(final long orderId) throws Exception {
         checkOrderId(orderId);
         final String path = format("/api/v2/orders/%d", orderId);
-        return httpClient.put(path, defaultSigner, json.payload(singletonMap("state", OrderState.CANCELING)), handlingErrors(parser(OrderDTO.class, OrderDTO::getOrder)));
+        return httpClient.put(path, defaultSigner, json.payload(singletonMap("state", "CANCELING")), handlingErrors(parser(OrderDTO.class, OrderDTO::getOrder)));
     }
 
     public List<Market> getMarkets() throws Exception {
@@ -186,7 +185,7 @@ public class JSurbtc {
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
-    public List<Order> getOrders(final String marketId, final OrderState orderState) throws Exception {
+    public List<Order> getOrders(final String marketId, final String orderState) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketId, orderState).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
@@ -196,7 +195,7 @@ public class JSurbtc {
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
-    public List<Order> getOrders(final String marketId, final OrderState orderState, final BigDecimal minimunExchanged) throws Exception {
+    public List<Order> getOrders(final String marketId, final String orderState, final BigDecimal minimunExchanged) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&minimun_exchanged=%s", marketId, orderState, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }

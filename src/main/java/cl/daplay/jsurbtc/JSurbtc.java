@@ -21,7 +21,6 @@ import java.util.logging.Logger;
 import cl.daplay.jsurbtc.http.DefaultHTTPClient;
 import cl.daplay.jsurbtc.jackson.dto.ApiKeyDTO;
 import cl.daplay.jsurbtc.jackson.dto.BalanceDTO;
-import cl.daplay.jsurbtc.jackson.dto.BalanceEventsDTO;
 import cl.daplay.jsurbtc.jackson.dto.BalancesDTO;
 import cl.daplay.jsurbtc.jackson.dto.DepositsDTO;
 import cl.daplay.jsurbtc.jackson.dto.ExceptionDTO;
@@ -39,7 +38,6 @@ import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
 import cl.daplay.jsurbtc.model.balance.Balance;
-import cl.daplay.jsurbtc.model.balance.BalanceEvent;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.market.MarketID;
@@ -206,13 +204,6 @@ public class JSurbtc {
     public List<Withdrawal> getWithdrawals(final Currency currency) throws Exception {
         final String path = format("/api/v2/currencies/%s/withdrawals", currency).toLowerCase();
         return newPaginatedList(path, defaultSigner, WithdrawalsDTO.class, WithdrawalsDTO::getPagination, WithdrawalsDTO::getWithdrawals);
-    }
-
-    public List<BalanceEvent> getBalanceEvents(final Currency currency) throws Exception {
-        final String path = "/api/v2/balance_events";
-        final String params = "?currencies%5B%5D=" + currency + "&event_names%5B%5D=deposit_confirm&event_names%5B%5D=withdrawal_confirm&event_names%5B%5D=transaction&event_names%5B%5D=transfer_confirmation&relevant=true";
-
-        return get(path + params, defaultSigner, BalanceEventsDTO.class, BalanceEventsDTO::getBalanceEvents);
     }
 
     // ** implementation methods **

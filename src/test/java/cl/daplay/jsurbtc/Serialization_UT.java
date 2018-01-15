@@ -38,14 +38,6 @@ public final class Serialization_UT {
     }
 
     @Test
-    public void balance_events() throws Exception {
-        backAndForth(BalanceEventsDTO.class,
-                "balance_events_btc.json",
-                "balance_events_clp.json",
-                "balance_events_eth.json");
-    }
-
-    @Test
     public void withdrawals() throws Exception {
         backAndForth(WithdrawalsDTO.class,
                 "withdrawals_empty.json",

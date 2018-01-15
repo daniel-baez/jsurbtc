@@ -1,13 +1,13 @@
-package cl.daplay.jsurbtc;
+package cl.daplay.jsurbtc.lazylist;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-public final class JSurbtcPaginatedListException extends IndexOutOfBoundsException {
+public final class LazyListException extends IndexOutOfBoundsException {
 
     private final Exception e;
 
-    public JSurbtcPaginatedListException(final Exception e) {
+    public LazyListException(final Exception e) {
         this.e = e;
     }
 

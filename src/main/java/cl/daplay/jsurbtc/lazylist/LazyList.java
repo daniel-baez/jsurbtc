@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc;
+package cl.daplay.jsurbtc.lazylist;
 
 import java.io.Serializable;
 import java.util.AbstractList;
@@ -8,7 +8,7 @@ import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
-final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializable {
+public final class LazyList<T> extends AbstractList<T> implements Serializable {
 
     @FunctionalInterface
     public interface GetPage<T> {
@@ -19,10 +19,10 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
 
     private static final long serialVersionUID = 2017_08_06;
 
-    private static JSurbtcPaginatedList<?> EMPTY = new JSurbtcPaginatedList<>(emptyList(), __ -> emptyList(), 0, 0);
+    private static LazyList<?> EMPTY = new LazyList<>(emptyList(), __ -> emptyList(), 0, 0);
 
-    static <K> JSurbtcPaginatedList<K> empty() {
-        return (JSurbtcPaginatedList<K>) EMPTY;
+    public static <K> LazyList<K> empty() {
+        return (LazyList<K>) EMPTY;
     }
 
     static int indexInPage(final int index, final int pageSize) {
@@ -46,10 +46,10 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
     private final Object[] pages;
     private final GetPage<T> nextPage;
 
-    public JSurbtcPaginatedList(final List<T> firstPage,
-                                final GetPage<T> nextPage,
-                                int totalPages,
-                                int totalCount) {
+    public LazyList(final List<T> firstPage,
+                    final GetPage<T> nextPage,
+                    int totalPages,
+                    int totalCount) {
         this.pages = new Object[max(1, totalPages)];
         this.pages[0] = firstPage;
 
@@ -72,7 +72,7 @@ final class JSurbtcPaginatedList<T> extends AbstractList<T> implements Serializa
         try {
             page = getPage(pageForIndex);
         } catch (Exception e) {
-            throw new JSurbtcPaginatedListException(e);
+            throw new LazyListException(e);
         }
 
         final int indexInPage = indexInPage(index, pageSize);

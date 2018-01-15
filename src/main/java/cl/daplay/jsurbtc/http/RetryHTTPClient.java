@@ -19,9 +19,7 @@ public final class RetryHTTPClient implements HTTPClient {
 
     @Override
     public <T> T get(final String path, final Signer signer, final HTTPResponseHandler<T> responseHandler) throws Exception {
-        return retry(() -> {
-            return delegate.get(path, signer, responseHandler);
-        });
+        return retry(() -> delegate.get(path, signer, responseHandler));
     }
 
     @Override

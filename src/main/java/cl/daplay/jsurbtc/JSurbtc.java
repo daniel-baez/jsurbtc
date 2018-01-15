@@ -35,6 +35,7 @@ import cl.daplay.jsurbtc.jackson.dto.TradesDTO;
 import cl.daplay.jsurbtc.jackson.dto.WithdrawalsDTO;
 import cl.daplay.jsurbtc.jackson.dto.request.APIKeyRequestDTO;
 import cl.daplay.jsurbtc.jackson.dto.request.OrderRequestDTO;
+import cl.daplay.jsurbtc.lazylist.LazyList;
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
@@ -222,11 +223,11 @@ public class JSurbtc {
 
     // ** implementation methods **
 
-    private <T, K> JSurbtcPaginatedList<T> newPaginatedList(final String path,
-            final Signer signer,
-            final Class<K> dtoType,
-            final Function<K, PaginationDTO> getPagination,
-            final Function<K, List<T>> getPage) throws Exception {
+    private <T, K> LazyList<T> newPaginatedList(final String path,
+                                                final Signer signer,
+                                                final Class<K> dtoType,
+                                                final Function<K, PaginationDTO> getPagination,
+                                                final Function<K, List<T>> getPage) throws Exception {
 
         return get(path, signer, (__, responseBody) -> {
             final K dto = json.parse(responseBody, dtoType);
@@ -237,7 +238,7 @@ public class JSurbtc {
 
             final List<T> page = getPage.apply(dto);
 
-            return new JSurbtcPaginatedList<T>(page, index -> {
+            return new LazyList<T>(page, index -> {
                 final String nextPath = appendPageParameter(path, index + 1);
                 return get(nextPath, signer, (__1, responseBody1) -> getPage.apply(json.parse(responseBody1, dtoType)));
             }, totalPages, totalCount);

@@ -120,6 +120,7 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     public Amount divide(Amount divisor) {
+        System.out.println("BBBBBBBB");
         return new Amount(currency, super.divide(divisor.getAmount(), RoundingMode.HALF_UP));
     }
 
@@ -187,6 +188,7 @@ public class Amount extends BigDecimal implements Serializable {
 
     @Override
     public Amount divide(BigDecimal divisor) {
+        System.out.println("AAAAAAA");
         return new Amount(currency, super.divide(divisor));
     }
 

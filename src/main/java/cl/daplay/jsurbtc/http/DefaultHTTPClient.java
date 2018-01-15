@@ -1,21 +1,16 @@
 package cl.daplay.jsurbtc.http;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.StringReader;
+import cl.daplay.jsurbtc.HTTPClient;
+import cl.daplay.jsurbtc.Signer;
+import cl.daplay.jsurbtc.Utils;
+import cl.daplay.jsurbtc.model.JSurbtcException;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
-import java.util.Optional;
 import java.util.function.LongSupplier;
-import java.util.function.Supplier;
-import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-
-import cl.daplay.jsurbtc.*;
 
 public final class DefaultHTTPClient implements HTTPClient {
 
@@ -43,13 +38,13 @@ public final class DefaultHTTPClient implements HTTPClient {
     }
 
     @Override
-    public <T> T put(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
+    public <T> T put(final String path, final Signer signer, final String jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return doRequest(path, signer, "PUT", jsonBody, responseHandler);
 
     }
 
     @Override
-    public <T> T post(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
+    public <T> T post(final String path, final Signer signer, final String jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return doRequest(path, signer, "POST", jsonBody, responseHandler);
 
     }
@@ -57,14 +52,12 @@ public final class DefaultHTTPClient implements HTTPClient {
     private <T> T doRequest(final String path,
                             final Signer signer,
                             final String method,
-                            final Supplier<String> bodySupplier,
+                            final String _requestBody,
                             final HTTPResponseHandler<T> responseHandler) throws Exception {
+        final String requestBody = _requestBody == null ? "" : _requestBody.trim();
+
         final URL url = new URL(BASE_PATH + path);
         final HttpURLConnection con = (HttpURLConnection) (proxy == null ? url.openConnection() : url.openConnection(proxy));
-
-        final String requestBody = Optional.ofNullable(bodySupplier)
-                .map(Supplier::get)
-                .orElse("");
 
         final long nonce = nonceSupplier.getAsLong();
         final String signature = signer.sign(requestBody, method, path, nonce);

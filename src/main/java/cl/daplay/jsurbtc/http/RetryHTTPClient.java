@@ -23,12 +23,12 @@ public final class RetryHTTPClient implements HTTPClient {
     }
 
     @Override
-    public <T> T put(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
+    public <T> T put(final String path, final Signer signer, final String jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return retry(() -> delegate.put(path, signer, jsonBody, responseHandler));
     }
 
     @Override
-    public <T> T post(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
+    public <T> T post(final String path, final Signer signer, final String jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return retry(() -> delegate.post(path, signer, jsonBody, responseHandler));
     }
 

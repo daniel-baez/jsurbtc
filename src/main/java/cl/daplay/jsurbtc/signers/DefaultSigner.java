@@ -3,12 +3,11 @@ package cl.daplay.jsurbtc.signers;
 import java.math.BigInteger;
 import java.security.Key;
 import java.util.Base64;
-import java.util.function.LongSupplier;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import cl.daplay.jsurbtc.JSurbtcException;
+import cl.daplay.jsurbtc.model.JSurbtcException;
 import cl.daplay.jsurbtc.Signer;
 
 public final class DefaultSigner implements Signer {

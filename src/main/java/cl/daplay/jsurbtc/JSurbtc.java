@@ -1,42 +1,13 @@
 package cl.daplay.jsurbtc;
 
-import static cl.daplay.jsurbtc.Constants.newBigDecimalFormat;
-
-import static java.lang.String.format;
-import static java.lang.System.currentTimeMillis;
-import static java.util.Arrays.stream;
-import static java.util.Collections.singletonMap;
-
-import java.math.BigDecimal;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.text.DecimalFormat;
-import java.time.Instant;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.Function;
-import java.util.function.LongSupplier;
-import java.util.logging.Logger;
-
+import cl.daplay.jsurbtc.fun.ThrowingFunction;
 import cl.daplay.jsurbtc.http.DefaultHTTPClient;
 import cl.daplay.jsurbtc.http.RetryHTTPClient;
-import cl.daplay.jsurbtc.jackson.dto.ApiKeyDTO;
-import cl.daplay.jsurbtc.jackson.dto.BalanceDTO;
-import cl.daplay.jsurbtc.jackson.dto.BalancesDTO;
-import cl.daplay.jsurbtc.jackson.dto.DepositsDTO;
-import cl.daplay.jsurbtc.jackson.dto.ExceptionDTO;
-import cl.daplay.jsurbtc.jackson.dto.MarketsDTO;
-import cl.daplay.jsurbtc.jackson.dto.OrderBookDTO;
-import cl.daplay.jsurbtc.jackson.dto.OrderDTO;
-import cl.daplay.jsurbtc.jackson.dto.OrdersDTO;
-import cl.daplay.jsurbtc.jackson.dto.PaginationDTO;
-import cl.daplay.jsurbtc.jackson.dto.TickerDTO;
-import cl.daplay.jsurbtc.jackson.dto.TradesDTO;
-import cl.daplay.jsurbtc.jackson.dto.WithdrawalsDTO;
-import cl.daplay.jsurbtc.jackson.dto.request.APIKeyRequestDTO;
-import cl.daplay.jsurbtc.jackson.dto.request.OrderRequestDTO;
+import cl.daplay.jsurbtc.jackson.JacksonJSON;
+import cl.daplay.jsurbtc.json.JSON;
 import cl.daplay.jsurbtc.lazylist.LazyList;
 import cl.daplay.jsurbtc.model.ApiKey;
+import cl.daplay.jsurbtc.model.Page;
 import cl.daplay.jsurbtc.model.Ticker;
 import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
@@ -47,6 +18,20 @@ import cl.daplay.jsurbtc.model.trades.Trades;
 import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import cl.daplay.jsurbtc.signers.DefaultSigner;
 import cl.daplay.jsurbtc.signers.DoNothingSigner;
+
+import java.math.BigDecimal;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.text.DecimalFormat;
+import java.time.Instant;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.LongSupplier;
+import java.util.logging.Logger;
+
+import static cl.daplay.jsurbtc.Constants.newBigDecimalFormat;
+import static java.lang.String.format;
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Main entrypoint
@@ -69,7 +54,7 @@ public class JSurbtc {
      *
      * You may customize this number by environment variable "JSURBTC.HTTP_MAX_RETRY"
      */
-    private final static int HTTP_MAX_RETRY = Integer.parseInt(System.getProperty("JSURBTC.HTTP_MAX_RETRY", "5"));
+    private final static int HTTP_MAX_RETRY = Integer.parseInt(System.getProperty("JSURBTC.HTTP_MAX_RETRY", "5"), 10);
 
     private final DecimalFormat bigDecimalFormat;
     private final HTTPClient httpClient;
@@ -90,10 +75,10 @@ public class JSurbtc {
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy, int httpMaxRetry) {
-        this(key, secret, nonceSupplier, JSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy), httpMaxRetry);
+        this(key, secret, nonceSupplier, JacksonJSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy), httpMaxRetry);
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy, int httpMaxRetry) {
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JacksonJSON json, final Proxy proxy, int httpMaxRetry) {
         this(new RetryHTTPClient(new DefaultHTTPClient(proxy, key, nonceSupplier, VERSION_SUPPLIER.get()), httpMaxRetry),
                 newBigDecimalFormat(), 
                 json,
@@ -111,7 +96,7 @@ public class JSurbtc {
 
     public JSurbtc(final HTTPClient httpClient,
             final DecimalFormat bigDecimalFormat,
-            final JSON json,
+            final JacksonJSON json,
             final Signer defaultSigner,
             final Signer noSignatureSigner) {
         this.bigDecimalFormat = bigDecimalFormat;
@@ -123,13 +108,19 @@ public class JSurbtc {
 
     public ApiKey newAPIKey(final String name, final Instant expiration) throws Exception {
         final String path = "/api/v2/api_keys";
-        return post(path, defaultSigner, new APIKeyRequestDTO(name, expiration), parser(ApiKeyDTO.class, ApiKeyDTO::getApiKey));
+
+        return httpClient.post(path, defaultSigner, json.newAPIKey(name, expiration), responseHandler(json::apiKey));
     }
 
     public Order newOrder(final String marketId, final String orderType, final String orderPriceType, final BigDecimal qty, final BigDecimal price) throws Exception {
         final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
-        final OrderRequestDTO payload = new OrderRequestDTO(bigDecimalFormat, orderType, orderPriceType, qty, price);
-        return post(path, defaultSigner, payload, parser(OrderDTO.class, OrderDTO::getOrder));
+        final String payload = json.newOrder(marketId, orderType, orderPriceType, qty, price);
+
+        return httpClient.post(path, defaultSigner, payload, responseHandler(json::order));
+    }
+
+    public Trades getTrades(final String marketId) throws Exception {
+        return getTrades(marketId, null);
     }
 
     public Trades getTrades(final String marketId, final Instant timestamp) throws Exception {
@@ -139,110 +130,106 @@ public class JSurbtc {
             path += "?timestamp=" + timestamp.toEpochMilli();
         }
 
-        return get(path, noSignatureSigner, parser(TradesDTO.class, TradesDTO::getTrades));
+        return httpClient.get(path, noSignatureSigner, responseHandler(json::trades));
+    }
+
+    public Order cancelOrder(final long orderId) throws Exception {
+        checkOrderId(orderId);
+        final String path = format("/api/v2/orders/%d", orderId);
+
+        String payload = json.cancelOrder(orderId);
+
+        return httpClient.put(path, defaultSigner, payload, responseHandler(json::order));
+    }
+
+    public List<Market> getMarkets() throws Exception {
+        final String path = "/api/v2/markets";
+        return httpClient.get(path, noSignatureSigner, responseHandler(json::markets));
+    }
+
+    public Ticker getTicker(final String marketId) throws Exception {
+        final String path = format("/api/v2/markets/%s/ticker", marketId).toLowerCase();
+        return httpClient.get(path, noSignatureSigner, responseHandler(json::ticker));
+    }
+
+    public OrderBook getOrderBook(final String marketId) throws Exception {
+        final String path = format("/api/v2/markets/%s/order_book", marketId).toLowerCase();
+        return httpClient.get(path, noSignatureSigner, responseHandler(json::orderBook));
+    }
+
+    public Balance getBalance(final String currency) throws Exception {
+        final String path = format("/api/v2/balances/%s", currency).toLowerCase();
+        return httpClient.get(path, defaultSigner, responseHandler(json::balance));
+    }
+
+    public List<Balance> getBalances() throws Exception {
+        return httpClient.get("/api/v2/balances", defaultSigner, responseHandler(json::balances));
+    }
+
+    public List<Order> getOrders(final String marketId) throws Exception {
+        final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::orders);
+    }
+
+    public List<Order> getOrders(final String marketId, final String orderState) throws Exception {
+        final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketId, orderState).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::orders);
+    }
+
+    public List<Order> getOrders(final String marketId, final BigDecimal minimunExchanged) throws Exception {
+        final String path = format("/api/v2/markets/%s/orders?minimun_exchanged=%s", marketId, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::orders);
+    }
+
+    public List<Order> getOrders(final String marketId, final String orderState, final BigDecimal minimunExchanged) throws Exception {
+        final String path = format("/api/v2/markets/%s/orders?state=%s&minimun_exchanged=%s", marketId, orderState, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::orders);
+    }
+
+    public Order getOrder(final long orderId) throws Exception {
+        checkOrderId(orderId);
+        final String path = format("/api/v2/orders/%d", orderId).toLowerCase();
+        return httpClient.get(path, defaultSigner, responseHandler(json::order));
+    }
+
+    public List<Deposit> getDeposits(final String currency) throws Exception {
+        final String path = format("/api/v2/currencies/%s/deposits", currency).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::deposits);
+    }
+
+    public List<Withdrawal> getWithdrawals(final String currency) throws Exception {
+        final String path = format("/api/v2/currencies/%s/withdrawals", currency).toLowerCase();
+        return newPaginatedList(path, defaultSigner, json::withdrawls);
     }
 
     public String getVersion() {
         return VERSION_SUPPLIER.get();
     }
 
-    public Trades getTrades(final String marketId) throws Exception {
-        return getTrades(marketId, null);
-    }
-
-    public Order cancelOrder(final long orderId) throws Exception {
-        checkOrderId(orderId);
-        final String path = format("/api/v2/orders/%d", orderId);
-        return httpClient.put(path, defaultSigner, json.payload(singletonMap("state", "CANCELING")), handlingErrors(parser(OrderDTO.class, OrderDTO::getOrder)));
-    }
-
-    public List<Market> getMarkets() throws Exception {
-        final String path = "/api/v2/markets";
-        return get(path, noSignatureSigner, MarketsDTO.class, MarketsDTO::getMarkets);
-    }
-
-    public Ticker getTicker(final String marketId) throws Exception {
-        final String path = format("/api/v2/markets/%s/ticker", marketId).toLowerCase();
-        return get(path, noSignatureSigner, TickerDTO.class, TickerDTO::getTicker);
-    }
-
-    public OrderBook getOrderBook(final String marketId) throws Exception {
-        final String path = format("/api/v2/markets/%s/order_book", marketId).toLowerCase();
-        return get(path, noSignatureSigner, OrderBookDTO.class, OrderBookDTO::getOrderBook);
-    }
-
-    public Balance getBalance(final String currency) throws Exception {
-        final String path = format("/api/v2/balances/%s", currency).toLowerCase();
-        return get(path, defaultSigner, BalanceDTO.class, BalanceDTO::getBalance);
-    }
-
-    public List<Balance> getBalances() throws Exception {
-        return get("/api/v2/balances", defaultSigner, BalancesDTO.class, BalancesDTO::getBalances);
-    }
-
-    public List<Order> getOrders(final String marketId) throws Exception {
-        final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
-        return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
-    }
-
-    public List<Order> getOrders(final String marketId, final String orderState) throws Exception {
-        final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketId, orderState).toLowerCase();
-        return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
-    }
-
-    public List<Order> getOrders(final String marketId, final BigDecimal minimunExchanged) throws Exception {
-        final String path = format("/api/v2/markets/%s/orders?minimun_exchanged=%s", marketId, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
-        return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
-    }
-
-    public List<Order> getOrders(final String marketId, final String orderState, final BigDecimal minimunExchanged) throws Exception {
-        final String path = format("/api/v2/markets/%s/orders?state=%s&minimun_exchanged=%s", marketId, orderState, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
-        return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
-    }
-
-    public Order getOrder(final long orderId) throws Exception {
-        checkOrderId(orderId);
-        final String path = format("/api/v2/orders/%d", orderId).toLowerCase();
-        return get(path, defaultSigner, OrderDTO.class, OrderDTO::getOrder);
-    }
-
-    public List<Deposit> getDeposits(final String currency) throws Exception {
-        final String path = format("/api/v2/currencies/%s/deposits", currency).toLowerCase();
-        return newPaginatedList(path, defaultSigner, DepositsDTO.class, DepositsDTO::getPagination, DepositsDTO::getDeposits);
-    }
-
-    public List<Withdrawal> getWithdrawals(final String currency) throws Exception {
-        final String path = format("/api/v2/currencies/%s/withdrawals", currency).toLowerCase();
-        return newPaginatedList(path, defaultSigner, WithdrawalsDTO.class, WithdrawalsDTO::getPagination, WithdrawalsDTO::getWithdrawals);
-    }
-
     // ** implementation methods **
 
-    private <T, K> LazyList<T> newPaginatedList(final String path,
-                                                final Signer signer,
-                                                final Class<K> dtoType,
-                                                final Function<K, PaginationDTO> getPagination,
-                                                final Function<K, List<T>> getPage) throws Exception {
+    private <T> LazyList<T> newPaginatedList(String path,
+                                             Signer signer,
+                                             ThrowingFunction<String, List<T>> parseList) throws Exception {
 
-        return get(path, signer, (__, responseBody) -> {
-            final K dto = json.parse(responseBody, dtoType);
+        // hace el get de la primera pagina
+        // obtiene detalles de la paginacion de esa primera pagina
 
-            final PaginationDTO pagination = getPagination.apply(dto);
+        return httpClient.get(path, signer, responseHandler((responseBody) -> {
+            final List<T> page = parseList.apply(responseBody);
+            final Page pagination = json.page(responseBody);
+
             final int totalPages = pagination.getTotalPages();
             final int totalCount = pagination.getTotalCount();
 
-            final List<T> page = getPage.apply(dto);
+            return new LazyList<>(page, index -> {
+                // makes request for next page
+                final boolean append = path.contains("?");
+                final String nextPath = format("%s%spage=%d", path, append ? "&" : "?", index + 1);
 
-            return new LazyList<T>(page, index -> {
-                final String nextPath = appendPageParameter(path, index + 1);
-                return get(nextPath, signer, (__1, responseBody1) -> getPage.apply(json.parse(responseBody1, dtoType)));
+                return httpClient.get(nextPath, signer, responseHandler(parseList));
             }, totalPages, totalCount);
-        });
-    }
-
-    private static String appendPageParameter(final String path, final int page) {
-        final boolean append = path.contains("?");
-        return format("%s%spage=%d", path, append ? "&" : "?", page);
+        }));
     }
 
     private void checkOrderId(final long orderId) {
@@ -251,48 +238,16 @@ public class JSurbtc {
         }
     }
 
-    private <T, K> K get(final String path, Signer signer, final Class<T> valueType, final Function<T, K> mapper) throws Exception {
-        return get(path, signer, (__, responseBody) -> mapper.apply(json.parse(responseBody, valueType)));
-    }
-
-    private <T, K> K get(final String path, Signer signer, final HTTPClient.HTTPResponseHandler<K> responseHandler) throws Exception {
-        return httpClient.get(path, signer, handlingErrors(responseHandler));
-    }
-
-    private <T> T post(final String path, Signer signer, final Object payload, final HTTPClient.HTTPResponseHandler<T> responseHandler) throws Exception {
-        return httpClient.post(path, signer, json.payload(payload), handlingErrors(responseHandler));
-    }
-
-    private <T, K> HTTPClient.HTTPResponseHandler<K> parser(final Class<T> valueType, final Function<T, K> mapper) {
-        return (statusCode, responseBody) -> mapper.apply(json.parse(responseBody, valueType));
-    }
-
-    private <T> HTTPClient.HTTPResponseHandler<T> handlingErrors(final HTTPClient.HTTPResponseHandler<T> responseHandler) {
+    private <T> HTTPClient.HTTPResponseHandler<T> responseHandler(final ThrowingFunction<String, T> mapper) {
         return (statusCode, responseBody) -> {
             // OK(200) or CREATED(201)
             final boolean successful = statusCode == 200 || statusCode == 201;
             if (!successful) {
-                final ExceptionDTO exceptionDTO = json.parse(responseBody, ExceptionDTO.class);
-                if (null == exceptionDTO) {
-                    throw new Exception(format("Surbtc request failed. status code: '%d' response body: '%s'", statusCode, responseBody));
-                }
-
-                throw error2Error(statusCode, exceptionDTO);
+                throw json.exception(statusCode, responseBody);
             }
 
-            return responseHandler.handle(statusCode, responseBody);
+            return mapper.apply(responseBody);
         };
-    }
-
-    private JSurbtcException.Detail error2Error(ExceptionDTO.ErrorDTO in) {
-        return new JSurbtcException.Detail(in.resource, in.field, in.code, in.message);
-    }
-
-    private JSurbtcException error2Error(final int statusCode, ExceptionDTO in) {
-        final ExceptionDTO.ErrorDTO[] dtos = in.errors == null ? new ExceptionDTO.ErrorDTO[0] : in.errors;
-
-        final JSurbtcException.Detail[] details = stream(dtos).map(this::error2Error).toArray(JSurbtcException.Detail[]::new);
-        return new JSurbtcException(statusCode, in.message, in.code, details);
     }
 
 }

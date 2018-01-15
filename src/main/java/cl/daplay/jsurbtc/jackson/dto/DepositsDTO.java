@@ -1,5 +1,6 @@
 package cl.daplay.jsurbtc.jackson.dto;
 
+import cl.daplay.jsurbtc.model.Page;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,16 +18,16 @@ public final class DepositsDTO {
     @JsonProperty("deposits")
     private final List<Deposit> deposits;
     @JsonProperty("meta")
-    private final PaginationDTO pagination;
+    private final Page pagination;
 
     @JsonCreator
     public DepositsDTO(@JsonProperty("deposits") List<Deposit> deposits,
-                       @JsonProperty("meta") PaginationDTO pagination) {
+                       @JsonProperty("meta") Page pagination) {
         this.deposits = deposits;
         this.pagination = pagination;
     }
 
-    public PaginationDTO getPagination() {
+    public Page getPagination() {
         return pagination;
     }
 

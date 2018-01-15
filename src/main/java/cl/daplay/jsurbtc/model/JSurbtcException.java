@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc;
+package cl.daplay.jsurbtc.model;
 
 import static java.lang.String.format;
 

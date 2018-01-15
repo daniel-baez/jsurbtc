@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Objects;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "timestamp", "amount", "price", "direction" })
@@ -21,12 +22,12 @@ public class Transaction implements Serializable, Comparable<Transaction> {
     @JsonProperty("price")
     private final BigDecimal price;
     @JsonProperty("direction")
-    private final Direction direction;
+    private final String direction;
 
     public Transaction(@JsonProperty("timestamp") final Instant timestamp,
                        @JsonProperty("amount") final BigDecimal amount,
                        @JsonProperty("price") final BigDecimal price,
-                       @JsonProperty("direction") final Direction direction) {
+                       @JsonProperty("direction") final String direction) {
         this.timestamp = timestamp;
         this.amount = amount;
         this.price = price;
@@ -45,7 +46,7 @@ public class Transaction implements Serializable, Comparable<Transaction> {
         return price;
     }
 
-    public Direction getDirection() {
+    public String getDirection() {
         return direction;
     }
 
@@ -53,22 +54,17 @@ public class Transaction implements Serializable, Comparable<Transaction> {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        final Transaction that = (Transaction) o;
-
-        if (timestamp != null ? !timestamp.equals(that.timestamp) : that.timestamp != null) return false;
-        if (amount != null ? !amount.equals(that.amount) : that.amount != null) return false;
-        if (price != null ? !price.equals(that.price) : that.price != null) return false;
-        return direction == that.direction;
+        Transaction that = (Transaction) o;
+        return Objects.equals(timestamp, that.timestamp) &&
+                Objects.equals(amount, that.amount) &&
+                Objects.equals(price, that.price) &&
+                Objects.equals(direction, that.direction);
     }
 
     @Override
     public int hashCode() {
-        int result = timestamp != null ? timestamp.hashCode() : 0;
-        result = 31 * result + (amount != null ? amount.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (direction != null ? direction.hashCode() : 0);
-        return result;
+
+        return Objects.hash(timestamp, amount, price, direction);
     }
 
     @Override

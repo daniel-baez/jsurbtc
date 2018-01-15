@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.balance;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -16,7 +15,7 @@ public class Balance implements Serializable {
     @JsonProperty("account_id")
     private final long accountId;
     @JsonProperty("id")
-    private final Currency id;
+    private final String id;
     @JsonProperty("amount")
     private final Amount amount;
     @JsonProperty("available_amount")
@@ -37,7 +36,7 @@ public class Balance implements Serializable {
 
     @JsonCreator
     public Balance(@JsonProperty("account_id") final long accountId,
-                   @JsonProperty("id") final Currency id,
+                   @JsonProperty("id") final String id,
                    @JsonProperty("amount") final Amount amount,
                    @JsonProperty("available_amount") final Amount availableAmount,
                    @JsonProperty("frozen_amount") final Amount frozenAmount,
@@ -54,7 +53,7 @@ public class Balance implements Serializable {
         return accountId;
     }
 
-    public Currency getId() {
+    public String getId() {
         return id;
     }
 

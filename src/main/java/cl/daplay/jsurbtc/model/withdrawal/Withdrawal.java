@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.withdrawal;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -16,7 +15,7 @@ public class Withdrawal implements Serializable {
     @JsonProperty("state")
     private final String state;
     @JsonProperty("currency")
-    private final Currency currency;
+    private final String currency;
     @JsonProperty("created_at")
     private final Instant createdAt;
     @JsonProperty("withdrawal_data")
@@ -38,7 +37,7 @@ public class Withdrawal implements Serializable {
 
     public Withdrawal(@JsonProperty("id") long id,
                       @JsonProperty("state") String state,
-                      @JsonProperty("currency") Currency currency,
+                      @JsonProperty("currency") String currency,
                       @JsonProperty("created_at") Instant createdAt,
                       @JsonProperty("withdrawal_data") WithdrawalData withdrawalWithdrawalData,
                       @JsonProperty("amount") Amount amount,
@@ -60,7 +59,7 @@ public class Withdrawal implements Serializable {
         return state;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -102,7 +101,7 @@ public class Withdrawal implements Serializable {
 
         if (id != that.id) return false;
         if (state != null ? !state.equals(that.state) : that.state != null) return false;
-        if (currency != that.currency) return false;
+        if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (withdrawalWithdrawalData != null ? !withdrawalWithdrawalData.equals(that.withdrawalWithdrawalData) : that.withdrawalWithdrawalData != null)
             return false;

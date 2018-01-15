@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.model.market;
 
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -9,24 +8,24 @@ import java.util.*;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.groupingBy;
 
-public enum MarketID implements Iterable<Currency> {
-    BTC_CLP(Currency.BTC, Currency.CLP),
-    BTC_COP(Currency.BTC, Currency.COP),
-    BTC_PEN(Currency.BTC, Currency.PEN),
-    ETH_BTC(Currency.ETH, Currency.BTC),
-    ETH_CLP(Currency.ETH, Currency.CLP),
-    ETH_COP(Currency.ETH, Currency.COP),
-    ETH_PEN(Currency.ETH, Currency.PEN),
-    BCH_CLP(Currency.BCH, Currency.CLP),
-    BCH_COP(Currency.BCH, Currency.COP),
-    BCH_PEN(Currency.BCH, Currency.PEN),
-    BCH_BTC(Currency.BCH, Currency.BTC),
+public enum MarketID implements Iterable<String> {
+    BTC_CLP("BTC", "CLP"),
+    BTC_COP("BTC", "COP"),
+    BTC_PEN("BTC", "PEN"),
+    ETH_BTC("ETH", "BTC"),
+    ETH_CLP("ETH", "CLP"),
+    ETH_COP("ETH", "COP"),
+    ETH_PEN("ETH", "PEN"),
+    BCH_CLP("BCH", "CLP"),
+    BCH_COP("BCH", "COP"),
+    BCH_PEN("BCH", "PEN"),
+    BCH_BTC("BCH", "BTC"),
     ;
 
-    private static final Map<Currency, List<MarketID>> MARKETS_BY_QUOTE_CURRENCY = Arrays.stream(MarketID.values())
+    private static final Map<String, List<MarketID>> MARKETS_BY_QUOTE_CURRENCY = Arrays.stream(MarketID.values())
             .collect(groupingBy(MarketID::getQuoteCurrency));
 
-    private static final Map<Currency, List<MarketID>> MARKETS_BY_BASE_CURRENCY = Arrays.stream(MarketID.values())
+    private static final Map<String, List<MarketID>> MARKETS_BY_BASE_CURRENCY = Arrays.stream(MarketID.values())
             .collect(groupingBy(MarketID::getBaseCurrency));
 
     @JsonCreator
@@ -34,36 +33,36 @@ public enum MarketID implements Iterable<Currency> {
         return MarketID.valueOf(value.replace('-', '_'));
     }
 
-    public static Optional<MarketID> byBaseAndQuoteCurrencies(final Currency base, final Currency quote) {
+    public static Optional<MarketID> byBaseAndQuoteCurrencies(final String base, final String quote) {
         return byBaseCurrency(base).stream().filter(marketId -> marketId.getQuoteCurrency() == quote).findFirst();
     }
 
-    public static List<MarketID> byQuoteCurrency(final Currency quoteCurrency) {
+    public static List<MarketID> byQuoteCurrency(final String quoteCurrency) {
         return MARKETS_BY_QUOTE_CURRENCY.getOrDefault(quoteCurrency, emptyList());
     }
 
-    public static List<MarketID> byBaseCurrency(final Currency baseCurrency) {
+    public static List<MarketID> byBaseCurrency(final String baseCurrency) {
         return MARKETS_BY_BASE_CURRENCY.getOrDefault(baseCurrency, emptyList());
     }
 
-    private final Currency baseCurrency;
-    private final Currency quoteCurrency;
+    private final String baseCurrency;
+    private final String quoteCurrency;
 
-    MarketID(final Currency baseCurrency, final Currency quoteCurrency) {
+    MarketID(final String baseCurrency, final String quoteCurrency) {
         this.baseCurrency = baseCurrency;
         this.quoteCurrency = quoteCurrency;
     }
 
-    public Currency getBaseCurrency() {
+    public String getBaseCurrency() {
         return baseCurrency;
     }
 
-    public Currency getQuoteCurrency() {
+    public String getQuoteCurrency() {
         return quoteCurrency;
     }
 
     @Override
-    public Iterator<Currency> iterator() {
+    public Iterator<String> iterator() {
         return Arrays.asList(baseCurrency, quoteCurrency).iterator();
     }
 

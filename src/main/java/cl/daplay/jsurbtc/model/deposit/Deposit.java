@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.deposit;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +18,7 @@ public class Deposit implements Serializable {
     @JsonProperty("state")
     private final String state;
     @JsonProperty("currency")
-    private final Currency currency;
+    private final String currency;
     @JsonProperty("created_at")
     private final Instant createdAt;
     @JsonProperty("deposit_data")
@@ -42,7 +41,7 @@ public class Deposit implements Serializable {
     @JsonCreator
     public Deposit(@JsonProperty("id") final long id,
                    @JsonProperty("state") final String state,
-                   @JsonProperty("currency") final Currency currency,
+                   @JsonProperty("currency") final String currency,
                    @JsonProperty("created_at") final Instant createdAt,
                    @JsonProperty("deposit_data") final DepositData depositData,
                    @JsonProperty("amount") final Amount amount,
@@ -68,7 +67,7 @@ public class Deposit implements Serializable {
         return amount;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -93,7 +92,7 @@ public class Deposit implements Serializable {
 
         if (id != deposit.id) return false;
         if (state != null ? !state.equals(deposit.state) : deposit.state != null) return false;
-        if (currency != deposit.currency) return false;
+        if (currency != null ? !currency.equals(deposit.currency) : deposit.currency != null) return false;
         if (createdAt != null ? !createdAt.equals(deposit.createdAt) : deposit.createdAt != null) return false;
         if (depositData != null ? !depositData.equals(deposit.depositData) : deposit.depositData != null) return false;
         if (amount != null ? !amount.equals(deposit.amount) : deposit.amount != null) return false;

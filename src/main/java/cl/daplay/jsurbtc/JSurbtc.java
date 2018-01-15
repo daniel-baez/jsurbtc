@@ -37,7 +37,6 @@ import cl.daplay.jsurbtc.jackson.dto.request.APIKeyRequestDTO;
 import cl.daplay.jsurbtc.jackson.dto.request.OrderRequestDTO;
 import cl.daplay.jsurbtc.lazylist.LazyList;
 import cl.daplay.jsurbtc.model.ApiKey;
-import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.Ticker;
 import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
@@ -176,7 +175,7 @@ public class JSurbtc {
         return get(path, noSignatureSigner, OrderBookDTO.class, OrderBookDTO::getOrderBook);
     }
 
-    public Balance getBalance(final Currency currency) throws Exception {
+    public Balance getBalance(final String currency) throws Exception {
         final String path = format("/api/v2/balances/%s", currency).toLowerCase();
         return get(path, defaultSigner, BalanceDTO.class, BalanceDTO::getBalance);
     }
@@ -211,12 +210,12 @@ public class JSurbtc {
         return get(path, defaultSigner, OrderDTO.class, OrderDTO::getOrder);
     }
 
-    public List<Deposit> getDeposits(final Currency currency) throws Exception {
+    public List<Deposit> getDeposits(final String currency) throws Exception {
         final String path = format("/api/v2/currencies/%s/deposits", currency).toLowerCase();
         return newPaginatedList(path, defaultSigner, DepositsDTO.class, DepositsDTO::getPagination, DepositsDTO::getDeposits);
     }
 
-    public List<Withdrawal> getWithdrawals(final Currency currency) throws Exception {
+    public List<Withdrawal> getWithdrawals(final String currency) throws Exception {
         final String path = format("/api/v2/currencies/%s/withdrawals", currency).toLowerCase();
         return newPaginatedList(path, defaultSigner, WithdrawalsDTO.class, WithdrawalsDTO::getPagination, WithdrawalsDTO::getWithdrawals);
     }

@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.model.withdrawal;
 
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,7 +21,7 @@ public class Account implements Serializable {
     @JsonProperty("created_at")
     private final Instant createdAt;
     @JsonProperty("currency")
-    private final Currency currency;
+    private final String currency;
     @JsonProperty("document_number")
     private final String documentNumber;
     @JsonProperty("email")
@@ -46,7 +45,7 @@ public class Account implements Serializable {
                    @JsonProperty("account_type") String accountType,
                    @JsonProperty("bank_id") long bankId,
                    @JsonProperty("created_at") Instant createdAt,
-                   @JsonProperty("currency") Currency currency,
+                   @JsonProperty("currency") String currency,
                    @JsonProperty("document_number") String documentNumber,
                    @JsonProperty("email") String email,
                    @JsonProperty("full_name") String fullName,
@@ -91,7 +90,7 @@ public class Account implements Serializable {
         return createdAt;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -140,7 +139,7 @@ public class Account implements Serializable {
             return false;
         if (accountType != null ? !accountType.equals(account.accountType) : account.accountType != null) return false;
         if (createdAt != null ? !createdAt.equals(account.createdAt) : account.createdAt != null) return false;
-        if (currency != account.currency) return false;
+        if (currency != null ? !currency.equals(account.currency) : account.currency != null)
         if (documentNumber != null ? !documentNumber.equals(account.documentNumber) : account.documentNumber != null)
             return false;
         if (email != null ? !email.equals(account.email) : account.email != null) return false;

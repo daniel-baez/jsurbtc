@@ -30,7 +30,7 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     @JsonProperty("currency")
-    private final Currency currency;
+    private final String currency;
     @JsonProperty("amount")
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal amount;
@@ -40,7 +40,7 @@ public class Amount extends BigDecimal implements Serializable {
     }
 
     @JsonCreator
-    public Amount(@JsonProperty("currency") final Currency currency,
+    public Amount(@JsonProperty("currency") final String currency,
                   @JsonProperty("amount") final BigDecimal amount) {
         super(unwrap(amount).toString());
 
@@ -51,7 +51,7 @@ public class Amount extends BigDecimal implements Serializable {
         this.amount = unwrap(amount);
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
@@ -223,7 +223,7 @@ public class Amount extends BigDecimal implements Serializable {
 
         Amount amount = (Amount) o;
 
-        return currency == amount.currency;
+        return currency.equals(amount.currency);
     }
 
     @Override

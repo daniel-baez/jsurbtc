@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.market;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.Currency;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,9 +15,9 @@ public class Market implements Serializable {
     @JsonProperty("name")
     private final String name;
     @JsonProperty("base_currency")
-    private final Currency baseCurrency;
+    private final String baseCurrency;
     @JsonProperty("quote_currency")
-    private final Currency quoteCurrency;
+    private final String quoteCurrency;
     @JsonProperty("minimum_order_amount")
     private final Amount minimumOrderAmount;
 
@@ -33,8 +32,8 @@ public class Market implements Serializable {
     @JsonCreator
     public Market(@JsonProperty("id") final MarketID id,
                   @JsonProperty("name") final String name,
-                  @JsonProperty("base_currency") final Currency baseCurrency,
-                  @JsonProperty("quote_currency") final Currency quoteCurrency,
+                  @JsonProperty("base_currency") final String baseCurrency,
+                  @JsonProperty("quote_currency") final String quoteCurrency,
                   @JsonProperty("minimum_order_amount") final Amount minimumOrderAmount) {
         this.id = id;
         this.name = name;
@@ -51,11 +50,11 @@ public class Market implements Serializable {
         return name;
     }
 
-    public Currency getBaseCurrency() {
+    public String getBaseCurrency() {
         return baseCurrency;
     }
 
-    public Currency getQuoteCurrency() {
+    public String getQuoteCurrency() {
         return quoteCurrency;
     }
 

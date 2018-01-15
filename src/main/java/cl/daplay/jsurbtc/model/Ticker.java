@@ -57,7 +57,7 @@ public class Ticker implements Serializable {
      * @return `getBaseCurrency().getCurrency()`
      */
     @JsonIgnore
-    public Currency getBaseCurrency() {
+    public String getBaseCurrency() {
         return getVolume().getCurrency();
     }
 
@@ -66,7 +66,7 @@ public class Ticker implements Serializable {
      * @return `getLastPrice().getCurrency()`
      */
     @JsonIgnore
-    public Currency getQuoteCurrency() {
+    public String getQuoteCurrency() {
         return getLastPrice().getCurrency();
     }
 

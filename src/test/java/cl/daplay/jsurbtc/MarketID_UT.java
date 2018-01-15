@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc;
 
-import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.market.MarketID;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,14 +28,14 @@ public class MarketID_UT {
             final String expectedBaseCurrency = matcher.group(1);
             final String expectedQuoteCurrency = matcher.group(2);
 
-            final Currency baseCurrency = marketID.getBaseCurrency();
-            final Currency quoteCurrency = marketID.getQuoteCurrency();
+            final String baseCurrency = marketID.getBaseCurrency();
+            final String quoteCurrency = marketID.getQuoteCurrency();
 
             final String secondAssertion = format("MarketID: %s baseCurrency should be: %s but is: %s", marketID, expectedBaseCurrency, baseCurrency);
-            Assert.assertEquals(secondAssertion, expectedBaseCurrency, baseCurrency.name());
+            Assert.assertEquals(secondAssertion, expectedBaseCurrency, baseCurrency);
 
             final String thirdAssertion = format("MarketID: %s quoteCurrency should be: %s but is: %s", marketID, expectedQuoteCurrency, quoteCurrency);
-            Assert.assertEquals(thirdAssertion, expectedQuoteCurrency, quoteCurrency.name());
+            Assert.assertEquals(thirdAssertion, expectedQuoteCurrency, quoteCurrency);
         }
     }
 

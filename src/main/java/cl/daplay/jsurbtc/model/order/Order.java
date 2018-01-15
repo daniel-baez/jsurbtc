@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.order;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.Currency;
 import cl.daplay.jsurbtc.model.market.MarketID;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,7 +29,7 @@ public class Order implements Serializable {
     @JsonProperty("account_id")
     private long accountId;
     @JsonProperty("fee_currency")
-    private Currency feeCurrency;
+    private String feeCurrency;
     @JsonProperty("price_type")
     private OrderPriceType priceType;
     @JsonProperty("limit")
@@ -70,7 +69,7 @@ public class Order implements Serializable {
                  @JsonProperty("created_at") Instant createdAt,
                  @JsonProperty("market_id") long marketId,
                  @JsonProperty("account_id") long accountId,
-                 @JsonProperty("fee_currency") Currency feeCurrency,
+                 @JsonProperty("fee_currency") String feeCurrency,
                  @JsonProperty("price_type") OrderPriceType priceType,
                  @JsonProperty("limit") Amount limit,
                  @JsonProperty("amount") Amount amount,
@@ -149,8 +148,8 @@ public class Order implements Serializable {
      */
     @JsonIgnore
     public MarketID getMarketID() {
-        final Currency base = originalAmount.getCurrency();
-        final Currency quote = totalExchanged.getCurrency();
+        final String base = originalAmount.getCurrency();
+        final String quote = totalExchanged.getCurrency();
 
         return MarketID.byBaseAndQuoteCurrencies(base, quote)
                 .orElseThrow(() -> {
@@ -164,7 +163,7 @@ public class Order implements Serializable {
      * @return amount.currency
      */
     @JsonIgnore
-    public Currency getBaseCurrency() {
+    public String getBaseCurrency() {
         return amount.getCurrency();
     }
 
@@ -188,7 +187,7 @@ public class Order implements Serializable {
         return accountId;
     }
 
-    public Currency getFeeCurrency() {
+    public String getFeeCurrency() {
         return feeCurrency;
     }
 
@@ -234,7 +233,7 @@ public class Order implements Serializable {
         if (type != null ? !type.equals(order.type) : order.type != null) return false;
         if (state != null ? !state.equals(order.state) : order.state != null) return false;
         if (createdAt != null ? !createdAt.equals(order.createdAt) : order.createdAt != null) return false;
-        if (feeCurrency != order.feeCurrency) return false;
+        if (feeCurrency != null ? !feeCurrency.equals(order.feeCurrency) : order.feeCurrency != null) return false;
         if (priceType != null ? !priceType.equals(order.priceType) : order.priceType != null) return false;
         if (limit != null ? !limit.equals(order.limit) : order.limit != null) return false;
         if (amount != null ? !amount.equals(order.amount) : order.amount != null) return false;

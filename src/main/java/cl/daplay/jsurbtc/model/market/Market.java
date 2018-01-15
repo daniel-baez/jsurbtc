@@ -11,7 +11,7 @@ public class Market implements Serializable {
     private static final long serialVersionUID = 2017_08_06;
 
     @JsonProperty("id")
-    private final MarketID id;
+    private final String id;
     @JsonProperty("name")
     private final String name;
     @JsonProperty("base_currency")
@@ -30,7 +30,7 @@ public class Market implements Serializable {
     }
 
     @JsonCreator
-    public Market(@JsonProperty("id") final MarketID id,
+    public Market(@JsonProperty("id") final String id,
                   @JsonProperty("name") final String name,
                   @JsonProperty("base_currency") final String baseCurrency,
                   @JsonProperty("quote_currency") final String quoteCurrency,
@@ -42,7 +42,7 @@ public class Market implements Serializable {
         this.minimumOrderAmount = minimumOrderAmount;
     }
 
-    public MarketID getId() {
+    public String getId() {
         return id;
     }
 

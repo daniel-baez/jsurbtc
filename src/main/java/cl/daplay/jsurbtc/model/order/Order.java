@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.model.order;
 
 import cl.daplay.jsurbtc.model.Amount;
-import cl.daplay.jsurbtc.model.market.MarketID;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -144,17 +143,14 @@ public class Order implements Serializable {
     }
 
     /**
-     * @return MarketID of originalAmount.currency and totalExchanged.currency
+     * @return String of originalAmount.currency and totalExchanged.currency
      */
     @JsonIgnore
-    public MarketID getMarketID() {
+    public String getMarketID() {
         final String base = originalAmount.getCurrency();
         final String quote = totalExchanged.getCurrency();
 
-        return MarketID.byBaseAndQuoteCurrencies(base, quote)
-                .orElseThrow(() -> {
-                    return new RuntimeException(format("Can't find MarketID constant for [%s, %s]", base, quote));
-                });
+        return String.format("%s-%s", base, quote);
     }
 
     /**

@@ -41,7 +41,6 @@ import cl.daplay.jsurbtc.model.Ticker;
 import cl.daplay.jsurbtc.model.balance.Balance;
 import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
-import cl.daplay.jsurbtc.model.market.MarketID;
 import cl.daplay.jsurbtc.model.order.Order;
 import cl.daplay.jsurbtc.model.order.OrderBook;
 import cl.daplay.jsurbtc.model.order.OrderPriceType;
@@ -130,13 +129,13 @@ public class JSurbtc {
         return post(path, defaultSigner, new APIKeyRequestDTO(name, expiration), parser(ApiKeyDTO.class, ApiKeyDTO::getApiKey));
     }
 
-    public Order newOrder(final MarketID marketId, final OrderType orderType, final OrderPriceType orderPriceType, final BigDecimal qty, final BigDecimal price) throws Exception {
+    public Order newOrder(final String marketId, final OrderType orderType, final OrderPriceType orderPriceType, final BigDecimal qty, final BigDecimal price) throws Exception {
         final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
         final OrderRequestDTO payload = new OrderRequestDTO(bigDecimalFormat, orderType, orderPriceType, qty, price);
         return post(path, defaultSigner, payload, parser(OrderDTO.class, OrderDTO::getOrder));
     }
 
-    public Trades getTrades(final MarketID marketId, final Instant timestamp) throws Exception {
+    public Trades getTrades(final String marketId, final Instant timestamp) throws Exception {
         String path = format("/api/v2/markets/%s/trades", marketId).toLowerCase();
 
         if (timestamp != null) {
@@ -150,7 +149,7 @@ public class JSurbtc {
         return VERSION_SUPPLIER.get();
     }
 
-    public Trades getTrades(final MarketID marketId) throws Exception {
+    public Trades getTrades(final String marketId) throws Exception {
         return getTrades(marketId, null);
     }
 
@@ -165,12 +164,12 @@ public class JSurbtc {
         return get(path, noSignatureSigner, MarketsDTO.class, MarketsDTO::getMarkets);
     }
 
-    public Ticker getTicker(final MarketID marketId) throws Exception {
+    public Ticker getTicker(final String marketId) throws Exception {
         final String path = format("/api/v2/markets/%s/ticker", marketId).toLowerCase();
         return get(path, noSignatureSigner, TickerDTO.class, TickerDTO::getTicker);
     }
 
-    public OrderBook getOrderBook(final MarketID marketId) throws Exception {
+    public OrderBook getOrderBook(final String marketId) throws Exception {
         final String path = format("/api/v2/markets/%s/order_book", marketId).toLowerCase();
         return get(path, noSignatureSigner, OrderBookDTO.class, OrderBookDTO::getOrderBook);
     }
@@ -184,22 +183,22 @@ public class JSurbtc {
         return get("/api/v2/balances", defaultSigner, BalancesDTO.class, BalancesDTO::getBalances);
     }
 
-    public List<Order> getOrders(final MarketID marketId) throws Exception {
+    public List<Order> getOrders(final String marketId) throws Exception {
         final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
-    public List<Order> getOrders(final MarketID marketId, final OrderState orderState) throws Exception {
+    public List<Order> getOrders(final String marketId, final OrderState orderState) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&algo=", marketId, orderState).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
-    public List<Order> getOrders(final MarketID marketId, final BigDecimal minimunExchanged) throws Exception {
+    public List<Order> getOrders(final String marketId, final BigDecimal minimunExchanged) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?minimun_exchanged=%s", marketId, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }
 
-    public List<Order> getOrders(final MarketID marketId, final OrderState orderState, final BigDecimal minimunExchanged) throws Exception {
+    public List<Order> getOrders(final String marketId, final OrderState orderState, final BigDecimal minimunExchanged) throws Exception {
         final String path = format("/api/v2/markets/%s/orders?state=%s&minimun_exchanged=%s", marketId, orderState, bigDecimalFormat.format(minimunExchanged)).toLowerCase();
         return newPaginatedList(path, defaultSigner, OrdersDTO.class, OrdersDTO::getPagination, OrdersDTO::getOrders);
     }

@@ -64,6 +64,7 @@ public class JSurbtc {
     }
 
     private final static Logger LOGGER = Logger.getLogger(JSurbtc.class.getName());
+    private final static VersionSupplier VERSION_SUPPLIER  = VersionSupplier.INSTANCE;
 
     private final DecimalFormat bigDecimalFormat;
     private final HTTPClient httpClient;
@@ -88,7 +89,7 @@ public class JSurbtc {
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
-        this(new DefaultHTTPClient(proxy, key, nonceSupplier, VersionSupplier.INSTANCE.get()),
+        this(new DefaultHTTPClient(proxy, key, nonceSupplier, VERSION_SUPPLIER.get()),
                 newBigDecimalFormat(), 
                 json,
                 new DefaultSigner(secret),
@@ -134,6 +135,10 @@ public class JSurbtc {
         }
 
         return get(path, noSignatureSigner, parser(TradesDTO.class, TradesDTO::getTrades));
+    }
+
+    public String getVersion() {
+        return VERSION_SUPPLIER.get();
     }
 
     public Trades getTrades(final MarketID marketId) throws Exception {

@@ -19,6 +19,7 @@ import java.util.function.LongSupplier;
 import java.util.logging.Logger;
 
 import cl.daplay.jsurbtc.http.DefaultHTTPClient;
+import cl.daplay.jsurbtc.http.RetryHTTPClient;
 import cl.daplay.jsurbtc.jackson.dto.ApiKeyDTO;
 import cl.daplay.jsurbtc.jackson.dto.BalanceDTO;
 import cl.daplay.jsurbtc.jackson.dto.BalancesDTO;
@@ -64,7 +65,15 @@ public class JSurbtc {
     }
 
     private final static Logger LOGGER = Logger.getLogger(JSurbtc.class.getName());
+
     private final static VersionSupplier VERSION_SUPPLIER  = VersionSupplier.INSTANCE;
+
+    /**
+     * by default, this client will retry any HTTP error 5 times, returning the fifth Exception.
+     *
+     * You may customize this number by environment variable "JSURBTC.HTTP_MAX_RETRY"
+     */
+    private final static int HTTP_MAX_RETRY = Integer.parseInt(System.getProperty("JSURBTC.HTTP_MAX_RETRY", "5"));
 
     private final DecimalFormat bigDecimalFormat;
     private final HTTPClient httpClient;
@@ -73,23 +82,23 @@ public class JSurbtc {
     private final Signer noSignatureSigner;
 
     public JSurbtc() {
-        this(null, null, JSurbtc.newNonce(), null);
+        this(null, null, JSurbtc.newNonce(), null, HTTP_MAX_RETRY);
     }
 
     public JSurbtc(final String key, final String secret) {
-        this(key, secret, JSurbtc.newNonce(), null);
+        this(key, secret, JSurbtc.newNonce(), null, HTTP_MAX_RETRY);
     }
 
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier) {
-        this(key, secret, nonceSupplier, null);
+        this(key, secret, nonceSupplier, null, HTTP_MAX_RETRY);
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy) {
-        this(key, secret, nonceSupplier, JSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy));
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy, int httpMaxRetry) {
+        this(key, secret, nonceSupplier, JSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy), httpMaxRetry);
     }
 
-    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy) {
-        this(new DefaultHTTPClient(proxy, key, nonceSupplier, VERSION_SUPPLIER.get()),
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final JSON json, final Proxy proxy, int httpMaxRetry) {
+        this(new RetryHTTPClient(new DefaultHTTPClient(proxy, key, nonceSupplier, VERSION_SUPPLIER.get()), httpMaxRetry),
                 newBigDecimalFormat(), 
                 json,
                 new DefaultSigner(secret),
@@ -256,10 +265,6 @@ public class JSurbtc {
 
     private <T> T post(final String path, Signer signer, final Object payload, final HTTPClient.HTTPResponseHandler<T> responseHandler) throws Exception {
         return httpClient.post(path, signer, json.payload(payload), handlingErrors(responseHandler));
-    }
-
-    private <T> HTTPClient.HTTPResponseHandler<T> parser(final Class<T> valueType) {
-        return parser(valueType, Function.identity());
     }
 
     private <T, K> HTTPClient.HTTPResponseHandler<K> parser(final Class<T> valueType, final Function<T, K> mapper) {

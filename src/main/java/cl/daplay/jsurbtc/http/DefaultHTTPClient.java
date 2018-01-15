@@ -19,8 +19,6 @@ import cl.daplay.jsurbtc.*;
 
 public final class DefaultHTTPClient implements HTTPClient {
 
-    private final static Logger LOGGER = Logger.getLogger(DefaultHTTPClient.class.getName());
-
     private static final String BASE_PATH = "https://www.surbtc.com";
 
     private final Proxy proxy;
@@ -41,63 +39,26 @@ public final class DefaultHTTPClient implements HTTPClient {
     @Override
     public <T> T get(final String path, final Signer signer, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return doRequest(path, signer, "GET", null, responseHandler);
+
     }
 
     @Override
     public <T> T put(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return doRequest(path, signer, "PUT", jsonBody, responseHandler);
+
     }
 
     @Override
     public <T> T post(final String path, final Signer signer, final Supplier<String> jsonBody, final HTTPResponseHandler<T> responseHandler) throws Exception {
         return doRequest(path, signer, "POST", jsonBody, responseHandler);
-    }
-
-    @FunctionalInterface
-    interface ThrowingSupplier<T> {
-
-        T get() throws Exception;
-
-    }
-
-    private <T> T retry(final int limit, final ThrowingSupplier<T> supplier) throws Exception {
-        int retries = 0;
-        Exception lastEx = null;
-
-        while (true) {
-            if (retries > limit) {
-                if (lastEx != null) {
-                    throw lastEx;
-                }
-            }
-
-            try {
-                return supplier.get();
-            } catch (Exception ex) {
-                lastEx = ex;
-                retries = retries + 1;
-            }
-        }
 
     }
 
     private <T> T doRequest(final String path,
-            final Signer signer,
-            final String method,
-            final Supplier<String> bodySupplier,
-            final HTTPResponseHandler<T> responseHandler) throws Exception {
-        // TODO: this should be configurable
-        // TODO: move retrying to another implementation of HTTPClient
-        return retry(5, () -> {
-            return __doRequest(path, signer, method, bodySupplier, responseHandler);
-        });
-    }
-
-    private <T> T __doRequest(final String path,
-            final Signer signer,
-            final String method,
-            final Supplier<String> bodySupplier,
-            final HTTPResponseHandler<T> responseHandler) throws Exception {
+                            final Signer signer,
+                            final String method,
+                            final Supplier<String> bodySupplier,
+                            final HTTPResponseHandler<T> responseHandler) throws Exception {
         final URL url = new URL(BASE_PATH + path);
         final HttpURLConnection con = (HttpURLConnection) (proxy == null ? url.openConnection() : url.openConnection(proxy));
 

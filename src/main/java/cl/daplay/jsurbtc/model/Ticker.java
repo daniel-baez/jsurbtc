@@ -52,24 +52,6 @@ public class Ticker implements Serializable {
         this.priceVariation7Days = priceVariation7Days;
     }
 
-    /**
-     * example: if you asked for BTC_CLP this would be BTC
-     * @return `getBaseCurrency().getCurrency()`
-     */
-    @JsonIgnore
-    public String getBaseCurrency() {
-        return getVolume().getCurrency();
-    }
-
-    /**
-     * example: if you asked for BTC_CLP this would be CLP
-     * @return `getLastPrice().getCurrency()`
-     */
-    @JsonIgnore
-    public String getQuoteCurrency() {
-        return getLastPrice().getCurrency();
-    }
-
     public Amount getLastPrice() {
         return lastPrice;
     }

@@ -92,77 +92,6 @@ public class Order implements Serializable {
         this.paidFee = paidFee;
     }
 
-    /**
-     * @return for Bids, the amount you ended up getting (traded amount - paid fee) in baseCurrency
-     * for Asks, tradedAmount
-     */
-    @JsonIgnore
-    public Amount getActualAmount() {
-        if (type.equals("BID")) {
-            final Amount paidFee = getPaidFee();
-            final Amount tradedAmount = getTradedAmount();
-            return new Amount(tradedAmount.getCurrency(), tradedAmount.subtract(paidFee));
-        } else {
-            return tradedAmount;
-        }
-    }
-
-    /**
-     * @return always in 'quoteCurrency' returns totalExchaged - paidFee
-     */
-    @JsonIgnore
-    public Amount getActualExchanged() {
-        return totalExchanged.subtract(getPaidFeeQuoted());
-    }
-
-    /**
-     * @return tradedAmount / totalExchanged
-     */
-    @JsonIgnore
-    public Amount getExchangeRate() {
-        final boolean zeroTradingAmount = tradedAmount.compareTo(BigDecimal.ZERO) == 0;
-        final boolean zeroTotalExchanged = totalExchanged.compareTo(BigDecimal.ZERO) == 0;
-
-        if (zeroTradingAmount || zeroTotalExchanged) {
-            return new Amount(getBaseCurrency(), BigDecimal.ZERO);
-        }
-
-        return totalExchanged.divide(tradedAmount);
-    }
-
-    /**
-     * @return paid fee, always in quote currency
-     */
-    @JsonIgnore
-    public Amount getPaidFeeQuoted() {
-        if (type.equals("BID")) {
-            return getExchangeRate().multiply(getPaidFee());
-        }
-
-        return getPaidFee();
-    }
-
-    /**
-     * @return String of originalAmount.currency and totalExchanged.currency
-     */
-    @JsonIgnore
-    public String getMarketID() {
-        final String base = originalAmount.getCurrency();
-        final String quote = totalExchanged.getCurrency();
-
-        return String.format("%s-%s", base, quote);
-    }
-
-    /**
-     * If you made an order BTC_CLP, this would be BTC
-     *
-     * @return amount.currency
-     */
-    @JsonIgnore
-    public String getBaseCurrency() {
-        return amount.getCurrency();
-    }
-
     public long getId() {
         return id;
     }
@@ -277,12 +206,6 @@ public class Order implements Serializable {
                 ", tradedAmount=" + tradedAmount +
                 ", totalExchanged=" + totalExchanged +
                 ", paidFee=" + paidFee +
-                ", actualAmount=" + getActualAmount() +
-                ", marketID=" + getMarketID() +
-                ", getActualExchanged=" + getActualExchanged() +
-                ", getExchangeRate=" + getExchangeRate() +
-                ", getPaidFeeQuoted=" + getPaidFeeQuoted() +
-                ", baseCurrency=" + getBaseCurrency() +
                 '}';
     }
 }

@@ -43,7 +43,6 @@ import cl.daplay.jsurbtc.model.deposit.Deposit;
 import cl.daplay.jsurbtc.model.market.Market;
 import cl.daplay.jsurbtc.model.order.Order;
 import cl.daplay.jsurbtc.model.order.OrderBook;
-import cl.daplay.jsurbtc.model.order.OrderPriceType;
 import cl.daplay.jsurbtc.model.order.OrderState;
 import cl.daplay.jsurbtc.model.order.OrderType;
 import cl.daplay.jsurbtc.model.trades.Trades;
@@ -129,7 +128,7 @@ public class JSurbtc {
         return post(path, defaultSigner, new APIKeyRequestDTO(name, expiration), parser(ApiKeyDTO.class, ApiKeyDTO::getApiKey));
     }
 
-    public Order newOrder(final String marketId, final OrderType orderType, final OrderPriceType orderPriceType, final BigDecimal qty, final BigDecimal price) throws Exception {
+    public Order newOrder(final String marketId, final OrderType orderType, final String orderPriceType, final BigDecimal qty, final BigDecimal price) throws Exception {
         final String path = format("/api/v2/markets/%s/orders", marketId).toLowerCase();
         final OrderRequestDTO payload = new OrderRequestDTO(bigDecimalFormat, orderType, orderPriceType, qty, price);
         return post(path, defaultSigner, payload, parser(OrderDTO.class, OrderDTO::getOrder));

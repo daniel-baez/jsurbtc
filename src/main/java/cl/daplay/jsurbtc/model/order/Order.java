@@ -30,7 +30,7 @@ public class Order implements Serializable {
     @JsonProperty("fee_currency")
     private String feeCurrency;
     @JsonProperty("price_type")
-    private OrderPriceType priceType;
+    private String priceType;
     @JsonProperty("limit")
     private Amount limit;
     @JsonProperty("amount")
@@ -69,7 +69,7 @@ public class Order implements Serializable {
                  @JsonProperty("market_id") long marketId,
                  @JsonProperty("account_id") long accountId,
                  @JsonProperty("fee_currency") String feeCurrency,
-                 @JsonProperty("price_type") OrderPriceType priceType,
+                 @JsonProperty("price_type") String priceType,
                  @JsonProperty("limit") Amount limit,
                  @JsonProperty("amount") Amount amount,
                  @JsonProperty("original_amount") Amount originalAmount,
@@ -187,7 +187,7 @@ public class Order implements Serializable {
         return feeCurrency;
     }
 
-    public OrderPriceType getPriceType() {
+    public String getPriceType() {
         return priceType;
     }
 

@@ -1,12 +1,13 @@
 package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
+import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
 
-public class Withdrawal implements Serializable {
+public class JacksonWithdrawal implements Withdrawal, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -19,13 +20,13 @@ public class Withdrawal implements Serializable {
     @JsonProperty("created_at")
     private final Instant createdAt;
     @JsonProperty("withdrawal_data")
-    private final WithdrawalData withdrawalWithdrawalData;
+    private final JacksonWithdrawalData withdrawalWithdrawalData;
     @JsonProperty("amount")
     private final JacksonAmount amount;
     @JsonProperty("fee")
     private final JacksonAmount fee;
 
-    public Withdrawal(Withdrawal other) {
+    public JacksonWithdrawal(JacksonWithdrawal other) {
         this.id = other.id;
         this.state = other.state;
         this.currency = other.currency;
@@ -35,13 +36,13 @@ public class Withdrawal implements Serializable {
         this.fee = other.fee;
     }
 
-    public Withdrawal(@JsonProperty("id") long id,
-                      @JsonProperty("state") String state,
-                      @JsonProperty("currency") String currency,
-                      @JsonProperty("created_at") Instant createdAt,
-                      @JsonProperty("withdrawal_data") WithdrawalData withdrawalWithdrawalData,
-                      @JsonProperty("amount") JacksonAmount amount,
-                      @JsonProperty("fee") JacksonAmount fee) {
+    public JacksonWithdrawal(@JsonProperty("id") long id,
+                             @JsonProperty("state") String state,
+                             @JsonProperty("currency") String currency,
+                             @JsonProperty("created_at") Instant createdAt,
+                             @JsonProperty("withdrawal_data") JacksonWithdrawalData withdrawalWithdrawalData,
+                             @JsonProperty("amount") JacksonAmount amount,
+                             @JsonProperty("fee") JacksonAmount fee) {
         this.id = id;
         this.state = state;
         this.currency = currency;
@@ -67,7 +68,7 @@ public class Withdrawal implements Serializable {
         return createdAt;
     }
 
-    public WithdrawalData getWithdrawalWithdrawalData() {
+    public JacksonWithdrawalData getWithdrawalWithdrawalData() {
         return withdrawalWithdrawalData;
     }
 
@@ -97,7 +98,7 @@ public class Withdrawal implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Withdrawal that = (Withdrawal) o;
+        JacksonWithdrawal that = (JacksonWithdrawal) o;
 
         if (id != that.id) return false;
         if (state != null ? !state.equals(that.state) : that.state != null) return false;

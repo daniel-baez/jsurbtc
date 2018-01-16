@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.Instant;
 
-public class Account implements Serializable {
+public class JacksonAccount implements Serializable {
 
     private static final long serialVersionUID = 2017_10_22;
 
@@ -40,20 +40,20 @@ public class Account implements Serializable {
     private final String peCciNumber;
 
     @JsonCreator
-    public Account(@JsonProperty("id") long id,
-                   @JsonProperty("account_number") String accountNumber,
-                   @JsonProperty("account_type") String accountType,
-                   @JsonProperty("bank_id") long bankId,
-                   @JsonProperty("created_at") Instant createdAt,
-                   @JsonProperty("currency") String currency,
-                   @JsonProperty("document_number") String documentNumber,
-                   @JsonProperty("email") String email,
-                   @JsonProperty("full_name") String fullName,
-                   @JsonProperty("national_number_identifier") String nationalNumberIdentifier,
-                   @JsonProperty("phone") String phone,
-                   @JsonProperty("updated_at") Instant updatedAt,
-                   @JsonProperty("bank_name") String bankName,
-                   @JsonProperty("pe_cci_number") String peCciNumber) {
+    public JacksonAccount(@JsonProperty("id") long id,
+                          @JsonProperty("account_number") String accountNumber,
+                          @JsonProperty("account_type") String accountType,
+                          @JsonProperty("bank_id") long bankId,
+                          @JsonProperty("created_at") Instant createdAt,
+                          @JsonProperty("currency") String currency,
+                          @JsonProperty("document_number") String documentNumber,
+                          @JsonProperty("email") String email,
+                          @JsonProperty("full_name") String fullName,
+                          @JsonProperty("national_number_identifier") String nationalNumberIdentifier,
+                          @JsonProperty("phone") String phone,
+                          @JsonProperty("updated_at") Instant updatedAt,
+                          @JsonProperty("bank_name") String bankName,
+                          @JsonProperty("pe_cci_number") String peCciNumber) {
         this.id = id;
         this.accountNumber = accountNumber;
         this.accountType = accountType;
@@ -131,7 +131,7 @@ public class Account implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final Account account = (Account) o;
+        final JacksonAccount account = (JacksonAccount) o;
 
         if (id != account.id) return false;
         if (bankId != account.bankId) return false;

@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.dto;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonPage;
-import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
+import cl.daplay.jsurbtc.jackson.model.withdrawal.JacksonWithdrawal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,12 +14,12 @@ import java.util.List;
 public final class WithdrawalsDTO {
 
     @JsonProperty("withdrawals")
-    private final List<Withdrawal> withdrawals;
+    private final List<JacksonWithdrawal> withdrawals;
     @JsonProperty("meta")
     private final JacksonPage pagination;
 
     @JsonCreator
-    public WithdrawalsDTO(@JsonProperty("orders") List<Withdrawal> orders,
+    public WithdrawalsDTO(@JsonProperty("orders") List<JacksonWithdrawal> orders,
                           @JsonProperty("meta") JacksonPage pagination) {
         this.withdrawals = orders;
         this.pagination = pagination;
@@ -29,7 +29,7 @@ public final class WithdrawalsDTO {
         return pagination;
     }
 
-    public List<Withdrawal> getWithdrawals() {
+    public List<JacksonWithdrawal> getWithdrawals() {
         return withdrawals;
     }
 

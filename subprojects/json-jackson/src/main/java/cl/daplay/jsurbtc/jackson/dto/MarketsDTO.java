@@ -1,6 +1,6 @@
 package cl.daplay.jsurbtc.jackson.dto;
 
-import cl.daplay.jsurbtc.model.market.Market;
+import cl.daplay.jsurbtc.jackson.model.market.JacksonMarket;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,14 +11,14 @@ import java.util.List;
 public final class MarketsDTO {
 
     @JsonProperty("markets")
-    private final List<Market> markets;
+    private final List<JacksonMarket> markets;
 
     @JsonCreator
-    public MarketsDTO(@JsonProperty("markets") List<Market> markets) {
+    public MarketsDTO(@JsonProperty("markets") List<JacksonMarket> markets) {
         this.markets = markets;
     }
 
-    public List<Market> getMarkets() {
+    public List<JacksonMarket> getMarkets() {
         return markets;
     }
 

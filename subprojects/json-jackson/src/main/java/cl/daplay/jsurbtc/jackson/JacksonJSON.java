@@ -30,6 +30,7 @@ import java.util.Map;
 import static java.lang.String.format;
 import static java.util.Arrays.stream;
 import static java.util.Collections.singletonMap;
+import static java.util.stream.Collectors.toList;
 
 public enum JacksonJSON implements JSON {
     INSTANCE;
@@ -80,7 +81,10 @@ public enum JacksonJSON implements JSON {
 
     @Override
     public List<Market> markets(String json) throws IOException {
-        return objectMapper.readValue(json, MarketsDTO.class).getMarkets();
+        return objectMapper.readValue(json, MarketsDTO.class)
+                .getMarkets()
+                .stream()
+                .collect(toList());
     }
 
     @Override
@@ -110,22 +114,31 @@ public enum JacksonJSON implements JSON {
 
     @Override
     public List<Balance> balances(String json) throws IOException {
-        return objectMapper.readValue(json, BalancesDTO.class).getBalances();
+        return objectMapper.readValue(json, BalancesDTO.class).getBalances()
+                .stream()
+                .collect(toList());
+
     }
 
     @Override
     public List<Order> orders(String json) throws IOException {
-        return objectMapper.readValue(json, OrdersDTO.class).getOrders();
+        return objectMapper.readValue(json, OrdersDTO.class).getOrders()
+                .stream()
+                .collect(toList());
     }
 
     @Override
     public List<Deposit> deposits(String json) throws IOException {
-        return objectMapper.readValue(json, DepositsDTO.class).getDeposits();
+        return objectMapper.readValue(json, DepositsDTO.class).getDeposits()
+                .stream()
+                .collect(toList());
     }
 
     @Override
     public List<Withdrawal> withdrawls(String json) throws IOException {
-        return objectMapper.readValue(json, WithdrawalsDTO.class).getWithdrawals();
+        return objectMapper.readValue(json, WithdrawalsDTO.class).getWithdrawals()
+                .stream()
+                .collect(toList());
     }
 
     @Override

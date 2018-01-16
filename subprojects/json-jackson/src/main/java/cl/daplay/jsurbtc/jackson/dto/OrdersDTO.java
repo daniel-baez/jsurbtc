@@ -1,7 +1,8 @@
 package cl.daplay.jsurbtc.jackson.dto;
 
+import cl.daplay.jsurbtc.jackson.model.JacksonPage;
+import cl.daplay.jsurbtc.jackson.model.order.JacksonOrder;
 import cl.daplay.jsurbtc.model.Page;
-import cl.daplay.jsurbtc.model.order.Order;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,13 +15,13 @@ import java.util.List;
 public final class OrdersDTO {
 
     @JsonProperty("orders")
-    private final List<Order> orders;
+    private final List<JacksonOrder> orders;
     @JsonProperty("meta")
-    private final Page pagination;
+    private final JacksonPage pagination;
 
     @JsonCreator
-    public OrdersDTO(@JsonProperty("orders") List<Order> orders,
-                     @JsonProperty("meta") Page pagination) {
+    public OrdersDTO(@JsonProperty("orders") List<JacksonOrder> orders,
+                     @JsonProperty("meta") JacksonPage pagination) {
         this.orders = orders;
         this.pagination = pagination;
     }
@@ -29,7 +30,7 @@ public final class OrdersDTO {
         return pagination;
     }
 
-    public List<Order> getOrders() {
+    public List<JacksonOrder> getOrders() {
         return orders;
     }
 

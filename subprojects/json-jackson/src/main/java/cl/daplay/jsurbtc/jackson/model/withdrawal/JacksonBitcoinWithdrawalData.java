@@ -3,7 +3,7 @@ package cl.daplay.jsurbtc.jackson.model.withdrawal;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class BitcoinWithdrawalData extends WithdrawalData {
+public class JacksonBitcoinWithdrawalData extends JacksonWithdrawalData {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -13,9 +13,9 @@ public class BitcoinWithdrawalData extends WithdrawalData {
     private final String txHash;
 
     @JsonCreator
-    public BitcoinWithdrawalData(@JsonProperty("type") String type,
-                                 @JsonProperty("id") String targetAddress,
-                                 @JsonProperty("created_at") String txHash){
+    public JacksonBitcoinWithdrawalData(@JsonProperty("type") String type,
+                                        @JsonProperty("id") String targetAddress,
+                                        @JsonProperty("created_at") String txHash){
         super();
         this.targetAddress = targetAddress;
         this.txHash = txHash;
@@ -34,7 +34,7 @@ public class BitcoinWithdrawalData extends WithdrawalData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BitcoinWithdrawalData that = (BitcoinWithdrawalData) o;
+        JacksonBitcoinWithdrawalData that = (JacksonBitcoinWithdrawalData) o;
 
         if (targetAddress != null ? !targetAddress.equals(that.targetAddress) : that.targetAddress != null)
             return false;

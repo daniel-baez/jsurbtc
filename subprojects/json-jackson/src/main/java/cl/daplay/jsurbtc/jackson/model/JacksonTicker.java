@@ -1,6 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model;
 
 import cl.daplay.jsurbtc.jackson.BigDecimalToStringSerializer;
+import cl.daplay.jsurbtc.model.Ticker;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Ticker implements Serializable {
+public class JacksonTicker implements Ticker, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -27,7 +28,7 @@ public class Ticker implements Serializable {
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal priceVariation7Days;
 
-    public Ticker(Ticker other) {
+    public JacksonTicker(JacksonTicker other) {
         this.lastPrice = other.lastPrice;
         this.minAsk = other.minAsk;
         this.maxBid = other.maxBid;
@@ -37,12 +38,12 @@ public class Ticker implements Serializable {
     }
 
     @JsonCreator
-    public Ticker(@JsonProperty("last_price") final JacksonAmount lastPrice,
-                  @JsonProperty("min_ask") final JacksonAmount minAsk,
-                  @JsonProperty("max_bid") final JacksonAmount maxBid,
-                  @JsonProperty("volume") final JacksonAmount volume,
-                  @JsonProperty("price_variation_24h") final BigDecimal priceVariation24Hours,
-                  @JsonProperty("price_variation_7d") final BigDecimal priceVariation7Days) {
+    public JacksonTicker(@JsonProperty("last_price") final JacksonAmount lastPrice,
+                         @JsonProperty("min_ask") final JacksonAmount minAsk,
+                         @JsonProperty("max_bid") final JacksonAmount maxBid,
+                         @JsonProperty("volume") final JacksonAmount volume,
+                         @JsonProperty("price_variation_24h") final BigDecimal priceVariation24Hours,
+                         @JsonProperty("price_variation_7d") final BigDecimal priceVariation7Days) {
         this.lastPrice = lastPrice;
         this.minAsk = minAsk;
         this.maxBid = maxBid;
@@ -86,7 +87,7 @@ public class Ticker implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Ticker ticker = (Ticker) o;
+        JacksonTicker ticker = (JacksonTicker) o;
 
         if (lastPrice != null ? !lastPrice.equals(ticker.lastPrice) : ticker.lastPrice != null) return false;
         if (minAsk != null ? !minAsk.equals(ticker.minAsk) : ticker.minAsk != null) return false;

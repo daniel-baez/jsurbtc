@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
-public class FiatWithdrawalData extends WithdrawalData {
+public class JacksonFiatWithdrawalData extends JacksonWithdrawalData {
 
     private static final long serialVersionUID = 2017_08_06;
 
@@ -20,19 +20,19 @@ public class FiatWithdrawalData extends WithdrawalData {
     @JsonProperty("statement_ref")
     private final String statementRef;
     @JsonProperty("fiat_account")
-    private final Account account;
+    private final JacksonAccount account;
     @JsonProperty("source_account")
-    private final Account sourceAccount;
+    private final JacksonAccount sourceAccount;
 
     @JsonCreator
-    public FiatWithdrawalData(@JsonProperty("type") String type,
-                              @JsonProperty("id") long id,
-                              @JsonProperty("created_at") Instant createdAt,
-                              @JsonProperty("updated_at") Instant updatedAt,
-                              @JsonProperty("transacted_at") Instant transactedAt,
-                              @JsonProperty("statement_ref") String statementRef,
-                              @JsonProperty("fiat_account") Account account,
-                              @JsonProperty("source_account") Account sourceAccount) {
+    public JacksonFiatWithdrawalData(@JsonProperty("type") String type,
+                                     @JsonProperty("id") long id,
+                                     @JsonProperty("created_at") Instant createdAt,
+                                     @JsonProperty("updated_at") Instant updatedAt,
+                                     @JsonProperty("transacted_at") Instant transactedAt,
+                                     @JsonProperty("statement_ref") String statementRef,
+                                     @JsonProperty("fiat_account") JacksonAccount account,
+                                     @JsonProperty("source_account") JacksonAccount sourceAccount) {
         super();
         this.id = id;
         this.createdAt = createdAt;
@@ -63,11 +63,11 @@ public class FiatWithdrawalData extends WithdrawalData {
         return statementRef;
     }
 
-    public Account getAccount() {
+    public JacksonAccount getAccount() {
         return account;
     }
 
-    public Account getSourceAccount() {
+    public JacksonAccount getSourceAccount() {
         return sourceAccount;
     }
 
@@ -76,7 +76,7 @@ public class FiatWithdrawalData extends WithdrawalData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FiatWithdrawalData that = (FiatWithdrawalData) o;
+        JacksonFiatWithdrawalData that = (JacksonFiatWithdrawalData) o;
 
         if (id != that.id) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;

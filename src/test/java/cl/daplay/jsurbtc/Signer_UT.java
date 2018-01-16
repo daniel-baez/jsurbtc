@@ -2,10 +2,7 @@ package cl.daplay.jsurbtc;
 
 import org.junit.Test;
 
-import cl.daplay.jsurbtc.signers.DefaultSigner;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import cl.daplay.jsurbtc.signer.DefaultSigner;
 
 import static org.junit.Assert.assertEquals;
 

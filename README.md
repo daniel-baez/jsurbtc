@@ -68,7 +68,7 @@ To run integration tests (those ended in _IT.java), you'll need to add the follo
 
 # Todo
 
-- Remove jackson dependency 
+- Remove cl.daplay.jsurbtc.jackson dependency
 - Extract public API
 
 # Errors

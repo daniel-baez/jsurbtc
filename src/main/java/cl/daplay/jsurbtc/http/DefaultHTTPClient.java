@@ -3,7 +3,7 @@ package cl.daplay.jsurbtc.http;
 import cl.daplay.jsurbtc.HTTPClient;
 import cl.daplay.jsurbtc.Signer;
 import cl.daplay.jsurbtc.Utils;
-import cl.daplay.jsurbtc.model.JSurbtcException;
+import cl.daplay.jsurbtc.jackson.model.JacksonJSurbtcException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -67,7 +67,7 @@ public final class DefaultHTTPClient implements HTTPClient {
             con.setRequestMethod(method);
 
             if (key == null || key.isEmpty()) {
-                throw new JSurbtcException("API Key is missing.");
+                throw new JacksonJSurbtcException("API Key is missing.");
             }
 
             con.setRequestProperty("X-SBTC-APIKEY", key);

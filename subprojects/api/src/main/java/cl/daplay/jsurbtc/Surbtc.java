@@ -2,13 +2,13 @@ package cl.daplay.jsurbtc;
 
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.Ticker;
-import cl.daplay.jsurbtc.model.balance.Balance;
-import cl.daplay.jsurbtc.model.deposit.Deposit;
-import cl.daplay.jsurbtc.model.market.Market;
-import cl.daplay.jsurbtc.model.order.Order;
-import cl.daplay.jsurbtc.model.order.OrderBook;
-import cl.daplay.jsurbtc.model.trades.Trades;
-import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
+import cl.daplay.jsurbtc.model.Balance;
+import cl.daplay.jsurbtc.model.Deposit;
+import cl.daplay.jsurbtc.model.Market;
+import cl.daplay.jsurbtc.model.Order;
+import cl.daplay.jsurbtc.model.OrderBook;
+import cl.daplay.jsurbtc.model.Trades;
+import cl.daplay.jsurbtc.model.Withdrawal;
 
 import java.math.BigDecimal;
 import java.time.Instant;

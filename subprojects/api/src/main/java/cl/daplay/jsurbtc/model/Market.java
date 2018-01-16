@@ -1,4 +1,4 @@
-package cl.daplay.jsurbtc.model.market;
+package cl.daplay.jsurbtc.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

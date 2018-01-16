@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model.order;
 
 import cl.daplay.jsurbtc.jackson.BigDecimalToStringSerializer;
-import cl.daplay.jsurbtc.model.order.Offer;
+import cl.daplay.jsurbtc.model.OrderBook;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "price", "amount" })
-public class JacksonOffer implements Offer, Serializable {
+public class JacksonOffer implements OrderBook.Offer, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 

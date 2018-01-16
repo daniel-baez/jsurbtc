@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model.deposit;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
-import cl.daplay.jsurbtc.model.deposit.Deposit;
+import cl.daplay.jsurbtc.model.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

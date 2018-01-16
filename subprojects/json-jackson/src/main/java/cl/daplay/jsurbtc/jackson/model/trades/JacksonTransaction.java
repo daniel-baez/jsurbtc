@@ -1,6 +1,6 @@
 package cl.daplay.jsurbtc.jackson.model.trades;
 
-import cl.daplay.jsurbtc.model.trades.Transaction;
+import cl.daplay.jsurbtc.model.Trades;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "timestamp", "amount", "price", "direction" })
-public class JacksonTransaction implements Transaction, Serializable, Comparable<Transaction> {
+public class JacksonTransaction implements Trades.Transaction, Serializable, Comparable<Trades.Transaction> {
 
     private static final long serialVersionUID = 2017_10_27;
 
@@ -79,7 +79,7 @@ public class JacksonTransaction implements Transaction, Serializable, Comparable
     }
 
     @Override
-    public int compareTo(final Transaction o) {
+    public int compareTo(final Trades.Transaction o) {
         return this.timestamp.compareTo(o.getTimestamp());
     }
 }

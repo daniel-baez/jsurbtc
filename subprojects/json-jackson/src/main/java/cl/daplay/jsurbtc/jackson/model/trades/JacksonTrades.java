@@ -1,7 +1,6 @@
 package cl.daplay.jsurbtc.jackson.model.trades;
 
-import cl.daplay.jsurbtc.model.trades.Trades;
-import cl.daplay.jsurbtc.model.trades.Transaction;
+import cl.daplay.jsurbtc.model.Trades;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,7 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class JacksonTrades implements Trades, Serializable, Iterable<Transaction> {
+public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Transaction> {
 
     private static final long serialVersionUID = 2017_10_27;
 

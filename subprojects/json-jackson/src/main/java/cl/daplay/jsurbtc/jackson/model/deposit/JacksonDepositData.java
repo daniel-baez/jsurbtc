@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model.deposit;
 
 import cl.daplay.jsurbtc.Utils;
-import cl.daplay.jsurbtc.model.deposit.DepositData;
+import cl.daplay.jsurbtc.model.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class JacksonDepositData  implements DepositData, Serializable {
+public class JacksonDepositData  implements Deposit.DepositData, Serializable {
 
     private static final long serialVersionUID = 2017_10_22;
 

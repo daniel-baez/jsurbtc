@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model.order;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
-import cl.daplay.jsurbtc.model.order.Order;
+import cl.daplay.jsurbtc.model.Order;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

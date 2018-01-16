@@ -1,7 +1,7 @@
 package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
-import cl.daplay.jsurbtc.model.withdrawal.Withdrawal;
+import cl.daplay.jsurbtc.model.Withdrawal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;

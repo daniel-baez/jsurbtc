@@ -4,8 +4,8 @@ import cl.daplay.jsurbtc.JSON;
 import cl.daplay.jsurbtc.model.ApiKey;
 import cl.daplay.jsurbtc.model.JSurbtcException;
 import cl.daplay.jsurbtc.model.Ticker;
-import cl.daplay.jsurbtc.model.market.Market;
-import cl.daplay.jsurbtc.model.order.Order;
+import cl.daplay.jsurbtc.model.Market;
+import cl.daplay.jsurbtc.model.Order;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -133,6 +133,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void page() {
+        /// aqui hay que probar todos los archivos de ejemplo y punto
     }
 
     @Test

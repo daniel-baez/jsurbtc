@@ -61,7 +61,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void apiKey() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/api_key.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/api_key.json"));
         ApiKey apiKey = json.apiKey(jsonExample);
 
         Assert.assertTrue(jsonExample.contains(apiKey.getId()));
@@ -71,7 +71,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void markets() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/markets.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/markets.json"));
         List<Market> markets = json.markets(jsonExample);
 
         Assert.assertFalse(markets.isEmpty());
@@ -79,17 +79,17 @@ public class JacksonJSON_UT {
 
     @Test
     public void order() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/order.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/order.json"));
         Order order = json.order(jsonExample);
 
-        Assert.assertTrue(jsonExample.contains(order.getId() + ".json"));
+        Assert.assertTrue(jsonExample.contains(order.getId() + ""));
         Assert.assertTrue(jsonExample.contains(order.getType()));
         Assert.assertTrue(jsonExample.contains(order.getState()));
     }
 
     @Test
     public void ticker() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/ticker.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/ticker.json"));
         Ticker ticker = json.ticker(jsonExample);
 
         Assert.assertTrue(ticker.getLastPrice().longValueExact() == 1749000);
@@ -98,7 +98,7 @@ public class JacksonJSON_UT {
     @Test
     public void trades() throws IOException {
         for (int i = 1; i < 8; i++) {
-            String fileName = format("/trades%d.json.json", i);
+            String fileName = format("/trades%d.json", i);
             String jsonExample = convertStreamToString(getClass().getResourceAsStream(fileName));
             Trades trades = json.trades(jsonExample);
 
@@ -111,7 +111,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void order_book() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/order_book.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/order_book.json"));
         OrderBook orderBook = json.orderBook(jsonExample);
 
         Assert.assertTrue(orderBook.getAsks().size() == 35);
@@ -120,7 +120,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void balances() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/balances.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/balances.json"));
         List<Balance> balances = json.balances(jsonExample);
 
         Assert.assertTrue(balances.size() == 4);
@@ -128,7 +128,7 @@ public class JacksonJSON_UT {
 
     @Test
     public void balance() throws IOException {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/balance.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/balance.json"));
         Balance balance = json.balance(jsonExample);
 
         Assert.assertTrue(balance.getAccountId() == 1898);
@@ -209,22 +209,22 @@ public class JacksonJSON_UT {
 
     @Test
     public void exception() throws Exception {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/exception.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/exception.json"));
         JSurbtcException exception = json.exception(400, jsonExample);
-        Assert.assertTrue(exception.message.equals("authentication failed.json"));
+        Assert.assertTrue(exception.message.equals("authentication failed"));
     }
 
     @Test
     public void exception2() throws Exception {
-        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/exception2.json.json"));
+        String jsonExample = convertStreamToString(getClass().getResourceAsStream("/exception2.json"));
         JSurbtcException exception = json.exception(400, jsonExample);
-        Assert.assertTrue(exception.message.equals("Validation Failed.json"));
-        Assert.assertTrue(exception.code.equals("invalid_record.json"));
+        Assert.assertTrue(exception.message.equals("Validation Failed"));
+        Assert.assertTrue(exception.code.equals("invalid_record"));
         Assert.assertTrue(exception.details.length == 1);
-        Assert.assertTrue(exception.details[0].resource.equals("Bid.json"));
-        Assert.assertTrue(exception.details[0].field.equals("amount_cents.json"));
-        Assert.assertTrue(exception.details[0].code.equals("insolvent.json"));
-        Assert.assertTrue(exception.details[0].message.equals("insolvent.json"));
+        Assert.assertTrue(exception.details[0].resource.equals("Bid"));
+        Assert.assertTrue(exception.details[0].field.equals("amount_cents"));
+        Assert.assertTrue(exception.details[0].code.equals("insolvent"));
+        Assert.assertTrue(exception.details[0].message.equals("insolvent"));
     }
 
 }

@@ -14,7 +14,7 @@ public interface Withdrawal extends Serializable {
 
     Instant getCreatedAt();
 
-    WithdrawalData getWithdrawalWithdrawalData();
+    WithdrawalData getWithdrawalData();
 
     BigDecimal getAmount();
 

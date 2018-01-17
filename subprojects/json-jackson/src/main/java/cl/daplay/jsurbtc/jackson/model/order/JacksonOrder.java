@@ -42,23 +42,6 @@ public class JacksonOrder implements Order, Serializable {
     @JsonProperty("paid_fee")
     private JacksonAmount paidFee;
 
-    public JacksonOrder(JacksonOrder other) {
-        this.id = other.id;
-        this.type = other.type;
-        this.state = other.state;
-        this.createdAt = other.createdAt;
-        this.marketId = other.marketId;
-        this.accountId = other.accountId;
-        this.feeCurrency = other.feeCurrency;
-        this.priceType = other.priceType;
-        this.limit = other.limit;
-        this.amount = other.amount;
-        this.originalAmount = other.originalAmount;
-        this.tradedAmount = other.tradedAmount;
-        this.totalExchanged = other.totalExchanged;
-        this.paidFee = other.paidFee;
-    }
-
     @JsonCreator
     public JacksonOrder(@JsonProperty("id") long id,
                         @JsonProperty("type") String type,

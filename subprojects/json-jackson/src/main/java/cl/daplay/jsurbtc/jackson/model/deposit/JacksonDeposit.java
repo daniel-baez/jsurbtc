@@ -30,16 +30,6 @@ public class JacksonDeposit  implements Deposit, Serializable {
     @JsonProperty("fee")
     private final JacksonAmount fee;
 
-    public JacksonDeposit(JacksonDeposit other) {
-        this.id = other.id;
-        this.state = other.state;
-        this.currency = other.currency;
-        this.createdAt = other.createdAt;
-        this.depositData = other.depositData;
-        this.amount = other.amount;
-        this.fee = other.fee;
-    }
-
     @JsonCreator
     public JacksonDeposit(@JsonProperty("id") final long id,
                           @JsonProperty("state") final String state,

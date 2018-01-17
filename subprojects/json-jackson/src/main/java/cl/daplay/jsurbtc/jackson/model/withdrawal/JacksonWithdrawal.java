@@ -27,16 +27,6 @@ public class JacksonWithdrawal implements Withdrawal, Serializable {
     @JsonProperty("fee")
     private final JacksonAmount fee;
 
-    public JacksonWithdrawal(JacksonWithdrawal other) {
-        this.id = other.id;
-        this.state = other.state;
-        this.currency = other.currency;
-        this.createdAt = other.createdAt;
-        this.withdrawalWithdrawalData = other.withdrawalWithdrawalData;
-        this.amount = other.amount;
-        this.fee = other.fee;
-    }
-
     public JacksonWithdrawal(@JsonProperty("id") long id,
                              @JsonProperty("state") String state,
                              @JsonProperty("currency") String currency,

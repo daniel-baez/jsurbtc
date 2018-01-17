@@ -19,10 +19,6 @@ public class JacksonAmount {
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal amount;
 
-    public JacksonAmount(JacksonAmount other) {
-        this(other.getCurrency(), other.getAmount());
-    }
-
     @JsonCreator
     public JacksonAmount(@JsonProperty("currency") final String currency,
                          @JsonProperty("amount") final BigDecimal amount) {
@@ -39,4 +35,3 @@ public class JacksonAmount {
     }
 
 }
-

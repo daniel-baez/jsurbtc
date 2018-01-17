@@ -27,15 +27,6 @@ public class JacksonBalance implements Balance, Serializable {
     @JsonProperty("pending_withdraw_amount")
     private final JacksonAmount pendingWithdrawAmount;
 
-    public JacksonBalance(JacksonBalance other) {
-        this.accountId = other.accountId;
-        this.id = other.id;
-        this.amount = other.amount;
-        this.availableAmount = other.availableAmount;
-        this.frozenAmount = other.frozenAmount;
-        this.pendingWithdrawAmount = other.pendingWithdrawAmount;
-    }
-
     @JsonCreator
     public JacksonBalance(@JsonProperty("account_id") final long accountId,
                           @JsonProperty("id") final String id,

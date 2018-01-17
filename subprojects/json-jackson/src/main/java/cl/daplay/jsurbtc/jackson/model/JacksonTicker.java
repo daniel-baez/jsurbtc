@@ -28,15 +28,6 @@ public class JacksonTicker implements Ticker, Serializable {
     @JsonSerialize(using = BigDecimalToStringSerializer.class)
     private final BigDecimal priceVariation7Days;
 
-    public JacksonTicker(JacksonTicker other) {
-        this.lastPrice = other.lastPrice;
-        this.minAsk = other.minAsk;
-        this.maxBid = other.maxBid;
-        this.volume = other.volume;
-        this.priceVariation24Hours = other.priceVariation24Hours;
-        this.priceVariation7Days = other.priceVariation7Days;
-    }
-
     @JsonCreator
     public JacksonTicker(@JsonProperty("last_price") final JacksonAmount lastPrice,
                          @JsonProperty("min_ask") final JacksonAmount minAsk,

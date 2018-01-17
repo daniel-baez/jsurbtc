@@ -23,14 +23,6 @@ public class JacksonMarket implements Market, Serializable {
     @JsonProperty("minimum_order_amount")
     private final JacksonAmount minimumOrderAmount;
 
-    public JacksonMarket(JacksonMarket other) {
-        this.id = other.id;
-        this.name = other.name;
-        this.baseCurrency = other.baseCurrency;
-        this.quoteCurrency = other.quoteCurrency;
-        this.minimumOrderAmount = other.minimumOrderAmount;
-    }
-
     @JsonCreator
     public JacksonMarket(@JsonProperty("id") final String id,
                          @JsonProperty("name") final String name,

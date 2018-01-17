@@ -19,11 +19,6 @@ public class JacksonOrderBook implements OrderBook, Serializable {
     @JsonProperty("asks")
     private final List<Offer> asks;
 
-    public JacksonOrderBook(JacksonOrderBook other) {
-        this.bids = other.bids;
-        this.asks = other.asks;
-    }
-
     @JsonCreator
     public JacksonOrderBook(@JsonProperty("bids") List<JacksonOffer> bids,
                             @JsonProperty("asks") List<JacksonOffer> asks) {

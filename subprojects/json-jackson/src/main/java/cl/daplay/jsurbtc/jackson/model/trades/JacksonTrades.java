@@ -22,12 +22,6 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
     @JsonProperty("entries")
     private final List<Transaction> entries;
 
-    public JacksonTrades(JacksonTrades other) {
-        this.timestamp = other.timestamp;
-        this.lastTimestamp = other.lastTimestamp;
-        this.entries = other.entries;
-    }
-
     @JsonCreator
     public JacksonTrades(@JsonProperty("timestamp") final Instant timestamp,
                          @JsonProperty("last_timestamp") final Instant lastTimestamp,

@@ -34,16 +34,6 @@ public class JacksonApiKey implements ApiKey, Serializable {
     @JsonProperty("secret")
     private final String secret;
 
-    public JacksonApiKey(JacksonApiKey other) {
-        this.id = other.id;
-        this.name = other.name;
-        this.expirationTime = other.expirationTime;
-        this.enabled = other.enabled;
-        this.expired = other.expired;
-        this.lastAccessAt = other.lastAccessAt;
-        this.secret = other.secret;
-    }
-
     @JsonCreator
     public JacksonApiKey(@JsonProperty("id") final String id,
                          @JsonProperty("name") final String name,

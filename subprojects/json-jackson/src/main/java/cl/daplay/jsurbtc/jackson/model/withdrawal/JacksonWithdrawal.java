@@ -68,7 +68,7 @@ public class JacksonWithdrawal implements Withdrawal, Serializable {
         return createdAt;
     }
 
-    public JacksonWithdrawalData getWithdrawalWithdrawalData() {
+    public JacksonWithdrawalData getWithdrawalData() {
         return withdrawalWithdrawalData;
     }
 

@@ -4,9 +4,6 @@ import cl.daplay.jsurbtc.jackson.model.order.JacksonOrderBook;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public final class OrderBookDTO {
 
     @JsonProperty("order_book")

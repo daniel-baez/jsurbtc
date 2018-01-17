@@ -4,9 +4,6 @@ import cl.daplay.jsurbtc.jackson.model.order.JacksonOrder;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public final class OrderDTO {
 
     @JsonProperty("order")
@@ -21,18 +18,4 @@ public final class OrderDTO {
         return order;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderDTO orderDTO = (OrderDTO) o;
-
-        return order.equals(orderDTO.order);
-    }
-
-    @Override
-    public int hashCode() {
-        return order.hashCode();
-    }
 }

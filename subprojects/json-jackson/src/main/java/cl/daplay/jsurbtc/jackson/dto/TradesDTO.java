@@ -18,18 +18,4 @@ public final class TradesDTO {
         return trades;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        final TradesDTO tradesDTO = (TradesDTO) o;
-
-        return trades != null ? trades.equals(tradesDTO.trades) : tradesDTO.trades == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return trades != null ? trades.hashCode() : 0;
-    }
 }

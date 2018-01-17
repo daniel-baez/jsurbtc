@@ -1,9 +1,7 @@
 package cl.daplay.jsurbtc.jackson;
 
-import cl.daplay.jsurbtc.Constants;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
@@ -13,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 public final class BigDecimalFormat_UT {
 
     @Test
-    public void test() throws IOException {
+    public void test() {
         DecimalFormat decimalFormat = newBigDecimalFormat();
 
         assertEquals("0.4", decimalFormat.format(new BigDecimal("0.4")));

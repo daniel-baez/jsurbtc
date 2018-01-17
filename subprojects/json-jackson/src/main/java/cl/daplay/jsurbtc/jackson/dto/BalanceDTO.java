@@ -18,18 +18,4 @@ public final class BalanceDTO {
         return balance;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        BalanceDTO that = (BalanceDTO) o;
-
-        return balance.equals(that.balance);
-    }
-
-    @Override
-    public int hashCode() {
-        return balance.hashCode();
-    }
 }

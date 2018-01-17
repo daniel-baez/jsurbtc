@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +31,10 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
     @JsonCreator
     public JacksonTrades(@JsonProperty("timestamp") final Instant timestamp,
                          @JsonProperty("last_timestamp") final Instant lastTimestamp,
-                         @JsonProperty("entries") final List<Transaction> entries) {
+                         @JsonProperty("entries") final List<JacksonTransaction> entries) {
         this.timestamp = timestamp;
         this.lastTimestamp = lastTimestamp;
-        this.entries = entries;
+        this.entries = new ArrayList<>(entries);
     }
 
     public Optional<Instant> getTimestamp() {
@@ -50,7 +51,7 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
 
     @Override
     public Iterator<Transaction> iterator() {
-        return entries.iterator();
+        return getEntries().iterator();
     }
 
     @Override

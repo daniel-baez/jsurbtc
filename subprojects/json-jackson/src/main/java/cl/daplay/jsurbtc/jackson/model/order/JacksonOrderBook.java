@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonPropertyOrder({ "asks", "bids" })
@@ -24,10 +25,10 @@ public class JacksonOrderBook implements OrderBook, Serializable {
     }
 
     @JsonCreator
-    public JacksonOrderBook(@JsonProperty("bids") List<Offer> bids,
-                            @JsonProperty("asks") List<Offer> asks) {
-        this.bids = bids;
-        this.asks = asks;
+    public JacksonOrderBook(@JsonProperty("bids") List<JacksonOffer> bids,
+                            @JsonProperty("asks") List<JacksonOffer> asks) {
+        this.bids = new ArrayList<>(bids);
+        this.asks = new ArrayList<>(asks);
     }
 
     public List<Offer> getBids() {

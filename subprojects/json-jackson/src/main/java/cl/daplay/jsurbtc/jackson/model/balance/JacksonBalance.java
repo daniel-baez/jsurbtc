@@ -76,7 +76,7 @@ public class JacksonBalance implements Balance, Serializable {
 
     @Override
     public String toString() {
-        return "JacksonBalance{" +
+        return "Balance{" +
                 "accountId=" + accountId +
                 ", id='" + id + '\'' +
                 ", amount=" + amount +

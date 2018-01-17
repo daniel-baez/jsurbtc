@@ -7,17 +7,25 @@ public interface Ticker extends Serializable {
 
     BigDecimal getLastPrice();
 
+    String getLastPriceCurrency();
+
     /**
      * @return Lowest selling position
      */
     BigDecimal getMinAsk();
+
+    String getMinAskCurrency();
 
     /**
      * @return Highest buying position
      */
     BigDecimal getMaxBid();
 
+    String getMaxBidCurrency();
+
     BigDecimal getVolume();
+
+    String getVolumeCurrency();
 
     BigDecimal getPriceVariation24Hours();
 

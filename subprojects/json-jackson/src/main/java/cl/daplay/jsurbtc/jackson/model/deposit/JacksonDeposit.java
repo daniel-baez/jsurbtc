@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -56,32 +57,49 @@ public class JacksonDeposit  implements Deposit, Serializable {
         this.fee = fee;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getState() {
         return state;
     }
 
-    public JacksonAmount getAmount() {
-        return amount;
+    @Override
+    public BigDecimal getAmount() {
+        return amount.getAmount();
     }
 
+    @Override
+    public String getAmountCurrency() {
+        return amount.getCurrency();
+    }
+
+    @Override
     public String getCurrency() {
         return currency;
     }
 
+    @Override
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public JacksonDepositData getDepositData() {
         return depositData;
     }
 
-    public JacksonAmount getFee() {
-        return fee;
+    @Override
+    public BigDecimal getFee() {
+        return fee.getAmount();
+    }
+
+    @Override
+    public String getFeeCurrency() {
+        return fee.getCurrency();
     }
 
     @Override

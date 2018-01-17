@@ -52,26 +52,44 @@ public class JacksonTicker implements Ticker, Serializable {
         this.priceVariation7Days = priceVariation7Days;
     }
 
-    public JacksonAmount getLastPrice() {
-        return lastPrice;
+    @Override
+    public BigDecimal getLastPrice() {
+        return lastPrice.getAmount();
     }
 
-    /**
-     * @return Lowest selling position
-     */
-    public JacksonAmount getMinAsk() {
-        return minAsk;
+    @Override
+    public String getLastPriceCurrency() {
+        return lastPrice.getCurrency();
     }
 
-    /**
-     * @return Highest buying position
-     */
-    public JacksonAmount getMaxBid() {
-        return maxBid;
+    @Override
+    public BigDecimal getMinAsk() {
+        return minAsk.getAmount();
     }
 
-    public JacksonAmount getVolume() {
-        return volume;
+    @Override
+    public String getMinAskCurrency() {
+        return minAsk.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getMaxBid() {
+        return maxBid.getAmount();
+    }
+
+    @Override
+    public String getMaxBidCurrency() {
+        return maxBid.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getVolume() {
+        return volume.getAmount();
+    }
+
+    @Override
+    public String getVolumeCurrency() {
+        return volume.getCurrency();
     }
 
     public BigDecimal getPriceVariation24Hours() {

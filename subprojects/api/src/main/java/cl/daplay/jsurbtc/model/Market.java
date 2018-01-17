@@ -14,4 +14,6 @@ public interface Market extends Serializable {
     String getQuoteCurrency();
 
     BigDecimal getMinimumOrderAmount();
+
+    String getMinimumOrderAmountCurrency();
 }

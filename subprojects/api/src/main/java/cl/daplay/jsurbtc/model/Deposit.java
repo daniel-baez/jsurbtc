@@ -13,6 +13,8 @@ public interface Deposit extends Serializable {
 
     BigDecimal getAmount();
 
+    String getAmountCurrency();
+
     String getCurrency();
 
     Instant getCreatedAt();
@@ -20,6 +22,8 @@ public interface Deposit extends Serializable {
     DepositData getDepositData();
 
     BigDecimal getFee();
+
+    String getFeeCurrency();
 
     interface DepositData extends Serializable {
 

@@ -22,14 +22,25 @@ public interface Order extends Serializable {
 
     BigDecimal getLimit();
 
+    String getLimitCurrency();
+
     BigDecimal getAmount();
+
+    String getAmountCurrency();
 
     BigDecimal getOriginalAmount();
 
+    String getOriginalAmountCurrency();
+
     BigDecimal getTradedAmount();
+
+    String getTradedAmountCurrency();
 
     BigDecimal getTotalExchanged();
 
+    String getTotalExchangedCurrency();
+
     BigDecimal getPaidFee();
 
+    String getPaidFeeCurrency();
 }

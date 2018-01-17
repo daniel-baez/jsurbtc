@@ -5,6 +5,7 @@ import cl.daplay.jsurbtc.model.Withdrawal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 public class JacksonWithdrawal implements Withdrawal, Serializable {
@@ -52,32 +53,49 @@ public class JacksonWithdrawal implements Withdrawal, Serializable {
         this.fee = fee;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getState() {
         return state;
     }
 
+    @Override
     public String getCurrency() {
         return currency;
     }
 
+    @Override
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public JacksonWithdrawalData getWithdrawalData() {
         return withdrawalWithdrawalData;
     }
 
-    public JacksonAmount getAmount() {
-        return amount;
+    @Override
+    public BigDecimal getAmount() {
+        return amount.getAmount();
     }
 
-    public JacksonAmount getFee() {
-        return fee;
+    @Override
+    public String getAmountCurrency() {
+        return amount.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getFee() {
+        return fee.getAmount();
+    }
+
+    @Override
+    public String getFeeCurrency() {
+        return fee.getCurrency();
     }
 
     @Override

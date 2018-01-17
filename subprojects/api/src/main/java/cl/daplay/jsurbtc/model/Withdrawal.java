@@ -18,7 +18,11 @@ public interface Withdrawal extends Serializable {
 
     BigDecimal getAmount();
 
+    String getAmountCurrency();
+
     BigDecimal getFee();
+
+    String getFeeCurrency();
 
     interface WithdrawalData extends Serializable {
 

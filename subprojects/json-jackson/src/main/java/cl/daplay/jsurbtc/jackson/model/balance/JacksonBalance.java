@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @JsonPropertyOrder({ "id", "amount", "available_amount", "frozen_amount", "pending_withdraw_amount", "account_id" })
 public class JacksonBalance implements Balance, Serializable {
@@ -50,28 +51,54 @@ public class JacksonBalance implements Balance, Serializable {
         this.pendingWithdrawAmount = pendingWithdrawAmount;
     }
 
+    @Override
     public long getAccountId() {
         return accountId;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
-    public JacksonAmount getAmount() {
-        return amount;
+    @Override
+    public BigDecimal getAmount() {
+        return amount.getAmount();
     }
 
-    public JacksonAmount getAvailableAmount() {
-        return availableAmount;
+    @Override
+    public String getAmountCurrency() {
+        return amount.getCurrency();
     }
 
-    public JacksonAmount getFrozenAmount() {
-        return frozenAmount;
+    @Override
+    public BigDecimal getAvailableAmount() {
+        return availableAmount.getAmount();
     }
 
-    public JacksonAmount getPendingWithdrawAmount() {
-        return pendingWithdrawAmount;
+    @Override
+    public String getAvailableAmountCurrency() {
+        return availableAmount.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getFrozenAmount() {
+        return frozenAmount.getAmount();
+    }
+
+    @Override
+    public String getFrozenAmountCurrency() {
+        return frozenAmount.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getPendingWithdrawAmount() {
+        return pendingWithdrawAmount.getAmount();
+    }
+
+    @Override
+    public String getPendingWithdrawAmountCurrency() {
+        return pendingWithdrawAmount.getCurrency();
     }
 
     @Override

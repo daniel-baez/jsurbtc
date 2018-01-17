@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 public class JacksonOrder implements Order, Serializable {
@@ -89,58 +90,100 @@ public class JacksonOrder implements Order, Serializable {
         this.paidFee = paidFee;
     }
 
+    @Override
     public long getId() {
         return id;
     }
 
+    @Override
     public String getType() {
         return type;
     }
 
+    @Override
     public String getState() {
         return state;
     }
 
+    @Override
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    @Override
     public long getAccountId() {
         return accountId;
     }
 
+    @Override
     public String getFeeCurrency() {
         return feeCurrency;
     }
 
+    @Override
     public String getPriceType() {
         return priceType;
     }
 
-    public JacksonAmount getLimit() {
-        return limit;
+    @Override
+    public BigDecimal getLimit() {
+        return limit.getAmount();
     }
 
-    public JacksonAmount getAmount() {
-        return amount;
+    @Override
+    public String getLimitCurrency() {
+        return limit.getCurrency();
     }
 
-    public JacksonAmount getOriginalAmount() {
-        return originalAmount;
+    @Override
+    public BigDecimal getAmount() {
+        return amount.getAmount();
     }
 
-    public JacksonAmount getTradedAmount() {
-        return tradedAmount;
+    @Override
+    public String getAmountCurrency() {
+        return amount.getCurrency();
     }
 
-    public JacksonAmount getTotalExchanged() {
-        return totalExchanged;
+    @Override
+    public BigDecimal getOriginalAmount() {
+        return originalAmount.getAmount();
     }
 
-    public JacksonAmount getPaidFee() {
-        return paidFee;
+    @Override
+    public String getOriginalAmountCurrency() {
+        return originalAmount.getCurrency();
     }
 
+    @Override
+    public BigDecimal getTradedAmount() {
+        return tradedAmount.getAmount();
+    }
+
+    @Override
+    public String getTradedAmountCurrency() {
+        return tradedAmount.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getTotalExchanged() {
+        return totalExchanged.getAmount();
+    }
+
+    @Override
+    public String getTotalExchangedCurrency() {
+        return totalExchanged.getCurrency();
+    }
+
+    @Override
+    public BigDecimal getPaidFee() {
+        return paidFee.getAmount();
+    }
+
+    @Override
+    public String getPaidFeeCurrency() {
+        return paidFee.getCurrency();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class JacksonMarket implements Market, Serializable {
 
@@ -43,24 +44,34 @@ public class JacksonMarket implements Market, Serializable {
         this.minimumOrderAmount = minimumOrderAmount;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getBaseCurrency() {
         return baseCurrency;
     }
 
+    @Override
     public String getQuoteCurrency() {
         return quoteCurrency;
     }
 
-    public JacksonAmount getMinimumOrderAmount() {
-        return minimumOrderAmount;
+    @Override
+    public BigDecimal getMinimumOrderAmount() {
+        return minimumOrderAmount.getAmount();
+    }
+
+    @Override
+    public String getMinimumOrderAmountCurrency() {
+        return minimumOrderAmount.getCurrency();
     }
 
     @Override

@@ -11,11 +11,18 @@ public interface Balance extends Serializable {
 
     BigDecimal getAmount();
 
+    String getAmountCurrency();
+
     BigDecimal getAvailableAmount();
+
+    String getAvailableAmountCurrency();
 
     BigDecimal getFrozenAmount();
 
+    String getFrozenAmountCurrency();
+
     BigDecimal getPendingWithdrawAmount();
 
+    String getPendingWithdrawAmountCurrency();
 }
 

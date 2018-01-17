@@ -9,7 +9,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Transaction> {
 
@@ -31,12 +30,12 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
         this.entries = new ArrayList<>(entries);
     }
 
-    public Optional<Instant> getTimestamp() {
-        return Optional.ofNullable(timestamp);
+    public Instant getTimestamp() {
+        return timestamp;
     }
 
-    public Optional<Instant> getLastTimestamp() {
-        return Optional.ofNullable(lastTimestamp);
+    public Instant getLastTimestamp() {
+        return lastTimestamp;
     }
 
     public List<Transaction> getEntries() {

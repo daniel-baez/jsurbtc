@@ -4,13 +4,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 public interface Trades extends Serializable, Iterable<Trades.Transaction> {
 
-    Optional<Instant> getTimestamp();
+    Instant getTimestamp();
 
-    Optional<Instant> getLastTimestamp();
+    Instant getLastTimestamp();
 
     List<Transaction> getEntries();
 

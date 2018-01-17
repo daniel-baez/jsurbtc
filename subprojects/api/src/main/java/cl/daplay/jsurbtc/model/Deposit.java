@@ -3,7 +3,6 @@ package cl.daplay.jsurbtc.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.Optional;
 
 public interface Deposit extends Serializable {
 
@@ -29,14 +28,15 @@ public interface Deposit extends Serializable {
 
         String getType();
 
-        Optional<String> getAddress();
+        String getAddress();
 
-        Optional<String> getTxHash();
+        String getTxHash();
 
-        Optional<Instant> getCreatedAt();
+        Instant getCreatedAt();
 
-        Optional<Instant> getUpdatedAt();
+        Instant getUpdatedAt();
 
-        Optional<String> getUploadUrl();
+        String getUploadUrl();
+
     }
 }

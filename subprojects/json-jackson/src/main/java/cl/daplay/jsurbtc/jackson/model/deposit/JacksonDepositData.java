@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.jackson.model.deposit;
 
-import cl.daplay.jsurbtc.Utils;
 import cl.daplay.jsurbtc.model.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Optional;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class JacksonDepositData  implements Deposit.DepositData, Serializable {
@@ -47,24 +45,24 @@ public class JacksonDepositData  implements Deposit.DepositData, Serializable {
         return type;
     }
 
-    public Optional<String> getAddress() {
-        return Optional.ofNullable(address).filter(Utils::isNotEmpty);
+    public String getAddress() {
+        return address;
     }
 
-    public Optional<String> getTxHash() {
-        return Optional.ofNullable(txHash).filter(Utils::isNotEmpty);
+    public String getTxHash() {
+        return txHash;
     }
 
-    public Optional<Instant> getCreatedAt() {
-        return Optional.ofNullable(createdAt);
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public Optional<Instant> getUpdatedAt() {
-        return Optional.ofNullable(updatedAt);
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 
-    public Optional<String> getUploadUrl() {
-        return Optional.ofNullable(uploadUrl);
+    public String getUploadUrl() {
+        return uploadUrl;
     }
 
     @Override

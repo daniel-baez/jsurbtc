@@ -105,7 +105,7 @@ public class JacksonJSON_UT {
             List<Trades.Transaction> transactions = trades.getEntries();
             Trades.Transaction lastTransaction = transactions.get(transactions.size() - 1);
 
-            Assert.assertTrue(trades.getLastTimestamp().get().equals(lastTransaction.getTimestamp()));
+            Assert.assertTrue(trades.getLastTimestamp().equals(lastTransaction.getTimestamp()));
         }
     }
 

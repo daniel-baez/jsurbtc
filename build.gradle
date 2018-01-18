@@ -23,9 +23,7 @@ apply plugin: "org.ajoberstar.reckon"
 apply plugin: 'com.bmuschko.nexus'
 apply plugin: "com.gorylenko.gradle-git-properties"
 
-allprojects {
-    group = "cl.daplay"
-}
+group = "cl.daplay"
 description = "An idiomatic Java API for Surbtc REST services."
 
 targetCompatibility = '1.8'

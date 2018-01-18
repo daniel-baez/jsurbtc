@@ -44,12 +44,12 @@ List<Market> markets = surbtc.getMarkets();
 <dependency>
    <groupId>cl.daplay</groupId>
    <artifactId>jsurbtc</artifactId>
-   <version>3.0.0</version>
+   <version>4.0.0</version>
 </dependency>
 ```
 
 ```groovy
-compile group: 'cl.daplay', name: 'jsurbtc', version: '3.0.0'
+compile group: 'cl.daplay', name: 'jsurbtc', version: '4.0.0'
 ```
    
 # Documentation
@@ -68,7 +68,7 @@ To run integration tests (those ended in _IT.java), you'll need to add the follo
 
 # Todo
 
-- Remove jackson dependency 
+- Remove cl.daplay.jsurbtc.jackson dependency
 - Extract public API
 
 # Errors

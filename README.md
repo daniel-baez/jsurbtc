@@ -44,12 +44,12 @@ List<Market> markets = surbtc.getMarkets();
 <dependency>
    <groupId>cl.daplay</groupId>
    <artifactId>jsurbtc</artifactId>
-   <version>4.0.0</version>
+   <version>4.1.0</version>
 </dependency>
 ```
 
 ```groovy
-compile group: 'cl.daplay', name: 'jsurbtc', version: '4.0.0'
+compile group: 'cl.daplay', name: 'jsurbtc', version: '4.1.0'
 ```
    
 # Documentation

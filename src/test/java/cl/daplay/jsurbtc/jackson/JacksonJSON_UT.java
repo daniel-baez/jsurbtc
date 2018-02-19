@@ -56,6 +56,7 @@ public class JacksonJSON_UT {
         Random random = new Random();
 
         String out = json.cancelOrder(random.nextLong());
+        System.out.println(out);
         Assert.assertTrue("{\"state\":\"CANCELING\"}".equals(out));
     }
 

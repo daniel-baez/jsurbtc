@@ -22,7 +22,7 @@ public class JacksonOrder implements Order, Serializable {
     @JsonProperty("created_at")
     private Instant createdAt;
     @JsonProperty("market_id")
-    private long marketId;
+    private String marketId;
     @JsonProperty("account_id")
     private long accountId;
     @JsonProperty("fee_currency")
@@ -47,7 +47,7 @@ public class JacksonOrder implements Order, Serializable {
                         @JsonProperty("type") String type,
                         @JsonProperty("state") String state,
                         @JsonProperty("created_at") Instant createdAt,
-                        @JsonProperty("market_id") long marketId,
+                        @JsonProperty("market_id") String marketId,
                         @JsonProperty("account_id") long accountId,
                         @JsonProperty("fee_currency") String feeCurrency,
                         @JsonProperty("price_type") String priceType,
@@ -199,7 +199,7 @@ public class JacksonOrder implements Order, Serializable {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (int) (marketId ^ (marketId >>> 32));
+        result = 31 * result + (marketId != null ? marketId.hashCode() : 0);
         result = 31 * result + (int) (accountId ^ (accountId >>> 32));
         result = 31 * result + (feeCurrency != null ? feeCurrency.hashCode() : 0);
         result = 31 * result + (priceType != null ? priceType.hashCode() : 0);

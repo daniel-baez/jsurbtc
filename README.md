@@ -1,13 +1,6 @@
-# Want to create a script? [no problem](https://github.com/daplay/sur)
-
 # This is a work in progress ![travis-ci](https://travis-ci.org/daplay/jsurbtc.svg?branch=master)
 
-## Features
-
-- Idiomatic Java API
-- Java 8 Compatible
-- Lazy loading for paginated results
-- Error handling
+Java client for buda.com REST API
 
 ## Usage
 

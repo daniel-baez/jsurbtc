@@ -3,6 +3,7 @@ package cl.daplay.jsurbtc.http;
 import cl.daplay.jsurbtc.HTTPClient;
 import cl.daplay.jsurbtc.Signer;
 import cl.daplay.jsurbtc.fun.ThrowingSupplier;
+import cl.daplay.jsurbtc.model.JSurbtcException;
 
 /**
  * RetryHTTPClient it's an HTTPClient delegating inside a retry loop, bound to a hard limit
@@ -40,6 +41,15 @@ public final class RetryHTTPClient implements HTTPClient {
             try {
                 return supplier.get();
             } catch (Exception ex) {
+                // buda.com some times answers 401 by mistake
+                if (ex instanceof JSurbtcException) {
+                    JSurbtcException surbtcException = (JSurbtcException) ex;
+                    boolean invalidCredentials = surbtcException.httpStatusCode == 401;
+                    if (!invalidCredentials) {
+                        throw ex;
+                    }
+                }
+
                 lastEx = ex;
                 retries = retries + 1;
             }

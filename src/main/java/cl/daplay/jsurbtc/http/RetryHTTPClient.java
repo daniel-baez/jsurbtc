@@ -4,9 +4,9 @@ import cl.daplay.jsurbtc.HTTPClient;
 import cl.daplay.jsurbtc.Signer;
 import cl.daplay.jsurbtc.fun.ThrowingSupplier;
 
-import java.util.function.Supplier;
-import java.util.logging.Logger;
-
+/**
+ * RetryHTTPClient it's an HTTPClient delegating inside a retry loop, bound to a hard limit
+ */
 public final class RetryHTTPClient implements HTTPClient {
 
     private final HTTPClient delegate;
@@ -37,20 +37,17 @@ public final class RetryHTTPClient implements HTTPClient {
         Exception lastEx = null;
 
         while (true) {
-            if (retries > limit) {
-                if (lastEx != null) {
-                    throw lastEx;
-                }
-            }
-
             try {
                 return supplier.get();
             } catch (Exception ex) {
                 lastEx = ex;
                 retries = retries + 1;
             }
-        }
 
+            if (retries >= limit) {
+                throw lastEx;
+            }
+        }
     }
 
 }

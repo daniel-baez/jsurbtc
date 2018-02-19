@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface Trades extends Serializable, Iterable<Trades.Transaction> {
 
+    String getMarketId();
+
     Instant getTimestamp();
 
     Instant getLastTimestamp();

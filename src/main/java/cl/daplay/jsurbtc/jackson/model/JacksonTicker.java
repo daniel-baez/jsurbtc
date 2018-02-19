@@ -13,6 +13,8 @@ public class JacksonTicker implements Ticker, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
 
+    @JsonProperty("market_id")
+    private final String marketId;
     @JsonProperty("last_price")
     private final JacksonAmount lastPrice;
     @JsonProperty("min_ask")
@@ -29,18 +31,25 @@ public class JacksonTicker implements Ticker, Serializable {
     private final BigDecimal priceVariation7Days;
 
     @JsonCreator
-    public JacksonTicker(@JsonProperty("last_price") final JacksonAmount lastPrice,
+    public JacksonTicker(@JsonProperty("market_id") final String marketId,
+                         @JsonProperty("last_price") final JacksonAmount lastPrice,
                          @JsonProperty("min_ask") final JacksonAmount minAsk,
                          @JsonProperty("max_bid") final JacksonAmount maxBid,
                          @JsonProperty("volume") final JacksonAmount volume,
                          @JsonProperty("price_variation_24h") final BigDecimal priceVariation24Hours,
                          @JsonProperty("price_variation_7d") final BigDecimal priceVariation7Days) {
+        this.marketId = marketId;
         this.lastPrice = lastPrice;
         this.minAsk = minAsk;
         this.maxBid = maxBid;
         this.volume = volume;
         this.priceVariation24Hours = priceVariation24Hours;
         this.priceVariation7Days = priceVariation7Days;
+    }
+
+    @Override
+    public String getMarketId() {
+        return marketId;
     }
 
     @Override

@@ -34,4 +34,11 @@ public class JacksonAmount {
         return amount;
     }
 
+    @Override
+    public String toString() {
+        return "JacksonAmount{" +
+                "currency='" + currency + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
 }

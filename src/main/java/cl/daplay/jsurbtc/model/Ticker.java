@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 
 public interface Ticker extends Serializable {
 
+    String getMarketId();
+
     BigDecimal getLastPrice();
 
     String getLastPriceCurrency();

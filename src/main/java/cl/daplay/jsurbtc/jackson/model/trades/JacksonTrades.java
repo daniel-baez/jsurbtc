@@ -14,6 +14,8 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
 
     private static final long serialVersionUID = 2017_10_27;
 
+    @JsonProperty("market_it")
+    private final String marketId;
     @JsonProperty("timestamp")
     private final Instant timestamp;
     @JsonProperty("last_timestamp")
@@ -22,22 +24,32 @@ public class JacksonTrades implements Trades, Serializable, Iterable<Trades.Tran
     private final List<Transaction> entries;
 
     @JsonCreator
-    public JacksonTrades(@JsonProperty("timestamp") final Instant timestamp,
+    public JacksonTrades(@JsonProperty("market_id") final String marketId,
+                         @JsonProperty("timestamp") final Instant timestamp,
                          @JsonProperty("last_timestamp") final Instant lastTimestamp,
                          @JsonProperty("entries") final List<JacksonTransaction> entries) {
+        this.marketId = marketId;
         this.timestamp = timestamp;
         this.lastTimestamp = lastTimestamp;
         this.entries = new ArrayList<>(entries);
     }
 
+    @Override
+    public String getMarketId() {
+        return marketId;
+    }
+
+    @Override
     public Instant getTimestamp() {
         return timestamp;
     }
 
+    @Override
     public Instant getLastTimestamp() {
         return lastTimestamp;
     }
 
+    @Override
     public List<Transaction> getEntries() {
         return entries;
     }

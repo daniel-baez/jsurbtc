@@ -16,7 +16,7 @@ import cl.daplay.jsurbtc.model.OrderBook;
 import cl.daplay.jsurbtc.model.Trades;
 import cl.daplay.jsurbtc.model.Withdrawal;
 import cl.daplay.jsurbtc.signer.DefaultSigner;
-import cl.daplay.jsurbtc.signer.DoNothingSigner;
+import cl.daplay.jsurbtc.signer.NOOPSigner;
 
 import java.math.BigDecimal;
 import java.net.InetSocketAddress;
@@ -70,6 +70,10 @@ public class JSurbtc implements Surbtc {
         this(key, secret, nonceSupplier, null, HTTP_MAX_RETRY);
     }
 
+    public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy) {
+        this(key, secret, nonceSupplier, JacksonJSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy), HTTP_MAX_RETRY);
+    }
+
     public JSurbtc(final String key, final String secret, final LongSupplier nonceSupplier, final InetSocketAddress httpProxy, int httpMaxRetry) {
         this(key, secret, nonceSupplier, JacksonJSON.INSTANCE, httpProxy == null ? null : new Proxy(Proxy.Type.HTTP, httpProxy), httpMaxRetry);
     }
@@ -79,7 +83,7 @@ public class JSurbtc implements Surbtc {
                 newBigDecimalFormat(), 
                 json,
                 new DefaultSigner(secret),
-                DoNothingSigner.INSTANCE);
+                NOOPSigner.INSTANCE);
     }
 
     public JSurbtc(JSurbtc other) {
@@ -243,7 +247,7 @@ public class JSurbtc implements Surbtc {
 
     private void checkOrderId(final long orderId) {
         if (orderId <= 0) {
-            throw new IllegalArgumentException(format("invalid order id: %d", orderId));
+            throw new IllegalArgumentException(format("Invalid order id: %d", orderId));
         }
     }
 

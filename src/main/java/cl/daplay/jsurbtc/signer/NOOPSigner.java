@@ -2,7 +2,7 @@ package cl.daplay.jsurbtc.signer;
 
 import cl.daplay.jsurbtc.Signer;
 
-public enum DoNothingSigner implements Signer {
+public enum NOOPSigner implements Signer {
     INSTANCE;
 
 	public String sign(final String body,

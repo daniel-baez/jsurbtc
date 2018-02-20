@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.lazylist;
 
-import java.io.Serializable;
 import java.util.AbstractList;
 import java.util.List;
 
@@ -8,7 +7,7 @@ import static java.lang.Math.max;
 import static java.lang.String.format;
 import static java.util.Collections.emptyList;
 
-public final class LazyList<T> extends AbstractList<T> implements Serializable {
+public final class LazyList<T> extends AbstractList<T> {
 
     @FunctionalInterface
     public interface GetPage<T> {
@@ -16,8 +15,6 @@ public final class LazyList<T> extends AbstractList<T> implements Serializable {
         List<T> getPage(final int index) throws Exception;
 
     }
-
-    private static final long serialVersionUID = 2017_08_06;
 
     private static LazyList<?> EMPTY = new LazyList<>(emptyList(), __ -> emptyList(), 0, 0);
 

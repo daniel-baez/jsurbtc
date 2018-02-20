@@ -46,8 +46,8 @@ public final class LazyList<T> extends AbstractList<T> implements Serializable {
     private final Object[] pages;
     private final GetPage<T> nextPage;
 
-    public LazyList(final List<T> firstPage,
-                    final GetPage<T> nextPage,
+    public LazyList(List<T> firstPage,
+                    GetPage<T> nextPage,
                     int totalPages,
                     int totalCount) {
         this.pages = new Object[max(1, totalPages)];
@@ -88,12 +88,14 @@ public final class LazyList<T> extends AbstractList<T> implements Serializable {
     @SuppressWarnings("unchecked")
     private List<T> getPage(int pageForIndex) throws Exception {
         if (!isValidIndex(pageForIndex, totalPages)) {
-            throw new IllegalArgumentException(format("nextPage(pageForIndex=%d), illegal pageForIndex", pageForIndex));
+            throw new IllegalArgumentException(format("getPage(pageForIndex=%d), illegal pageForIndex", pageForIndex));
         }
 
-        synchronized (pages) {
-            if (pages[pageForIndex] == null) {
-                pages[pageForIndex] = nextPage.getPage(pageForIndex);
+        if (pages == null) {
+            synchronized (pages) {
+                if (pages[pageForIndex] == null) {
+                    pages[pageForIndex] = nextPage.getPage(pageForIndex);
+                }
             }
         }
 

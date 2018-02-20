@@ -2,12 +2,15 @@ package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
 import cl.daplay.jsurbtc.model.Withdrawal;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonWithdrawal implements Withdrawal, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;
@@ -27,6 +30,7 @@ public class JacksonWithdrawal implements Withdrawal, Serializable {
     @JsonProperty("fee")
     private final JacksonAmount fee;
 
+    @JsonCreator
     public JacksonWithdrawal(@JsonProperty("id") long id,
                              @JsonProperty("state") String state,
                              @JsonProperty("currency") String currency,

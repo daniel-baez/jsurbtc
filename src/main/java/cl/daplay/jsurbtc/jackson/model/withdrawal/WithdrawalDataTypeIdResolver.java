@@ -1,8 +1,5 @@
-package cl.daplay.jsurbtc.jackson;
+package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
-import cl.daplay.jsurbtc.jackson.model.withdrawal.JacksonBitcoinWithdrawalData;
-import cl.daplay.jsurbtc.jackson.model.withdrawal.JacksonFiatWithdrawalData;
-import cl.daplay.jsurbtc.jackson.model.withdrawal.JacksonWithdrawalData;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.JavaType;

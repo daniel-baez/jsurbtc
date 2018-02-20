@@ -3,6 +3,7 @@ package cl.daplay.jsurbtc.jackson.model.deposit;
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
 import cl.daplay.jsurbtc.model.Deposit;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonDeposit  implements Deposit, Serializable {
 
     private static final long serialVersionUID = 2017_10_22;

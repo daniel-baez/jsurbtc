@@ -1,11 +1,13 @@
 package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.time.Instant;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonAccount implements Serializable {
 
     private static final long serialVersionUID = 2017_10_22;

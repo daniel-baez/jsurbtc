@@ -1,6 +1,5 @@
 package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
-import cl.daplay.jsurbtc.jackson.WithdrawalDataTypeIdResolver;
 import cl.daplay.jsurbtc.model.Withdrawal;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonTypeIdResolver;

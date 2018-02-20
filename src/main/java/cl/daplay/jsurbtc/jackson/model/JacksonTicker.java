@@ -3,12 +3,14 @@ package cl.daplay.jsurbtc.jackson.model;
 import cl.daplay.jsurbtc.jackson.BigDecimalToStringSerializer;
 import cl.daplay.jsurbtc.model.Ticker;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonTicker implements Ticker, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

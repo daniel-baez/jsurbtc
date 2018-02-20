@@ -2,6 +2,7 @@ package cl.daplay.jsurbtc.jackson.model.order;
 
 import cl.daplay.jsurbtc.model.OrderBook;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonPropertyOrder({ "asks", "bids" })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonOrderBook implements OrderBook, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

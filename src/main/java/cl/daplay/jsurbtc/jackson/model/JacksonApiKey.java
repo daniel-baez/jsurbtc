@@ -2,6 +2,7 @@ package cl.daplay.jsurbtc.jackson.model;
 
 import cl.daplay.jsurbtc.model.ApiKey;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -15,6 +16,7 @@ import java.time.Instant;
         "expired",
         "last_access_at",
         "secret"})
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonApiKey implements ApiKey, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

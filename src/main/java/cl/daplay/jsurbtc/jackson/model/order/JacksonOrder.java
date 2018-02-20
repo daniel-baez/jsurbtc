@@ -3,12 +3,14 @@ package cl.daplay.jsurbtc.jackson.model.order;
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
 import cl.daplay.jsurbtc.model.Order;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonOrder implements Order, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

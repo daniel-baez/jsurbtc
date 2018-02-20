@@ -2,6 +2,7 @@ package cl.daplay.jsurbtc.jackson.model.trades;
 
 import cl.daplay.jsurbtc.model.Trades;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @JsonFormat(shape = JsonFormat.Shape.ARRAY)
 @JsonPropertyOrder({ "timestamp", "amount", "price", "direction" })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonTransaction implements Trades.Transaction, Serializable, Comparable<Trades.Transaction> {
 
     private static final long serialVersionUID = 2017_10_27;

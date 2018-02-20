@@ -3,6 +3,7 @@ package cl.daplay.jsurbtc.jackson.model.balance;
 import cl.daplay.jsurbtc.jackson.model.JacksonAmount;
 import cl.daplay.jsurbtc.model.Balance;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @JsonPropertyOrder({ "id", "amount", "available_amount", "frozen_amount", "pending_withdraw_amount", "account_id" })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonBalance implements Balance, Serializable {
 
     private static final long serialVersionUID = 2017_08_06;

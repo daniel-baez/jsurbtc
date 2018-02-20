@@ -1,10 +1,12 @@
 package cl.daplay.jsurbtc.jackson.model.withdrawal;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class JacksonFiatWithdrawalData extends JacksonWithdrawalData {
 
     private static final long serialVersionUID = 2017_08_06;

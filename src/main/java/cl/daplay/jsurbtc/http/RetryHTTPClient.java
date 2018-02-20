@@ -41,7 +41,7 @@ public final class RetryHTTPClient implements HTTPClient {
             try {
                 return supplier.get();
             } catch (Exception ex) {
-                // buda.com some times answers 401 by mistake
+                // buda.com sometimes answers 401 by mistake
                 if (ex instanceof JSurbtcException) {
                     JSurbtcException surbtcException = (JSurbtcException) ex;
                     boolean invalidCredentials = surbtcException.httpStatusCode == 401;

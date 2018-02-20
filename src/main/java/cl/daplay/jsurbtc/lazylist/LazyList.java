@@ -91,7 +91,7 @@ public final class LazyList<T> extends AbstractList<T> implements Serializable {
             throw new IllegalArgumentException(format("getPage(pageForIndex=%d), illegal pageForIndex", pageForIndex));
         }
 
-        if (pages == null) {
+        if (pages[pageForIndex] == null) {
             synchronized (pages) {
                 if (pages[pageForIndex] == null) {
                     pages[pageForIndex] = nextPage.getPage(pageForIndex);
